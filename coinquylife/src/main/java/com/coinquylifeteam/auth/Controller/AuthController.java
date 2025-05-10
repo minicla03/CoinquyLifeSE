@@ -4,12 +4,11 @@ import com.coinquylifeteam.auth.Service.AuthService;
 import com.coinquylifeteam.auth.Utility.AuthResult;
 import com.coinquylifeteam.auth.Utility.StatusAuth;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.ws.rs.core.Response;
 
 @Path("/auth")
-//@Consumes("application/x-www-form-urlencoded")
 public class AuthController {
 
     @Autowired
@@ -70,4 +69,5 @@ public class AuthController {
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
     }
+
 }

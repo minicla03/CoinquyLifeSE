@@ -1,5 +1,6 @@
 package com.coinquylifeteam.auth;
 
+import com.coinquylifeteam.auth.Controller.AuthController;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +13,7 @@ public class CoinquylifeApplication extends ResourceConfig
 {
 	public CoinquylifeApplication()
 	{
-		packages("com.coinquylifeteam.auth.Controller");
+		register(new AuthController());
 	}
 
 	public static void main(String[] args) {
