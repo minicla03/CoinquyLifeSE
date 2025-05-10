@@ -60,7 +60,6 @@ document.querySelector("#loginForm button").addEventListener("click", async () =
         if (res.ok) {
             alert("Login effettuato!");
 
-
         } else {
             alert("Errore: " + result.message);
         }
