@@ -4,15 +4,18 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Component
 public class TokenManager
 {
     private final Algorithm algorithm;
     private final long expiration;
 
-    public TokenManager(String secret, long expirationMillis)
+    public TokenManager(@Value("${jwt.secret}") String secret, @Value("${jwt.expiration}") long expirationMillis)
     {
         this.algorithm = Algorithm.HMAC256(secret);
         this.expiration = expirationMillis;
@@ -32,6 +35,19 @@ public class TokenManager
             DecodedJWT jwt = verifier.verify(token);
             return jwt.getSubject();
         } catch (Exception e) {
+            System.err.println("Errore durante la verifica del token: " + e.getMessage());
+            return null;
+        }
+    }
+
+    // Nuovo metodo per ottenere la data di scadenza del token
+    public Date getTokenExpiration(String token) {
+        try {
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT jwt = verifier.verify(token);
+            return jwt.getExpiresAt();
+        } catch (Exception e) {
+            System.err.println("Errore durante il recupero della data di scadenza del token: " + e.getMessage());
             return null;
         }
     }

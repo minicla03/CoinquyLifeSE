@@ -87,6 +87,12 @@
 			<version>3.1.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.glassfish.jersey.ext</groupId>
+			<artifactId>jersey-spring5</artifactId>
+			<version>3.1.2</version> <!-- Usa la versione compatibile con il tuo progetto -->
+		</dependency>
+
 	</dependencies>
 
 	<build>

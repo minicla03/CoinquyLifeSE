@@ -3,10 +3,9 @@ package com.coinquylifeteam.auth.Service;
 import com.coinquylifeteam.auth.Data.User;
 import com.coinquylifeteam.auth.JWT.TokenManager;
 import com.coinquylifeteam.auth.Repository.IUserRepository;
-import com.dbclient.MongoDBManager;
-import org.bson.Document;
+import com.coinquylifeteam.auth.Utility.AuthResult;
+import com.coinquylifeteam.auth.Utility.StatusAuth;
 import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,24 +20,28 @@ public class AuthService
         this.tokenManager = tokenManager;
     }
 
-    public boolean register(String username, String password) {
-        if (userRepository.findByUsername(username) != null)
-        {
-            return false;
+    public AuthResult register(String username, String name, String password, String surname, String email)
+    {
+        if (userRepository.findByUsername(username) != null) {
+            return new AuthResult(StatusAuth.USER_ALREADY_EXISTS, null);
         }
-        String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-        userRepository.insert(new User(username, hashed));
-        return true;
+
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        User user = new User(username, name, hashedPassword, surname, email);
+        userRepository.save(user);
+
+        return new AuthResult(StatusAuth.SUCCESS, tokenManager.generateToken(username));
     }
 
-    public String login(String username, String password) {
+    public AuthResult login(String username, String password)
+    {
         User user=userRepository.findByUsername(username);
-        if (user == null) return null;
+        if (user == null) return new AuthResult(StatusAuth.USER_NOT_FOUND, null);
 
         if (BCrypt.checkpw(password, user.getPassword())) {
-            return tokenManager.generateToken(username);
+            return new AuthResult(StatusAuth.SUCCESS, tokenManager.generateToken(username));
         }
-        return null;
+        return new AuthResult(StatusAuth.INVALID_CREDENTIALS, null);
     }
 
     public boolean isAuthenticated(String token)
