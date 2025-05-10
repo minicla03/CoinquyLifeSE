@@ -34,7 +34,7 @@
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        fetch('http://localhost:8081/rest/auth/register', {
+        fetch('http://localhost:8080/rest/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

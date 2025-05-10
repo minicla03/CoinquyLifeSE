@@ -16,7 +16,7 @@ public class AuthController {
 
     @POST
     @Path("/login")
-    public Response login(@FormParam("username") String username, @FormParam("password") String password)
+    public Response login(@QueryParam("username") String username, @QueryParam("password") String password)
     {
         AuthResult result = authService.login(username, password);
         if (result.getStatusAuth()== StatusAuth.SUCCESS)
