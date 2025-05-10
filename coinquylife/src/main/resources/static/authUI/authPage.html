@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login / Register</title>
+        <link rel="stylesheet" href="authStyle.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="form-container" id="loginForm">
+                <h2>Login</h2>
+                <input type="text" placeholder="Username" />
+                <input type="password" placeholder="Password" />
+                <button>Login</button>
+                <p>Non hai un account? <a href="#" onclick="showRegister()">Registrati</a></p>
+            </div>
+
+            <div class="form-container hidden" id="registerForm">
+                <h2>Registrati</h2>
+                <input type="text" placeholder="Nome" />
+                <input type="text" placeholder="Cognome" />
+                <input type="text" placeholder="Username" />
+                <input type="email" placeholder="Email" />
+                <input type="password" placeholder="Password" />
+                <button>Registrati</button>
+                <p>Hai già un account? <a href="#" onclick="showLogin()">Login</a></p>
+            </div>
+        </div>
+
+    <script src="authLogic.js"></script>
+</body>
+</html>
