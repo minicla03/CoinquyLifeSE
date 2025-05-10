@@ -12,8 +12,8 @@ function showLogin() {
 document.querySelector("#registerForm button").addEventListener("click", async () => {
     const inputs = document.querySelectorAll("#registerForm input");
     const data = {
-        nome: inputs[0].value,
-        cognome: inputs[1].value,
+        name: inputs[0].value,
+        surname: inputs[1].value,
         username: inputs[2].value,
         email: inputs[3].value,
         password: inputs[4].value,
