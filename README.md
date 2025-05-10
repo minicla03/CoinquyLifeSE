@@ -1,1 +1,1 @@
-COINQUILIFE
+CoinquiLife
