@@ -1,12 +1,12 @@
 package com.coinquylifeteam.auth.Controller;
 
+import com.coinquylifeteam.auth.Data.User;
 import com.coinquylifeteam.auth.Service.AuthService;
 import com.coinquylifeteam.auth.Utility.AuthResult;
 import com.coinquylifeteam.auth.Utility.StatusAuth;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-
 
 @Path("/auth")
 public class AuthController {
@@ -16,8 +16,12 @@ public class AuthController {
 
     @POST
     @Path("/login")
-    public Response login(@FormParam("username") String username, @FormParam("password") String password)
+    @Consumes("application/json")
+    public Response login(User user)
     {
+        String username = user.getUsername();
+        String password = user.getPassword();
+
         AuthResult result = authService.login(username, password);
         if (result.getStatusAuth()== StatusAuth.SUCCESS)
         {
@@ -34,37 +38,20 @@ public class AuthController {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
     }
 
-    /*@POST
-    @Path("/register")
-    public Response register(@FormParam("username") String username, @FormParam("name") String name,
-                             @FormParam("password") String password,
-                             @FormParam("surname") String surname, @FormParam("email") String email)
-    {
-        AuthResult result = authService.register(username, name, password, surname, email);
-        if (result.getStatusAuth() == StatusAuth.SUCCESS)
-        {
-            return Response.ok("Registration successful").build();
-        }
-        else if (result.getStatusAuth() == StatusAuth.USER_ALREADY_EXISTS)
-        {
-            return Response.status(Response.Status.CONFLICT).entity("User already exists").build();
-        }
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
-    }*/
-
     @POST
     @Path("/register")
-    public Response register(@QueryParam("username") String username, @QueryParam("name") String name,
-                             @QueryParam("password") String password,
-                             @QueryParam("surname") String surname, @QueryParam("email") String email)
-    {
+    public Response register(User user){
+
+        String username = user.getUsername();
+        String password = user.getPassword();
+        String name = user.getName();
+        String surname = user.getSurname();
+        String email = user.getEmail();
+
         AuthResult result = authService.register(username, name, password, surname, email);
-        if (result.getStatusAuth() == StatusAuth.SUCCESS)
-        {
+        if (result.getStatusAuth() == StatusAuth.SUCCESS) {
             return Response.ok("Registration successful").build();
-        }
-        else if (result.getStatusAuth() == StatusAuth.USER_ALREADY_EXISTS)
-        {
+        } else if (result.getStatusAuth() == StatusAuth.USER_ALREADY_EXISTS) {
             return Response.status(Response.Status.CONFLICT).entity("User already exists").build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
