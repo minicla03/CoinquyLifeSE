@@ -1,22 +1,27 @@
+// Funzione per mostrare il form di registrazione
 function showRegister() {
     document.getElementById("loginForm").classList.add("hidden");
     document.getElementById("registerForm").classList.remove("hidden");
+    document.getElementById("formTitle").textContent = "Registrazione";
 }
 
+// Funzione per mostrare il form di login
 function showLogin() {
     document.getElementById("registerForm").classList.add("hidden");
     document.getElementById("loginForm").classList.remove("hidden");
+    document.getElementById("formTitle").textContent = "Login";
 }
 
 
+// Aggiungi un listener per il click sul link "Registrati"
 document.querySelector("#registerForm button").addEventListener("click", async () => {
     const inputs = document.querySelectorAll("#registerForm input");
     const data = {
-        username: inputs[2].value,
-        password: inputs[4].value,
         name: inputs[0].value,
         surname: inputs[1].value,
+        username: inputs[2].value,
         email: inputs[3].value,
+        password: inputs[4].value,
     };
 
     try {
@@ -40,6 +45,7 @@ document.querySelector("#registerForm button").addEventListener("click", async (
     }
 });
 
+// Aggiungi un listener per il click sul link "Hai già un account?"
 document.querySelector("#loginForm").addEventListener("submit", async (event) => {
     event.preventDefault(); // Previene il comportamento predefinito del form
     const inputs = document.querySelectorAll("#loginForm input");
@@ -69,6 +75,7 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
     }
 });
 
+// Aggiungi un listener per il click sul link "Hai già un account?"
 document.querySelector("#loginForm button").addEventListener("click", async (event) => {
     event.preventDefault(); // Previene il doppio invio del form
     document.querySelector("#loginForm").dispatchEvent(new Event("submit"));
