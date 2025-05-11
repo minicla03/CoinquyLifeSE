@@ -7,10 +7,6 @@ import com.coinquylifeteam.auth.Utility.StatusAuth;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.Map;
-
 
 @Path("/auth")
 public class AuthController {
