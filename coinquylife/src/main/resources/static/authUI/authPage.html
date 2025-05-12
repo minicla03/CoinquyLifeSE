@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login / Register</title>
     <link rel="stylesheet" href="authStyle.css" />
+
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 <div class="container">
@@ -12,13 +15,20 @@
         <img src="logo-blu.png" style="height: 7em; margin-right: 2px;" />
         <h2 id="formTitle" style="margin: 5px 0;">Login</h2>
     </div>
+
+    <!-- Login Form -->
     <div class="form-container" id="loginForm" style="margin-top: 0;">
         <input type="text" placeholder="Username" />
         <input type="password" placeholder="Password" />
         <button>Login</button>
+
+        <!-- Google Login Button -->
+        <div id="googleLogin" style="margin-top: 10px;"></div>
+
         <p>Non hai un account? <a href="#" onclick="showRegister()">Registrati</a></p>
     </div>
 
+    <!-- Register Form -->
     <div class="form-container hidden" id="registerForm" style="margin-top: 0;">
         <input type="text" placeholder="Nome" />
         <input type="text" placeholder="Cognome" />
@@ -26,6 +36,10 @@
         <input type="email" placeholder="Email" />
         <input type="password" placeholder="Password" />
         <button>Registrati</button>
+
+        <!-- Google Register Button (optional, can be the same as login) -->
+        <div id="googleRegister" style="margin-top: 10px;"></div>
+
         <p>Hai già un account? <a href="#" onclick="showLogin()">Login</a></p>
     </div>
 </div>

@@ -63,6 +63,20 @@ public class User
         this.password = pass;
     }
 
+    public User(String id, String username, String name, String password, String surname, String email)
+    {
+        this.id_user = id;
+        this.username = username;
+        this.name = name;
+        this.password = password;
+        this.surname = surname;
+        this.email = email;
+        this.level = 0;
+        this.total_points = 0;
+        this.profileImage = null;
+        this.houseUser=null;
+    }
+
     public String getId_user() {
         return id_user;
     }

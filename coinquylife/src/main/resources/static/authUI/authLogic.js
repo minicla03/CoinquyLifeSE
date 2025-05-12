@@ -75,6 +75,54 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
     }
 });
 
+// Sostituisci con il tuo client ID ottenuto da Google Developer Console
+const clientID = "YOUR_GOOGLE_CLIENT_ID";
+
+function handleCredentialResponse(response) {
+   const idToken = response.credential;
+
+    fetch("http://localhost:8080/rest/auth/google", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token:idToken }),
+    })
+    .then(res => res.json())
+    .then(data => {
+        // per ricevere il token dal backend
+        const sessionToken = data.sessionToken;
+        localStorage.setItem("token", sessionToken);
+        if (data.success) {
+            alert("Login con Google effettuato!");
+            window.location.href = "/home";
+        } else {
+            alert("Errore durante il login con Google: " + data.message);
+        }
+    })
+    .catch(error => {
+        alert("Errore di rete: " + error.message);
+    });
+}
+
+window.onload = function () {
+    google.accounts.id.initialize({
+        client_id: clientID,
+        callback: handleCredentialResponse
+    });
+
+    google.accounts.id.renderButton(
+        document.getElementById("googleLogin"),
+        { theme: "outline", size: "large" }
+    );
+
+    google.accounts.id.renderButton(
+        document.getElementById("googleRegister"),
+        { theme: "outline", size: "large" }
+    );
+};
+
+
 // Aggiungi un listener per il click sul link "Hai già un account?"
 document.querySelector("#loginForm button").addEventListener("click", async (event) => {
     event.preventDefault(); // Previene il doppio invio del form

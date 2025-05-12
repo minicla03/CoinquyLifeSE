@@ -1,12 +1,18 @@
 package com.coinquylifeteam.auth.Controller;
 
 import com.coinquylifeteam.auth.Data.User;
+import com.coinquylifeteam.auth.Google.TokenRequest;
 import com.coinquylifeteam.auth.Service.AuthService;
 import com.coinquylifeteam.auth.Utility.AuthResult;
 import com.coinquylifeteam.auth.Utility.StatusAuth;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
+import org.apache.el.parser.Token;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.Map;
 
 @Path("/auth")
 public class AuthController {
@@ -55,6 +61,16 @@ public class AuthController {
             return Response.status(Response.Status.CONFLICT).entity("User already exists").build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
+    }
+
+    @POST
+    @Path("/google")
+    @Consumes("application/json")
+    public Response loginGoogle(@RequestBody TokenRequest token)
+    {
+        String idToken = token.getIdToken();
+        authService.verifyTokenGoogle(idToken);
+        return Response.status(Response.Status.OK).entity("OK").build();
     }
 
 }
