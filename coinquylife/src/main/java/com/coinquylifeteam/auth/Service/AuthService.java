@@ -7,6 +7,11 @@ import com.coinquylifeteam.auth.Utility.AuthResult;
 import com.coinquylifeteam.auth.Utility.StatusAuth;
 import jakarta.validation.Payload;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -17,7 +22,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import java.util.Collections;
 
 @Service
-public class AuthService
+public class AuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User>
 {
     private final IUserRepository userRepository;
     private final TokenManager tokenManager;
@@ -85,6 +90,29 @@ public class AuthService
         {
             throw new RuntimeException("Errore nella verifica del token", e);
         }
+    }
+
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2User user = new DefaultOAuth2UserService().loadUser(userRequest);
+        String email = user.getAttribute("email");
+
+        // Salva o aggiorna utente nel DB
+        userRepository.findByEmail(email)
+                .orElseGet(() -> userRepository.save(new User(email)));
+
+        return user;
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
+        http.authorizeRequests(a -> a.antMatchers("/", "/error", "/webjars/**").permitAll()
+                        .anyRequest().authenticated())
+                .exceptionHandling(e -> e
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                )
+                .oauth2Login();
     }
 
     public boolean isAuthenticated(String token)

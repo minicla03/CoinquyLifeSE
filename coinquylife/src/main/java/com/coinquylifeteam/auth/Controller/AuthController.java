@@ -10,12 +10,19 @@ import jakarta.ws.rs.core.Response;
 import org.apache.el.parser.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
 @Path("/auth")
-public class AuthController {
+public class AuthController{
 
     @Autowired
     private AuthService authService;
@@ -63,7 +70,7 @@ public class AuthController {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
     }
 
-    @POST
+    /*@POST
     @Path("/google")
     @Consumes("application/json")
     public Response loginGoogle(@RequestBody TokenRequest token)
@@ -71,6 +78,11 @@ public class AuthController {
         String idToken = token.getIdToken();
         authService.verifyTokenGoogle(idToken);
         return Response.status(Response.Status.OK).entity("OK").build();
-    }
+    }*/
 
+    @POST
+    @Path("/google")
+    public String loginGoogle(@AuthenticationPrincipal OAuth2User principal) {
+        return "Hello, " + principal.getAttribute("name");
+    }
 }
