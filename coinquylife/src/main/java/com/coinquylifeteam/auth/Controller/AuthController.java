@@ -82,7 +82,9 @@ public class AuthController{
 
     @POST
     @Path("/google")
-    public String loginGoogle(@AuthenticationPrincipal OAuth2User principal) {
-        return "Hello, " + principal.getAttribute("name");
+    public String loginGoogle(@AuthenticationPrincipal OAuth2User user)
+    {
+
+        return "Ciao " + user.getAttribute("name") + ", la tua email è: " + user.getAttribute("email");
     }
 }
