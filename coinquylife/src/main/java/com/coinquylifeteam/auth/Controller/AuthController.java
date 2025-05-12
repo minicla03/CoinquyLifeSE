@@ -19,10 +19,17 @@ public class AuthController {
     @Consumes("application/json")
     public Response login(User user)
     {
-        String username = user.getUsername();
+        AuthResult result;
         String password = user.getPassword();
+        String username = user.getUsername();
+        if (username == null ) {
+            String email = user.getEmail();
+            result = authService.login(email, password);
+        }
+        else {
+            result = authService.login(username, password);
+        }
 
-        AuthResult result = authService.login(username, password);
         if (result.getStatusAuth()== StatusAuth.SUCCESS)
         {
             return Response.ok("Login successful").build();

@@ -33,13 +33,17 @@ public class AuthService
         return new AuthResult(StatusAuth.SUCCESS, tokenManager.generateToken(username));
     }
 
-    public AuthResult login(String username, String password)
+    public AuthResult login(String identifier, String password)
     {
-        User user=userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(identifier);
+        if (user == null) {
+            user = userRepository.findByEmail(identifier);
+        }
+
         if (user == null) return new AuthResult(StatusAuth.USER_NOT_FOUND, null);
 
         if (BCrypt.checkpw(password, user.getPassword())) {
-            return new AuthResult(StatusAuth.SUCCESS, tokenManager.generateToken(username));
+            return new AuthResult(StatusAuth.SUCCESS, tokenManager.generateToken(user.getUsername()));
         }
         return new AuthResult(StatusAuth.INVALID_CREDENTIALS, null);
     }
