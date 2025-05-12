@@ -1,14 +1,19 @@
+// Funzione per mostrare il form di registrazione
 function showRegister() {
     document.getElementById("loginForm").classList.add("hidden");
     document.getElementById("registerForm").classList.remove("hidden");
+    document.getElementById("formTitle").textContent = "Registrazione";
 }
 
+// Funzione per mostrare il form di login
 function showLogin() {
     document.getElementById("registerForm").classList.add("hidden");
     document.getElementById("loginForm").classList.remove("hidden");
+    document.getElementById("formTitle").textContent = "Login";
 }
 
 
+// Aggiungi un listener per il click sul link "Registrati"
 document.querySelector("#registerForm button").addEventListener("click", async () => {
     const inputs = document.querySelectorAll("#registerForm input");
     const data = {
@@ -20,7 +25,7 @@ document.querySelector("#registerForm button").addEventListener("click", async (
     };
 
     try {
-        const res = await fetch("/rest/auth/register", {
+        const res = await fetch("http://localhost:8080/rest/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -28,19 +33,21 @@ document.querySelector("#registerForm button").addEventListener("click", async (
             body: JSON.stringify(data),
         });
 
-        const result = await res.json();
+        const result = await res.text();
         if (res.ok) {
             alert("Registrazione completata!");
             showLogin();
         } else {
-            alert("Errore: " + result.message);
+            alert("Errore: " + result);
         }
     } catch (error) {
         alert("Errore di rete: " + error.message);
     }
 });
 
-document.querySelector("#loginForm button").addEventListener("click", async () => {
+// Aggiungi un listener per il click sul link "Hai già un account?"
+document.querySelector("#loginForm").addEventListener("submit", async (event) => {
+    event.preventDefault(); // Previene il comportamento predefinito del form
     const inputs = document.querySelectorAll("#loginForm input");
     const data = {
         username: inputs[0].value,
@@ -48,7 +55,7 @@ document.querySelector("#loginForm button").addEventListener("click", async () =
     };
 
     try {
-        const res = await fetch("/rest/auth/register", {
+        const res = await fetch(`/rest/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -56,14 +63,20 @@ document.querySelector("#loginForm button").addEventListener("click", async () =
             body: JSON.stringify(data),
         });
 
-        const result = await res.json();
+        const result = await res.text();
         if (res.ok) {
             alert("Login effettuato!");
-
+            window.location.href = "/home";
         } else {
-            alert("Errore: " + result.message);
+            alert("Errore: " + result);
         }
     } catch (error) {
         alert("Errore di rete: " + error.message);
     }
+});
+
+// Aggiungi un listener per il click sul link "Hai già un account?"
+document.querySelector("#loginForm button").addEventListener("click", async (event) => {
+    event.preventDefault(); // Previene il doppio invio del form
+    document.querySelector("#loginForm").dispatchEvent(new Event("submit"));
 });

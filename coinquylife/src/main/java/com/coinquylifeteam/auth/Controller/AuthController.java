@@ -1,55 +1,60 @@
 package com.coinquylifeteam.auth.Controller;
 
+import com.coinquylifeteam.auth.Data.User;
 import com.coinquylifeteam.auth.Service.AuthService;
 import com.coinquylifeteam.auth.Utility.AuthResult;
 import com.coinquylifeteam.auth.Utility.StatusAuth;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
-@RestController
-@RequestMapping("/auth")
+@Path("/auth")
 public class AuthController {
 
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> requestData) {
-        String username = requestData.get("username");
-        String password = requestData.get("password");
-        AuthResult result = authService.login(username, password);
+    @POST
+    @Path("/login")
+    @Consumes("application/json")
+    public Response login(User user)
+    {
+        String username = user.getUsername();
+        String password = user.getPassword();
 
-        if (result.getStatusAuth() == StatusAuth.SUCCESS) {
-            return ResponseEntity.ok(Map.of("message", "Login successful"));
-        } else if (result.getStatusAuth() == StatusAuth.USER_NOT_FOUND) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "User not found"));
-        } else if (result.getStatusAuth() == StatusAuth.INVALID_CREDENTIALS) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Invalid credentials"));
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "An error occurred"));
+        AuthResult result = authService.login(username, password);
+        if (result.getStatusAuth()== StatusAuth.SUCCESS)
+        {
+            return Response.ok("Login successful").build();
         }
+        else if(result.getStatusAuth() == StatusAuth.USER_NOT_FOUND)
+        {
+            return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
+        }
+        else if (result.getStatusAuth() == StatusAuth.INVALID_CREDENTIALS)
+        {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid credentials").build();
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> register(@RequestBody Map<String, String> requestData) {
-        String username = requestData.get("username");
-        String name = requestData.get("name");
-        String password = requestData.get("password");
-        String surname = requestData.get("surname");
-        String email = requestData.get("email");
+    @POST
+    @Path("/register")
+    public Response register(User user){
+
+        String username = user.getUsername();
+        String password = user.getPassword();
+        String name = user.getName();
+        String surname = user.getSurname();
+        String email = user.getEmail();
 
         AuthResult result = authService.register(username, name, password, surname, email);
-
         if (result.getStatusAuth() == StatusAuth.SUCCESS) {
-            return ResponseEntity.ok(Map.of("message", "Registration successful"));
+            return Response.ok("Registration successful").build();
         } else if (result.getStatusAuth() == StatusAuth.USER_ALREADY_EXISTS) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", "User already exists"));
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "An error occurred"));
+            return Response.status(Response.Status.CONFLICT).entity("User already exists").build();
         }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
     }
+
 }
