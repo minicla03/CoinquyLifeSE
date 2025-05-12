@@ -37,8 +37,13 @@
         <input type="password" placeholder="Password" />
         <button>Registrati</button>
 
-        <!-- Google Register Button (optional, can be the same as login) -->
-        <div id="googleRegister" style="margin-top: 10px;"></div>
+        <a href="/oauth2/authorization/google" class="google-btn">
+            <div class="google-icon-wrapper">
+                <img class="google-icon" src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
+            </div>
+            <span class="btn-text">Accedi con Google</span>
+        </a>
+
 
         <p>Hai già un account? <a href="#" onclick="showLogin()">Login</a></p>
     </div>

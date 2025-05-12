@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@RestController
 @Path("/auth")
 public class AuthController{
 
@@ -69,22 +70,11 @@ public class AuthController{
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
     }
-
-    /*@POST
-    @Path("/google")
-    @Consumes("application/json")
-    public Response loginGoogle(@RequestBody TokenRequest token)
-    {
-        String idToken = token.getIdToken();
-        authService.verifyTokenGoogle(idToken);
-        return Response.status(Response.Status.OK).entity("OK").build();
-    }*/
-
-    @POST
-    @Path("/google")
-    public String loginGoogle(@AuthenticationPrincipal OAuth2User user)
-    {
-
-        return "Ciao " + user.getAttribute("name") + ", la tua email è: " + user.getAttribute("email");
-    }
+//
+//    @POST
+//    @Path("/google")
+//    public String loginGoogle(@AuthenticationPrincipal OAuth2User user)
+//    {
+//
+//    }
 }

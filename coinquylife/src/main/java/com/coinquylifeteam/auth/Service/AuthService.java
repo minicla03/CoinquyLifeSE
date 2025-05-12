@@ -66,8 +66,8 @@ public class AuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2U
             User newUser = new User(username, name, hashedPassword, surname, email);
             newUser.setEmail(email);
             userRepository.save(newUser);
-        }
-        return oauth2User;
+       }
+       return oauth2User;
     }
 
     public boolean isAuthenticated(String token)

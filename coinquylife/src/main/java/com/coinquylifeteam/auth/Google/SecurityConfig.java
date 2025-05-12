@@ -1,5 +1,6 @@
 package com.coinquylifeteam.auth.Google;
 
+import com.coinquylifeteam.auth.Service.AuthService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,27 +14,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final OAuth2UserService OAuth2UserService;
-
-    public SecurityConfig(OAuth2UserService<> OAuth2UserService) {
-        this.customOAuth2UserService = customOAuth2UserService;
-    }
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
-    {
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthService customOAuth2UserService) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login**", "/error").permitAll()
+                        .requestMatchers("/", "/login").permitAll()
                         .anyRequest().authenticated()
                 )
-                .oauth2Login(oauth -> oauth
-                        .defaultSuccessUrl("/home", true)
-                        .userInfoEndpoint(info -> info
-                                .userService(OAuth2UserService)
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
                         )
                 );
-
         return http.build();
     }
 }
