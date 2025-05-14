@@ -17,4 +17,12 @@ public class AuthResult
     public void setStatusAuth(StatusAuth statusAuth) {
         this.statusAuth = statusAuth;
     }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

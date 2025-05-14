@@ -7,7 +7,12 @@ import com.coinquylifeteam.auth.Utility.StatusAuth;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import java.net.URI;
+
+@Controller
 @Path("/auth")
 public class AuthController {
 
@@ -17,6 +22,7 @@ public class AuthController {
     @POST
     @Path("/login")
     @Consumes("application/json")
+    @Produces("application/json")
     public Response login(User user)
     {
         AuthResult result;
@@ -32,7 +38,9 @@ public class AuthController {
 
         if (result.getStatusAuth()== StatusAuth.SUCCESS)
         {
-            return Response.ok("Login successful").build();
+            System.out.println("Token: " + result.getToken());
+            // Generate a token and return it in the response
+            return Response.ok("{\"token\":\"" + result.getToken() + "\"}").type("application/json").build();
         }
         else if(result.getStatusAuth() == StatusAuth.USER_NOT_FOUND)
         {
@@ -63,5 +71,4 @@ public class AuthController {
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
     }
-
 }

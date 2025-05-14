@@ -13,6 +13,36 @@ function showLogin() {
 }
 
 
+// Funzione per reindirizzare alla pagina principale
+function redirectToHouse() {
+    const token = localStorage.getItem("token");
+    if (token) {
+        fetch("http://localhost:8080/rest/client/house", {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error("Errore nella risposta del server");
+                return response.text();
+            })
+            .then(html => {
+                document.open();       // Svuota il DOM
+                document.write(html);  // Scrive il nuovo HTML
+                document.close();      // Chiude il documento
+            })
+            .catch(err => {
+                alert("Errore: " + err.message);
+            });
+    } else {
+        alert("Token non trovato. Assicurati di essere autenticato.");
+    }
+}
+
+
+
+
 // Aggiungi un listener per il click sul link "Registrati"
 document.querySelector("#registerForm button").addEventListener("click", async () => {
     const inputs = document.querySelectorAll("#registerForm input");
@@ -66,7 +96,10 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
         const result = await res.text();
         if (res.ok) {
             alert("Login effettuato!");
-            window.location.href = "/home";
+            const json = JSON.parse(result);
+            const token = json["token"];
+            localStorage.setItem("token", token);
+            redirectToHouse();
         } else {
             alert("Errore: " + result);
         }
@@ -80,3 +113,5 @@ document.querySelector("#loginForm button").addEventListener("click", async (eve
     event.preventDefault(); // Previene il doppio invio del form
     document.querySelector("#loginForm").dispatchEvent(new Event("submit"));
 });
+
+

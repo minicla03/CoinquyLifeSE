@@ -52,9 +52,6 @@ public class AuthService
     {
         String username = tokenManager.verifyToken(token);
         if (username == null) return false;
-        return true;
-
-        //DA MODIFICARE
-        //return utenti.find(new Document("username", username)).first() != null;
+        return userRepository.findByUsername(username) != null;
     }
 }
