@@ -68,7 +68,6 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
             },
             body: JSON.stringify(data),
         });
@@ -88,6 +87,40 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
         //alert("Errore di rete: " + error.message);
         out = document.getElementById("outputlog");
         out.innerHTML = "❗️" + error.message;
+    }
+});
+
+let currentUser = null;
+
+window.addEventListener("DOMContentLoaded", async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        // Se non si ha un token si reindirizza al login
+        window.location.href = "/login.html";
+        return;
+    }
+
+    try {
+        const res = await fetch("http://localhost:8081/rest/auth/infoUser", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (res.ok) {
+            const userData = await res.json();
+            currentUser
+            document.getElementById("usernameLabel").textContent = "Ciao " + userData.username;
+
+        } else {
+            const errorText = await res.text();
+            console.error("Errore:", errorText);
+            window.location.href = "/login.html";
+        }
+    } catch (error) {
+        console.error("Errore di rete:", error);
+        window.location.href = "/login.html";
     }
 });
 

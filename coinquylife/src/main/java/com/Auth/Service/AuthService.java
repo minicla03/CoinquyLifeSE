@@ -69,14 +69,6 @@ public class AuthService
         return new AuthResult(StatusAuth.INVALID_CREDENTIALS, null);
     }
 
-
-    public boolean isAuthenticated(String token)
-    {
-        String username = tokenManager.verifyToken(token);
-        if (username == null) return false;
-        return userRepository.findByUsername(username) != null;
-    }
-
     /**
      * Verifica se il token è valido e restituisce il nome utente associato.
      *
@@ -90,6 +82,11 @@ public class AuthService
          return username;
     }
 
+    public User getUserInfo(String username)
+    {
+        if (username == null) return null;
+        return userRepository.findByUsername(username);
+    }
 
     /**
      * Associa una casa a un utente.

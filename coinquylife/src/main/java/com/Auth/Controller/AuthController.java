@@ -100,5 +100,28 @@ public class AuthController {
     }
 
 
+    @POST
+    @Path("/infoUser")
+    @Consumes("application/json")
+    public Response getUserInfo(@HeaderParam("Authorization") String authHeader, Map<String, String> body)
+    {
+        // Verifica se il token è presente
+        String token = authHeader.replace("Bearer ", "");
+        String username = authService.getUsernameFromToken(token);
+
+        if (username == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid token").build();
+        }
+
+        // Restituisci le informazioni dell'utente
+        User user = authService.getUserInfo(username);
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
+        }
+
+        return Response.ok(user).build();
+    }
+
+
 
 }

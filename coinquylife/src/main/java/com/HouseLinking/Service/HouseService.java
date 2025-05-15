@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("HouseService")
-public class HouseService {
-
+public class HouseService
+{
     @Autowired
     private IHouseRepository houseRepository;
-
 
     /**
      * Create a new house with the given name and address.
@@ -21,8 +20,8 @@ public class HouseService {
      * @param houseAddress The address of the house.
      * @return A response indicating the result of the creation operation.
      */
-    public Response createHouse(String houseName, String houseAddress) {
-
+    public Response createHouse(String houseName, String houseAddress)
+    {
         if (houseRepository.findByHouseName(houseName) != null) {
             return Response.status(Response.Status.CONFLICT)
                     .entity("La casa con questo nome esiste già")
@@ -31,27 +30,9 @@ public class HouseService {
 
         // Generate a unique house code (for example, using UUID)
         String houseCode = java.util.UUID.randomUUID().toString();
-
-        // Create a new house object
-        House newHouse = new House();
-        newHouse.setHouseName(houseName);
-        newHouse.setHouseAddress(houseAddress);
-
-
-
-        // Check if the generated house code already exists
-        while (houseRepository.findByHouseId(houseCode) != null) {
-            houseCode = java.util.UUID.randomUUID().toString();
-        }
-
-        // Hash the house code for security
         String hashedHouseCode = BCrypt.hashpw(houseCode, BCrypt.gensalt());
-
-        // Set the hashed house code
-        newHouse.setHouseCode(hashedHouseCode);
-
-        // Save the house to the database
-        houseRepository.save(newHouse);
+        House newHouse = new House(hashedHouseCode, houseName, houseAddress);
+        houseRepository.insert(newHouse);
 
         return Response.status(Response.Status.CREATED)
                 .entity("{\"code\":\"" + houseCode + "\"}")
@@ -68,7 +49,7 @@ public class HouseService {
     public Response loginHouse(String houseCode) {
         House house = houseRepository.findAll()
                 .stream()
-                .filter(h -> BCrypt.checkpw(houseCode, h.getHouseCode()))
+                .filter(h -> BCrypt.checkpw(houseCode, h.getHouseId()))
                 .findFirst()
                 .orElse(null);
 
