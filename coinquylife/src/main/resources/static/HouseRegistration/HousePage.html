@@ -14,6 +14,7 @@
     </div>
     <div class="form-container" id="loginForm" style="margin-top: 0;">
         <input type="text" placeholder="House id" />
+        <div id="outputlog" style="color: red; margin-bottom: 15px;"></div>
         <button>Entra</button>
         <p>Non hai una casa? <a href="#" onclick="showHouseCreation()">Crea la casa</a></p>
     </div>
@@ -21,8 +22,8 @@
     <div class="form-container hidden" id="registerForm" style="margin-top: 0;">
         <input type="text" placeholder="Name" />
         <input type="text" placeholder="Address" />
+        <div id="outputreg" style="color: red; margin-bottom: 15px;"></div>
         <button>Crea</button>
-        <output id="output" style="display: block; margin-top: 1em;"></output>
         <p>Hai già una casa? <a href="#" onclick="showHouseLogin()">Entra</a></p>
     </div>
 </div>

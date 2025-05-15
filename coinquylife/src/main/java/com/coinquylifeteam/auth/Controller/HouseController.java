@@ -30,6 +30,6 @@ public class HouseController {
     public Response loginHouse(@HeaderParam("Authorization") String authHeader, House house) {
 
         String houseCode = house.getHouseCode();
-        return houseService.loginHouse(authHeader, houseCode);
+        return houseService.loginHouse(houseCode);
     }
 }

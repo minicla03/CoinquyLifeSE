@@ -65,13 +65,19 @@ document.querySelector("#registerForm button").addEventListener("click", async (
 
         const result = await res.text();
         if (res.ok) {
-            alert("Registrazione completata!");
+            //alert("Registrazione completata!");
+            var out = document.getElementById("outputreg");
+            out.innerHTML = "✅ Registrazione completata!";
             showLogin();
         } else {
-            alert("Errore: " + result);
+            //alert("Errore: " + result);
+            var out = document.getElementById("outputreg");
+            out.innerHTML = "❗️" + result;
         }
     } catch (error) {
-        alert("Errore di rete: " + error.message);
+        //alert("Errore di rete: " + error.message);
+        var out = document.getElementById("outputreg");
+        out.innerHTML = "❗️" + error.message;
     }
 });
 
@@ -95,16 +101,22 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
 
         const result = await res.text();
         if (res.ok) {
-            alert("Login effettuato!");
+            //alert("Login effettuato!");
+            var out = document.getElementById("outputlog");
+            out.innerHTML = "✅ Login effettuato!";
             const json = JSON.parse(result);
             const token = json["token"];
             localStorage.setItem("token", token);
             redirectToHouse();
         } else {
-            alert("Errore: " + result);
+            //alert("Errore: " + result);
+            var out = document.getElementById("outputlog");
+            out.innerHTML = "❗️" + result;
         }
     } catch (error) {
-        alert("Errore di rete: " + error.message);
+        //alert("Errore di rete: " + error.message);
+        var out = document.getElementById("outputlog");
+        out.innerHTML = "❗️" + error.message;
     }
 });
 
