@@ -21,6 +21,7 @@ public class AuthController {
     private AuthService authService;
 
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     @POST
     @Path("/login")
@@ -134,7 +135,7 @@ public class AuthController {
     private static boolean validateEmail(String email)
     {
         if (email == null) return false;
-        Matcher matcher = EMAIL_REGEX.matcher(email);
+        Matcher matcher = EMAIL_PATTERN.matcher(email);
         return matcher.matches();
     }
 }
