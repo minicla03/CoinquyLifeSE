@@ -1,4 +1,4 @@
-package com.coinquylifeteam.auth.Utility;
+package com.Auth.Utility;
 
 public enum StatusAuth
 {
@@ -8,6 +8,4 @@ public enum StatusAuth
     USER_ALREADY_EXISTS,
     TOKEN_EXPIRED,
     TOKEN_INVALID,
-    HOUSE_NOT_FOUND,
-    HOUSE_ALREADY_EXISTS,
 }

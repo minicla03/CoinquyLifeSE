@@ -1,4 +1,4 @@
-package com.coinquylifeteam.auth.JWT;
+package com.Auth.JWT;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

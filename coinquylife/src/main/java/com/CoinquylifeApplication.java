@@ -1,8 +1,7 @@
-package com.coinquylifeteam.auth;
+package com;
 
-import com.clientManager.ClientController;
-import com.coinquylifeteam.auth.Controller.AuthController;
-import com.coinquylifeteam.auth.Controller.HouseController;
+import com.Auth.Controller.AuthController;
+import com.HouseLinking.Controller.HouseController;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

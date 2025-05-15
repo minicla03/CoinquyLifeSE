@@ -1,6 +1,6 @@
-package com.coinquylifeteam.auth.Repository;
+package com.HouseLinking.Repository;
 
-import com.coinquylifeteam.auth.Data.House;
+import com.HouseLinking.Data.House;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 

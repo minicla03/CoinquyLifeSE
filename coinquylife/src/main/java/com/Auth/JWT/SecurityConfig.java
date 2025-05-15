@@ -1,4 +1,4 @@
-package com.coinquylifeteam.auth.JWT;
+package com.Auth.JWT;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +23,7 @@ public class SecurityConfig {
                         .requestMatchers("/rest/house/create").authenticated()
                         .requestMatchers("/rest/house/loginHouse").authenticated()
                         .requestMatchers("/rest/client/house").authenticated()
+                        .requestMatchers("/HouseRegistration/HousePage.html").authenticated()
                         .anyRequest().permitAll() // Permetti tutte le altre richieste
                 )
                 .addFilterBefore(new JWTAuthenticationFilter(tokenManager), UsernamePasswordAuthenticationFilter.class);

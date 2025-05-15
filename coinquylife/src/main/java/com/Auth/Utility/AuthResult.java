@@ -1,4 +1,4 @@
-package com.coinquylifeteam.auth.Utility;
+package com.Auth.Utility;
 
 public class AuthResult
 {

@@ -1,4 +1,4 @@
-package com.coinquylifeteam.auth.JWT;
+package com.Auth.JWT;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

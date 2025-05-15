@@ -1,4 +1,4 @@
-package com.coinquylifeteam.auth.Data;
+package com.Auth.Data;
 
 import java.util.UUID;
 import org.springframework.data.annotation.Id;

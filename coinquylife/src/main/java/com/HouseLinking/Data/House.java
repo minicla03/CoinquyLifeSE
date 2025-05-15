@@ -1,4 +1,4 @@
-package com.coinquylifeteam.auth.Data;
+package com.HouseLinking.Data;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

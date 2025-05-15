@@ -1,16 +1,15 @@
-package com.coinquylifeteam.auth.Controller;
+package com.Auth.Controller;
 
-import com.coinquylifeteam.auth.Data.User;
-import com.coinquylifeteam.auth.Service.AuthService;
-import com.coinquylifeteam.auth.Utility.AuthResult;
-import com.coinquylifeteam.auth.Utility.StatusAuth;
+import com.Auth.Data.User;
+import com.Auth.Service.AuthService;
+import com.Auth.Utility.AuthResult;
+import com.Auth.Utility.StatusAuth;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 
-import java.net.URI;
+import java.util.Map;
 
 @Controller
 @Path("/auth")
@@ -44,13 +43,13 @@ public class AuthController {
         }
         else if(result.getStatusAuth() == StatusAuth.USER_NOT_FOUND)
         {
-            return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Utente non trovato").build();
         }
         else if (result.getStatusAuth() == StatusAuth.INVALID_CREDENTIALS)
         {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid credentials").build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Credenziali errate o non valide").build();
         }
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Server error").build();
     }
 
     @POST
@@ -71,4 +70,35 @@ public class AuthController {
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
     }
+
+    @POST
+    @Path("/link-house")
+    @Consumes("application/json")
+    public Response linkHouse(@HeaderParam("Authorization") String authHeader, Map<String, String> body) {
+
+        // Verifica se il token è presente
+        String token = authHeader.replace("Bearer ", "");
+
+        // Autentica utente tramite token
+        String username = authService.getUsernameFromToken(token);
+        String houseCode = body.get("houseCode");
+
+        if (username == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid token").build();
+        }
+
+        // Associa la casa all’utente (es. salva nel DB)
+        Response success = authService.linkHouseToUser(username, houseCode);
+
+        // Verifica se l'utente ha già una casa associata
+        if (success.getStatus() == 409) {
+            return Response.status(Response.Status.CONFLICT).entity("Failed to link house").build();
+        }
+
+        // Restituisci una risposta di successo
+        return Response.status(success.getStatus()).entity(success.getEntity()).build();
+    }
+
+
+
 }

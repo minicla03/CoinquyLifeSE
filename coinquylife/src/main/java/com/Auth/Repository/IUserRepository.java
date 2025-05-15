@@ -1,11 +1,13 @@
-package com.coinquylifeteam.auth.Repository;
+package com.Auth.Repository;
 
-import com.coinquylifeteam.auth.Data.User;
+import com.Auth.Data.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.mongodb.repository.Update;
 
 public interface IUserRepository extends MongoRepository<User, String>
 {
+
     @Query(value = "{ 'email' : ?0 }")
     User findByEmail(String email);
 
@@ -17,5 +19,9 @@ public interface IUserRepository extends MongoRepository<User, String>
 
     @Query(value = "{ 'house_user' : ?0 }")
     User findByHouseUser(String house_user);
+
+    @Update("{ '$set' : { 'house_user' : ?1 } }")
+    @Query("{ 'username' : ?0 }")
+    void setHouseUser(String username, String houseCode);
 
 }

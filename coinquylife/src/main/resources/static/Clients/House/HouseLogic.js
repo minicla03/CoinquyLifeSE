@@ -34,10 +34,10 @@ document.querySelector("#registerForm button").addEventListener("click", async (
         });
 
         const result = await res.text();
-        const json = JSON.parse(result);
-        const code = json["code"];
         if (res.ok) {
             //alert("Registrazione completata!");
+            const json = JSON.parse(result);
+            const code = json["code"];
             out = document.getElementById("outputreg");
             out.innerHTML = "✅ Registrazione completata, il codice di accesso alla tua Coinquihouse è: <br>" + code;
             //showHouseLogin();
