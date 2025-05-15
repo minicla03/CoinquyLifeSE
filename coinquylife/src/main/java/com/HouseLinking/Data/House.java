@@ -4,10 +4,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.UUID;
+
 @Document(collection = "Houses")
 public class House {
 
     @Id
+    @Field("idhouse")
     private String houseId;
 
     @Field("name")
@@ -16,14 +19,13 @@ public class House {
     @Field("address")
     private String houseAddress;
 
-    @Field("code")
-    private String houseCode;
-
     public House() {
 
     }
 
-    public House( String houseName, String houseAddress ) {
+    public House(String houseCode, String houseName, String houseAddress )
+    {
+        this.houseId= houseCode;
         this.houseName = houseName;
         this.houseAddress = houseAddress;
     }
@@ -51,16 +53,4 @@ public class House {
     public void setHouseAddress(String houseAddress) {
         this.houseAddress = houseAddress;
     }
-
-    public String getHouseCode() {
-        return houseCode;
-    }
-
-    public void setHouseCode(String houseCode) {
-        this.houseCode = houseCode;
-    }
-
-
-
-
 }

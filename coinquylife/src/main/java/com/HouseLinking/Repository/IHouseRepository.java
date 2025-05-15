@@ -15,7 +15,4 @@ public interface IHouseRepository extends MongoRepository<House, String> {
     @Query(value = "{ 'houseAddress' : ?0 }")
     House findByHouseAddress(String houseAddress);
 
-    @Query(value = "{ 'houseCode' : ?0 }")
-    House findByHouseCode(String houseCode);
-
 }

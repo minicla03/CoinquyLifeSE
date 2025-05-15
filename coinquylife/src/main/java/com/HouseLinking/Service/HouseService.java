@@ -29,16 +29,18 @@ public class HouseService {
                     .build();
         }
 
+        // Generate a unique house code (for example, using UUID)
+        String houseCode = java.util.UUID.randomUUID().toString();
+
         // Create a new house object
         House newHouse = new House();
         newHouse.setHouseName(houseName);
         newHouse.setHouseAddress(houseAddress);
 
-        // Generate a unique house code (for example, using UUID)
-        String houseCode = java.util.UUID.randomUUID().toString();
+
 
         // Check if the generated house code already exists
-        while (houseRepository.findByHouseCode(houseCode) != null) {
+        while (houseRepository.findByHouseId(houseCode) != null) {
             houseCode = java.util.UUID.randomUUID().toString();
         }
 

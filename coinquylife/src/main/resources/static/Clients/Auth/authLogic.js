@@ -12,7 +12,6 @@ function showLogin() {
     document.getElementById("formTitle").textContent = "Login";
 }
 
-
 // Funzione per reindirizzare alla pagina principale
 function redirectToHouse() {
     const token = localStorage.getItem("token");
@@ -40,9 +39,6 @@ function redirectToHouse() {
     }
 }
 
-
-
-
 // Aggiungi un listener per il click sul link "Registrati"
 document.querySelector("#registerForm button").addEventListener("click", async () => {
     const inputs = document.querySelectorAll("#registerForm input");
@@ -68,7 +64,7 @@ document.querySelector("#registerForm button").addEventListener("click", async (
             //alert("Registrazione completata!");
             var out = document.getElementById("outputreg");
             out.innerHTML = "✅ Registrazione completata!";
-            showLogin();
+            redirectToHouse();
         } else {
             //alert("Errore: " + result);
             var out = document.getElementById("outputreg");
