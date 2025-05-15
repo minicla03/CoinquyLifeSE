@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 @Controller
 @Path("/auth")
@@ -17,6 +19,8 @@ public class AuthController {
 
     @Autowired
     private AuthService authService;
+
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
     @POST
     @Path("/login")
@@ -61,6 +65,11 @@ public class AuthController {
         String name = user.getName();
         String surname = user.getSurname();
         String email = user.getEmail();
+
+        if(!validateEmail(email))
+        {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Email invalido").build();
+        }
 
         AuthResult result = authService.register(username, name, password, surname, email);
         if (result.getStatusAuth() == StatusAuth.SUCCESS) {
@@ -122,6 +131,10 @@ public class AuthController {
         return Response.ok(user).build();
     }
 
-
-
+    private static boolean validateEmail(String email)
+    {
+        if (email == null) return false;
+        Matcher matcher = EMAIL_REGEX.matcher(email);
+        return matcher.matches();
+    }
 }
