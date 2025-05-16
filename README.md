@@ -62,8 +62,8 @@ CoinquyLife-Web/
 ``` 
 /src/main/java/com/coinquylife/<servizio>/
 ├── controller/     --> RestController con endpoint REST
-├── model/          --> Entity o DTO
-├── repository/     --> Interfacce JPA/Mongo
+├── model/          --> Entity 
+├── repository/     --> Interfacce Mongo
 ├── service/        --> Logica di business
 └── config/         --> Configurazioni (Bean, Security, ecc.)
 ``` 
