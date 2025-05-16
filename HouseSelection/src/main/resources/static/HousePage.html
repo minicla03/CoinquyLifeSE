@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login / Register</title>
+    <link rel="stylesheet" href="HouseStyle.css" />
+</head>
+<body>
+<div class="container">
+    <div class="logo" style="display: flex; align-items: center; margin-bottom: 0;">
+        <img src="../../../../../AuthMicroService/src/main/resources/static/logo-blu.png" style="height: 7em; margin-right: 2px;" />
+        <div>
+            <h2 id="formTitle" style="margin: 5px 0;">CoinquiHouse</h2>
+            <!-- 🔽 Qui comparirà il messaggio personalizzato -->
+            <div id="usernameLabel" style="font-size: 1em; color: #333;"></div>
+        </div>
+    </div>
+
+    <div class="form-container" id="loginForm" style="margin-top: 0;">
+        <input type="text" id="loginHouseId" placeholder="House id" />
+        <div id="outputlog" style="color: red; margin-bottom: 15px;"></div>
+        <button>Entra</button>
+        <p>Non hai una casa? <a href="#" onclick="showHouseCreation()">Crea la casa</a></p>
+    </div>
+
+    <div class="form-container hidden" id="registerForm" style="margin-top: 0;">
+        <input type="text" id="regHouseName" placeholder="Name" />
+        <input type="text" id="regHouseAddress" placeholder="Address" />
+        <div id="outputreg" style="color: red; margin-bottom: 15px;"></div>
+        <button>Crea</button>
+        <p>Hai già una casa? <a href="#" onclick="showHouseLogin()">Entra</a></p>
+    </div>
+</div>
+
+<script src="HouseLogic.js"></script>
+</body>
+</html>

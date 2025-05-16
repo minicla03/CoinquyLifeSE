@@ -1,7 +1,7 @@
 package com;
 
-import com.Auth.Controller.AuthController;
-import com.HouseLinking.Controller.HouseController;
+import com.microservizi.Auth.Controller.AuthController;
+import com.microservizi.HouseLinking.Controller.HouseController;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
