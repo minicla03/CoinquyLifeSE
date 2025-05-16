@@ -95,8 +95,8 @@ Con affetto,
 
 ## 👥 Il Team CoinquyLife
 
-| Nome Completo               | 
-|-----------------------------|
+| Nome Completo               | Nick GitHub       |
+|-----------------------------|-------------------|
 | Aragonese Alessandra        | 
 | Maturo Christian            | 
 | Mininno Claudio             |
