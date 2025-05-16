@@ -97,11 +97,11 @@ Con affetto,
 
 | Nome Completo               | Nick GitHub       |
 |-----------------------------|-------------------|
-| Aragonese Alessandra        | 
-| Maturo Christian            | 
-| Mininno Claudio             |
-| Ricci Giuseppe              | 
-| Simeone Lucia               | 
+| Aragonese Alessandra        | Aleragons         |
+| Maturo Christian            | Kris-dj           |  
+| Mininno Claudio             | minicla03         |
+| Ricci Giuseppe              | Giusk10           |
+| Simeone Lucia               | luxiqqq           |
 
 ---
 
