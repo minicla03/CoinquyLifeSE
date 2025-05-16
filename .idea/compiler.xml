@@ -6,7 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="HouseSelection" />
+        <module name="AuthMicroService" />
+        <module name="HouseSelectionMicroService" />
         <module name="AuthMicroservice (1) (org.example)" />
       </profile>
     </annotationProcessing>
@@ -19,7 +20,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="AuthMicroService" options="-parameters" />
       <module name="AuthMicroservice" options="-parameters" />
-      <module name="HouseSelection" options="-parameters" />
+      <module name="HouseSelectionMicroService" options="-parameters" />
     </option>
   </component>
 </project>
