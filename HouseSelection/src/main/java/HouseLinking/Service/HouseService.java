@@ -4,24 +4,28 @@ import HouseLinking.Data.House;
 import HouseLinking.Repository.IHouseRepository;
 import HouseLinking.Utility.HouseResult;
 import HouseLinking.Utility.HouseStatus;
+import jakarta.ws.rs.core.Response;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
+
 @Service("HouseService")
-public class HouseService
-{
+public class HouseService {
     @Autowired
     private IHouseRepository houseRepository;
     @Autowired
-    private RestTemplate restTemplateConfig;
+    private RestTemplate restTemplate;
 
-    public HouseResult createHouse(String houseName, String houseAddress)
-    {
+    public HouseResult createHouse(String houseName, String houseAddress) {
         assert houseName != null;
-        if (houseRepository.findByHouseName(houseName) != null)
-        {
+        if (houseRepository.findByHouseName(houseName) != null) {
             return new HouseResult(HouseStatus.HOUSE_ALREADY_EXISTS, "La casa con questo nome esiste già");
         }
 
@@ -31,41 +35,47 @@ public class HouseService
         try {
             houseRepository.insert(newHouse);
             return new HouseResult(HouseStatus.HOUSE_CREATED, houseCode);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return new HouseResult(HouseStatus.HOUSE_NOT_CREATED, "Errore: " + e.getMessage());
         }
     }
 
-    public HouseResult loginHouse(String houseCode)
-    {
+    public HouseResult loginHouse(String houseCode) {
         House house = houseRepository.findAll()
                 .stream()
                 .filter(h -> BCrypt.checkpw(houseCode, h.getHouseId()))
                 .findFirst()
                 .orElse(null);
 
-        if (house == null)
-        {
+        if (house == null) {
             return new HouseResult(HouseStatus.HOUSE_NOT_FOUND, "codice non valido");
-        }
-        else
-        {
+        } else {
             return new HouseResult(HouseStatus.HOUSE_LOGGED_IN, house.getHouseId());
         }
     }
 
     public HouseResult linkHouseToUser(String auth, String houseCode)
     {
-        String url = "http://localhost:8081/link-house";
+        String url = "http://localhost:8080/auth/external/link-house";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(auth.replace("Bearer ", ""));
-
-        Map<String, String> body = Map.of("houseCode", houseCode);
+        Map<String, String> body = Map.of(
+                "houseCode", houseCode,
+                "auth", auth);
         HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
 
-        ResponseEntity<String> response = restTemplateConfig.postForEntity(url, request, String.class);
+        if (response.getStatusCode().is2xxSuccessful())
+        {
+            return new HouseResult(HouseStatus.LINKED_SUCCES, "House linked successfully");
+        }
+        else if (response.getStatusCode().is4xxClientError())
+        {
+            return new HouseResult(HouseStatus.USER_NOT_FOUND, "User not found");
+        }
+        else
+        {
+            return new HouseResult(HouseStatus.LINKED_ERROR, "Failed to link house");
+        }
     }
 }
