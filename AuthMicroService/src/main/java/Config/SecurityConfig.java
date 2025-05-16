@@ -12,21 +12,29 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    // Inietta il TokenManager per la gestione dei token JWT
     @Autowired
     private TokenManager tokenManager;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disattiva CSRF se usi token
+                .csrf(csrf -> csrf.disable()) // Disabilita CSRF perché usi token JWT
                 .authorizeHttpRequests(auth -> auth
+                        // Permetti qualsiasi file statico (qualsiasi estensione e sottocartella)
+                        .requestMatchers("/**/*.*").permitAll()
+
+                        // Permetti senza autenticazione login e registrazione
                         .requestMatchers("/rest/auth/login", "/rest/auth/register").permitAll()
-                        .requestMatchers("/rest/house/create").authenticated()
-                        .requestMatchers("/rest/house/loginHouse").authenticated()
-                        .requestMatchers("/rest/client/house").authenticated()
-                        .requestMatchers("/HouseRegistration/HousePage.html").authenticated()
-                        .anyRequest().permitAll() // Permetti tutte le altre richieste
+
+                        // Proteggi le API che richiedono autenticazione
+                        .requestMatchers(
+                                "/rest/house/create",
+                                "/rest/house/loginHouse",
+                                "/rest/client/house"
+                        ).authenticated()
+
+                        // Tutte le altre richieste sono libere
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JWTAuthenticationFilter(tokenManager), UsernamePasswordAuthenticationFilter.class);
 

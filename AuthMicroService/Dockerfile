@@ -5,7 +5,7 @@ FROM openjdk:21-slim
 WORKDIR /app
 
 # Copia il file JAR dell'applicazione nel contenitore
-COPY target/house-service-0.0.1-SNAPSHOT.jar app.jar
+COPY target/AuthMicroService-0.0.1-SNAPSHOT.jar app.jar
 
 # Espone la porta su cui l'applicazione sarà in ascolto
 EXPOSE 8080
