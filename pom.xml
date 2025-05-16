@@ -19,6 +19,7 @@
     <modules>
         <module>AuthMicroService</module>
         <module>HouseSelection</module>
+        <module>ExpenseMicroService</module>
     </modules>
 
     <properties>
