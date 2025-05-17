@@ -9,6 +9,11 @@
         <module name="coinquylife" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="AuthMicroService" target="21" />
+      <module name="ExpenseMicroService" target="21" />
+      <module name="HouseSelectionMicroService" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class House {
 
     @Id
+    @Field("houseId")
     private String houseId;
 
     @Field("name")
@@ -16,14 +17,13 @@ public class House {
     @Field("address")
     private String houseAddress;
 
-    @Field("code")
-    private String houseCode;
 
     public House() {
 
     }
 
-    public House( String houseName, String houseAddress ) {
+    public House( String houseId, String houseName, String houseAddress ) {
+        this.houseId = houseId;
         this.houseName = houseName;
         this.houseAddress = houseAddress;
     }
@@ -51,16 +51,4 @@ public class House {
     public void setHouseAddress(String houseAddress) {
         this.houseAddress = houseAddress;
     }
-
-    public String getHouseCode() {
-        return houseCode;
-    }
-
-    public void setHouseCode(String houseCode) {
-        this.houseCode = houseCode;
-    }
-
-
-
-
 }

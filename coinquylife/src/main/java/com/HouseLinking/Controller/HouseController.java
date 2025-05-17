@@ -44,7 +44,8 @@ public class HouseController {
     @POST
     @Path("/loginHouse")
     public Response loginHouse(@HeaderParam("Authorization") String auth, House house) {
-        String houseCode = house.getHouseCode();
+        String houseCode = house.getHouseId();
+        System.out.println(houseCode);
         Response creationResponse = houseService.loginHouse(houseCode); // esempio
 
         if (creationResponse.getStatus() != 404) {

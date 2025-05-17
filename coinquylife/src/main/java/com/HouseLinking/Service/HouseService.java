@@ -29,27 +29,13 @@ public class HouseService {
                     .build();
         }
 
-        // Create a new house object
-        House newHouse = new House();
-        newHouse.setHouseName(houseName);
-        newHouse.setHouseAddress(houseAddress);
-
         // Generate a unique house code (for example, using UUID)
         String houseCode = java.util.UUID.randomUUID().toString();
-
-        // Check if the generated house code already exists
-        while (houseRepository.findByHouseCode(houseCode) != null) {
-            houseCode = java.util.UUID.randomUUID().toString();
-        }
-
         // Hash the house code for security
         String hashedHouseCode = BCrypt.hashpw(houseCode, BCrypt.gensalt());
-
-        // Set the hashed house code
-        newHouse.setHouseCode(hashedHouseCode);
-
+        House newHouse = new House(hashedHouseCode, houseName, houseAddress);
         // Save the house to the database
-        houseRepository.save(newHouse);
+        houseRepository.insert(newHouse);
 
         return Response.status(Response.Status.CREATED)
                 .entity("{\"code\":\"" + houseCode + "\"}")
@@ -66,9 +52,15 @@ public class HouseService {
     public Response loginHouse(String houseCode) {
         House house = houseRepository.findAll()
                 .stream()
-                .filter(h -> BCrypt.checkpw(houseCode, h.getHouseCode()))
+                .filter(h -> BCrypt.checkpw(houseCode, h.getHouseId()))
                 .findFirst()
                 .orElse(null);
+
+        System.out.println("House Code: " + houseCode);
+        houseRepository.findAll().forEach(h -> {
+            System.out.println("Stored HouseId: " + h.getHouseId());
+            System.out.println("Match: " + BCrypt.checkpw(houseCode, h.getHouseId()));
+        });
 
         if (house == null) {
             return Response.status(Response.Status.NOT_FOUND)

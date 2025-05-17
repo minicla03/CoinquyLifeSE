@@ -60,9 +60,10 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
     const inputs = document.querySelectorAll("#loginForm input");
     const token = localStorage.getItem("token");
     const data = {
-        houseCode: inputs[0].value,
+        houseId: inputs[0].value,
     };
 
+    //alert("HouseCode: " + data.houseCode);
     try {
         const res = await fetch(`/rest/house/loginHouse`, {
             method: "POST",
