@@ -61,17 +61,14 @@ document.querySelector("#registerForm button").addEventListener("click", async (
 
         const result = await res.text();
         if (res.ok) {
-            //alert("Registrazione completata!");
             var out = document.getElementById("outputreg");
             out.innerHTML = "✅ Registrazione completata!";
             redirectToHouse();
         } else {
-            //alert("Errore: " + result);
             var out = document.getElementById("outputreg");
             out.innerHTML = "❗️" + result;
         }
     } catch (error) {
-        //alert("Errore di rete: " + error.message);
         var out = document.getElementById("outputreg");
         out.innerHTML = "❗️" + error.message;
     }
@@ -97,7 +94,6 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
 
         const result = await res.text();
         if (res.ok) {
-            //alert("Login effettuato!");
             var out = document.getElementById("outputlog");
             out.innerHTML = "✅ Login effettuato!";
             const json = JSON.parse(result);
@@ -105,12 +101,10 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
             localStorage.setItem("token", token);
             redirectToHouse();
         } else {
-            //alert("Errore: " + result);
             var out = document.getElementById("outputlog");
             out.innerHTML = "❗️" + result;
         }
     } catch (error) {
-        //alert("Errore di rete: " + error.message);
         var out = document.getElementById("outputlog");
         out.innerHTML = "❗️" + error.message;
     }

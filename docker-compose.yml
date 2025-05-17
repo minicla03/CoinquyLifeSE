@@ -1,24 +1,28 @@
 services:
 
-  auth-service:
-    build: ./AuthMicroService
-    container_name: auth-service
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mongo
-
-  house-selection:
-    build: ./HouseSelectionMicroService
-    container_name: house-selection
-    ports:
-      - "8081:8081"
-    depends_on:
-      - auth-service
-      - mongo
-
   mongo:
     image: mongo
     container_name: mongo
     ports:
       - "27017:27017"
+
+  auth-service:
+    build: ./AuthMicroService
+    container_name: auth-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/userdb
+    depends_on:
+      - mongo
+
+  house-selection:
+    build: ./HouseSelection
+    container_name: house-selection
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/housedb
+    depends_on:
+      - auth-service
+      - mongo
