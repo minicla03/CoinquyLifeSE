@@ -15,6 +15,7 @@ public class AuthMicroServiceApplication extends ResourceConfig
         packages("com/coinquyteam/authApplication/Service");
         packages("com/coinquyteam/authApplication/Data");
         packages("com/coinquyteam/authApplication/JWT");
+        packages("com/coinquyteam/authApplication/Config");
     }
 
     public static void main(String[] args)
