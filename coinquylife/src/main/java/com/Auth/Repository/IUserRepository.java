@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
 
+import java.util.List;
+
 public interface IUserRepository extends MongoRepository<User, String>
 {
 
@@ -19,6 +21,9 @@ public interface IUserRepository extends MongoRepository<User, String>
 
     @Query(value = "{ 'house_user' : ?0 }")
     User findByHouseUser(String house_user);
+
+    @Query(value = "{ 'houseId' : ?0 }")
+    List<User> findAllUsersByHouseId(String houseId);
 
     @Update("{ '$set' : { 'house_user' : ?1 } }")
     @Query("{ 'username' : ?0 }")

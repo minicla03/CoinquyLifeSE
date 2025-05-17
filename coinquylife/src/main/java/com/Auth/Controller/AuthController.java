@@ -99,6 +99,13 @@ public class AuthController {
         return Response.status(success.getStatus()).entity(success.getEntity()).build();
     }
 
+    @GET
+    @Path("/getUsersByHouse")
+    public Response getUsersByHouse(@QueryParam("houseId") String houseId)
+    {
+        return authService.getUsersByHouseId(houseId);
+    }
+
 
 
 }

@@ -1,8 +1,8 @@
+// expenseLogic.js
 
 const expenses = [];
-const coinquilini = [];
 
-const descriptionInput = document.getElementById("description");
+const titleInput = document.getElementById("title");
 const amountInput = document.getElementById("amount");
 const payerInput = document.getElementById("payer");
 const categorySelect = document.getElementById("category");
@@ -18,37 +18,12 @@ function addExpense() {
     const amount = parseFloat(amountStr);
     const payer = payerInput.value.trim();
     const category = categorySelect.value;
-    //codice casa
 
     if (!title || !payer || !category || isNaN(amount) || amount <= 0) {
         alert("Per favore, compila tutti i campi correttamente.");
         return;
     }
 
-    fetch('/expense/createExpense', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ title, amount, payer, category })
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Errore durante la creazione della spesa.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Spesa creata con successo:', data);
-            expenses.push({ title, amount, payer, category, paid: false });
-            renderExpenses();
-            updateTotal();
-            balancesDiv.innerHTML = "<p>ℹ️ Nessun calcolo effettuato</p>";
-        })
-        .catch(error => {
-            console.error('Errore:', error);
-            alert('Si è verificato un errore durante la creazione della spesa.');
-        });
     expenses.push({ title, amount, payer, category, paid: false });
 
     titleInput.value = "";
@@ -62,49 +37,27 @@ function addExpense() {
 }
 
 function renderExpenses() {
-    fetch('/expense/getAllExpenses', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Errore durante il recupero delle spese.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Spese recuperate con successo:', data);
-            data(
-                foreach(expense => {
-                    expenses.push(expense)
-                }));
-        })
-        .catch(error => {
-            console.error('Errore:', error);
-            alert('Si è verificato un errore durante il recupero delle spese.');
-        });
-
     expenseList.innerHTML = "";
-    expenses.forEach((expense, index) => {
+
+    expenses.forEach((exp, index) => {
         const li = document.createElement("li");
 
-        li.classList.toggle("paid", expense.paid); // aggiungi classe paid se pagata
+        li.classList.toggle("paid", exp.paid); // aggiungi classe paid se pagata
 
         const detailsDiv = document.createElement("div");
         detailsDiv.classList.add("details");
         detailsDiv.innerHTML = `
-        <span class="title">${expense.title}</span>
-        <span class="meta">🍂 ${expense.category} • 🙋 ${expense.payer}</span>`;
+            <span class="title">${exp.title}</span>
+            <span class="meta">🍂 ${exp.category} • 🙋 ${exp.payer}</span>
+        `;
 
         const amountDiv = document.createElement("div");
         amountDiv.classList.add("amount");
-        amountDiv.textContent = `€${expense.amount.toFixed(2)}`;
+        amountDiv.textContent = `€${exp.amount.toFixed(2)}`;
 
         const paidBtn = document.createElement("button");
-        paidBtn.textContent = expense.paid ? "✅ Pagata" : "✔️ Saldata";
-        paidBtn.disabled = expense.paid;
+        paidBtn.textContent = exp.paid ? "✅ Pagata" : "✔️ Saldata";
+        paidBtn.disabled = exp.paid;
         paidBtn.classList.add("paid-btn");
 
         paidBtn.addEventListener("click", () => {
@@ -198,51 +151,6 @@ function calculateBalances() {
         });
     }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    fetch('/auth/getUsersByHouse', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Errore durante il recupero dei coinquilini.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Coinquilini recuperati con successo:', data);
-            data.forEach(coinquilino => {
-                coinquilini.push(coinquilino);
-            });
-        })
-        .catch(error => {
-            console.error('Errore:', error);
-            alert('Si è verificato un errore durante il recupero dei coinquilini.');
-        });
-
-    const container = document.getElementById('participants-container');
-
-    coinquilini.forEach(coinquilino => {
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.name = 'participants';
-        checkbox.value = coinquilino.name;
-        checkbox.id = `participant-${coinquilino.name}`;
-
-        const label = document.createElement('label');
-        label.htmlFor = checkbox.id;
-        label.textContent = coinquilino.name;
-
-        container.appendChild(checkbox);
-        container.appendChild(label);
-        container.appendChild(document.createElement('br'));
-    });
-});
-
 
 addBtn.addEventListener("click", addExpense);
 calculateBtn.addEventListener("click", calculateBalances);

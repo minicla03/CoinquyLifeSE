@@ -9,6 +9,8 @@ import jakarta.ws.rs.core.Response;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Servizio per la gestione dell'autenticazione degli utenti.
  */
@@ -116,5 +118,14 @@ public class AuthService
         String hashedHouseCode = BCrypt.hashpw(houseCode, BCrypt.gensalt());
         userRepository.setHouseUser(username, hashedHouseCode);
         return Response.ok().build(); // Operazione riuscita
+    }
+
+    public Response getUsersByHouseId(String houseId)
+    {
+        List<User> users = userRepository.findAllUsersByHouseId(houseId);
+        if (users.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Nessun utente trovato").build();
+        }
+        return Response.ok(users).build();
     }
 }
