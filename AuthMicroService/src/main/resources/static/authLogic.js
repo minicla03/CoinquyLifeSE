@@ -100,6 +100,7 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
             const token = json["token"];
             localStorage.setItem("token", token);
             redirectToHouse();
+            //window.location.href = "http://localhost:8081/HousePage.html";
         } else {
             var out = document.getElementById("outputlog");
             out.innerHTML = "❗️" + result;

@@ -8,7 +8,7 @@ WORKDIR /HouseSelectionMicroService
 COPY target/HouseSelectionMicroService-0.0.1-SNAPSHOT.jar app.jar
 
 # Espone la porta su cui l'applicazione sarà in ascolto
-EXPOSE 8080
+EXPOSE 8081
 
 # Comando per eseguire l'applicazione
 ENTRYPOINT ["java", "-jar", "app.jar"]
