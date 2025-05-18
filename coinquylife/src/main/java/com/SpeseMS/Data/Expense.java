@@ -32,29 +32,28 @@ public class Expense {
     @Field("house_id")
     private String houseId;
 
-    @Field("participants") //chiamate rest AuthService
+    @Field("participants")
     private List<String> participants; // List of user IDs participating in this expens
 
     @Field("status")
     private StatusExpense status;
 
-    // Default constructor
     public Expense() {
         this.createdDate = new Date();
     }
 
-    // Constructor with basic fields
-    public Expense(CategoryExpense category, Double amount, String createdBy, String houseId, List<String> participants) {
-        this.category = category;
+    public Expense(String description, Double amount, String createdBy, Date createdDate, CategoryExpense category, String houseId, List<String> participants)
+    {
+        this.description = description;
         this.amount = amount;
         this.createdBy = createdBy;
+        this.createdDate = createdDate;
+        this.category = category;
         this.houseId = houseId;
         this.participants = participants;
-        this.createdDate = new Date();
-        this.status = StatusExpense.PENDING; // Default status
+        this.status=StatusExpense.PENDING;
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }

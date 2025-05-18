@@ -1,14 +1,17 @@
 package com.SpeseMS.Controller;
 
+import com.SpeseMS.Data.CategoryExpense;
 import com.SpeseMS.Data.Expense;
 import com.SpeseMS.Service.ExpenseService;
+import com.SpeseMS.Utility.ExpenseResult;
+import com.SpeseMS.Utility.ExpenseStatus;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @Path("/expense")
@@ -23,17 +26,45 @@ public class ExpenseController
     public Response createExpense(Expense expense)
     {
         String expenseDescription = expense.getDescription();
-        Date expenseDate = expense.getCreatedDate();
-        Double expenseAmount = expense.getAmount();
+        Date expenseDate = new Date(); // Assuming the current date is used for the expense
+        double expenseAmount = expense.getAmount();
+        String createdBy = expense.getCreatedBy();
         String houseId = expense.getHouseId();
+        CategoryExpense category = expense.getCategory();
+        List<String> partecipants= expense.getParticipants();
 
-        return expenseService.createExpense(expenseDescription, expenseDate, expenseAmount, houseId);
+        ExpenseResult expenseResult =expenseService.createExpense(expenseDescription, expenseDate, expenseAmount, houseId, createdBy, category, partecipants);
+
+        if (expenseResult.getStatus() == ExpenseStatus.SUCCESS)
+        {
+            return Response.ok(expenseResult).build();
+        }
+        else if (expenseResult.getStatus() == ExpenseStatus.ERROR)
+        {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(expenseResult).build();
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Bad request").build();
+        }
     }
 
     @GET
-    @Path("/getAllExpeses")
+    @Path("/getAllExpenses")
     public Response getAllExpenses(@QueryParam("houseId") String houseId)
     {
-        return expenseService.getAllExpenses(houseId);
+        ExpenseResult expenseResult=expenseService.getAllExpenses(houseId);
+        if (expenseResult.getStatus() == ExpenseStatus.SUCCESS)
+        {
+            return Response.ok(expenseResult).build();
+        }
+        else if (expenseResult.getStatus() == ExpenseStatus.NO_CONTENT)
+        {
+            return Response.status(Response.Status.NO_CONTENT).entity(expenseResult).build();
+        }
+        else
+        {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Server error").build();
+        }
     }
 }
