@@ -95,7 +95,7 @@ Con affetto,
 
 ## 👥 Il Team CoinquyLife
 
-| Nome Completo               | Nick GitHub       |
+| Nome                        | Nick GitHub       |
 |-----------------------------|-------------------|
 | Aragonese Alessandra        | Aleragons         |
 | Maturo Christian            | Kris-dj           |  
