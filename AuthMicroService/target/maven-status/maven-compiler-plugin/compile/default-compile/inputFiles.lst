@@ -1,0 +1,14 @@
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\AuthMicroServiceApplication.java
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Config\CorsGlobalConfig.java
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Controller\AuthController.java
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Controller\ClientController.java
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Controller\WebAuthController.java
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Data\User.java
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\JWT\JWTAuthenticationFilter.java
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\JWT\SecurityConfig.java
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\JWT\TokenManager.java
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Repository\IUserRepository.java
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Service\AuthService.java
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Service\WebAuthClientService.java
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Utility\AuthResult.java
+C:\Users\User\IdeaProjects\CoinquyLifeSE\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Utility\StatusAuth.java
