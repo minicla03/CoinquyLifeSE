@@ -1,3 +1,27 @@
+
+/*Logica per il profilo utente*/
+
+const utente = {
+    immagineProfilo: "user-solid.svg"
+};
+
+const userLink = document.getElementById('user');
+
+// Crea l'immagine
+const img = document.createElement('img');
+img.src = utente.immagineProfilo;
+img.className = 'profile-img';
+
+// Pulisce il contenuto esistente (opzionale)
+userLink.innerHTML = '';
+
+// Inserisce immagine
+userLink.appendChild(img);
+
+
+
+
+
 /*Logica per il calendario*/
 
 const monthYear = document.getElementById("monthYear");
@@ -120,7 +144,7 @@ mostraClassifica(classifica);
 
     const lista = document.getElementById("lista-persone");
 
-    personeInCasa.slice(0, 4).forEach(persona => {
+    personeInCasa.forEach(persona => {
     const li = document.createElement("li");
     li.className = "persona-item";
 
@@ -132,3 +156,60 @@ mostraClassifica(classifica);
     lista.appendChild(li);
 });
 
+
+const eventi = [
+    {
+        titolo: "Oggi ospiti",
+        autore: {
+            nome: "Mario",
+            cognome: "Rossi"
+        },
+        data: "2025-05-16"
+    },
+    {
+        titolo: "Pulizie generali",
+        autore: {
+            nome: "Giulia",
+            cognome: "Verdi"
+        },
+        data: "2025-05-15"
+    },
+    {
+        titolo: "Compleanno di Luca",
+        autore: {
+            nome: "Anna",
+            cognome: "Bianchi"
+        },
+        data: "2025-05-13"
+    },
+    {
+        titolo: "Visita del padrone di casa",
+        autore: {
+            nome: "Marco",
+            cognome: "Neri"
+        },
+        data: "2025-05-10"
+    },
+    {
+        titolo: "Festa di fine sessione",
+        autore: {
+            nome: "Laura",
+            cognome: "Gialli"
+        },
+        data: "2025-05-08"
+    }
+];
+
+const listaEventi = document.getElementById("lista-eventi");
+eventi.forEach(evento => {
+    const li = document.createElement("li");
+    li.className = "events-item";
+
+    li.innerHTML = `
+      <strong>${evento.titolo}</strong>
+      <span>Creato da: ${evento.autore.nome} ${evento.autore.cognome}</span>
+      <span>Data: ${new Date(evento.data).toLocaleDateString()}</span>
+    `;
+
+    listaEventi.appendChild(li);
+});
