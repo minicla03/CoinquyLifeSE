@@ -107,7 +107,6 @@ const classifica = [
 
 function mostraClassifica(data) {
     const container = document.getElementById("classificaBox");
-    container.innerHTML = "<div class='score-title'><h3>Classifica</h3></div>";
 
     const ul = document.createElement("ul");
     ul.classList.add("classifica-list");

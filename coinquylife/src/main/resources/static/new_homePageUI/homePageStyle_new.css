@@ -354,7 +354,7 @@ button:hover{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    height: calc(50vh - 62px - 60.44px - 40px);
+    height: calc(50vh - 62px - 86px - 40px);
     box-sizing: border-box;
     padding: 1rem 2rem;
 
@@ -373,6 +373,7 @@ button:hover{
 }
 
 .events-item{
+    color: #333333;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
