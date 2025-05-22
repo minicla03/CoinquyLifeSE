@@ -87,11 +87,16 @@ body {
 }
 
 #expense-list li {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
+    background-color: #f0eaff;
+    border-radius: 10px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(69, 0, 253, 0.2);
     font-size: 1rem;
+    color: #4500fd;
 }
 
 .summary {
@@ -114,63 +119,8 @@ body {
     margin-bottom: 10px;
 }
 
-#balances p.positive {
-    color: green;
-}
-
-#balances p.negative {
-    color: red;
-}
-
-#balances p.neutral {
-    color: gray;
-}
-
-#expense-list li {
-    background-color: #f0eaff;
-    border-radius: 10px;
-    padding: 12px 15px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(69, 0, 253, 0.2);
-    font-size: 1rem;
-    color: #4500fd;
-}
-
-#expense-list li .details {
-    display: flex;
-    flex-direction: column;
-}
-
-#expense-list li .details .title {
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-#expense-list li .details .meta {
-    font-size: 0.85rem;
-    color: #7a52f9; /* tonalità più chiara */
-}
-
-#expense-list li .amount {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #8b00fd;
-}
-
-#balances p {
-    font-size: 1rem;
-    color: #4b0082; /* un viola più scuro */
-    margin: 10px 0;
-    line-height: 1.4;
-    font-weight: 600;
-    text-align: center;
-}
-
 #calculate-btn {
-    background-color: rgba(139, 0, 253, 0.94); /* viola acceso */
+    background-color: rgba(139, 0, 253, 0.94);
     color: white;
     padding: 10px 20px;
     border: none;
@@ -181,12 +131,12 @@ body {
 }
 
 #calculate-btn:hover {
-    background-color: #4500fd; /* viola scuro */
+    background-color: #4500fd;
 }
 
 .paid-btn {
     margin-left: 10px;
-    background-color: #4CAF50; /* verde */
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;

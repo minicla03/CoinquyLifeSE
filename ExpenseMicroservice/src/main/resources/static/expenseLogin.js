@@ -1,5 +1,3 @@
-
-
 const expenses = [];
 const coinquilini = [];
 const houseId = localStorage.getItem("houseId");

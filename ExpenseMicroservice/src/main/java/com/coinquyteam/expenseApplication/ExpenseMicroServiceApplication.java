@@ -14,10 +14,10 @@ public class ExpenseMicroServiceApplication extends ResourceConfig
 {
     public ExpenseMicroServiceApplication()
     {
-        register("com.coinquyteam.expenseApplication.Controller");
-        register("com.coinquyteam.expenseApplication.Service");
-        register("com.coinquyteam.expenseApplication.Data");
-        register("com.coinquyteam.expenseApplication.Repository");
+        register("Controller");
+        register("Service");
+        register("Data");
+        register("Repository");
     }
 
     public static void main(String[] args)
