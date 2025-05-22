@@ -6,26 +6,21 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="AuthMicroService" />
         <module name="ExpenseMicroService" />
         <module name="HouseSelectionMicroService" />
-        <module name="AuthMicroservice (1) (org.example)" />
-        <module name="AuthMicroService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="AuthMicroservice" target="21" />
-      <module name="AuthMicroservice (1) (org.example)" target="21" />
-      <module name="CoinquyLifeSE" target="1.5" />
-      <module name="HouseSelection" target="21" />
-      <module name="PurchaseMicroService" target="21" />
+      <module name="ClientControllerService" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="AuthMicroService" options="-parameters" />
-      <module name="AuthMicroservice" options="-parameters" />
       <module name="ExpenseMicroService" options="-parameters" />
       <module name="HouseSelectionMicroService" options="-parameters" />
+      <module name="coinquylife" options="" />
     </option>
   </component>
 </project>

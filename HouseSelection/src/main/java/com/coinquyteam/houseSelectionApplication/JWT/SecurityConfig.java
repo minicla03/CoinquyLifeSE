@@ -1,4 +1,4 @@
-package com.coinquyteam.authApplication.JWT;
+package com.coinquyteam.houseSelectionApplication.JWT;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,16 +16,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disabilita CSRF perché usi token JWT
+                .csrf(csrf -> csrf.disable())// Disabilita CSRF perché usi token JWT
                 .httpBasic(basic -> basic.disable()) // Disabilita l'autenticazione di base
                 .authorizeHttpRequests(auth -> auth
                         // Tutte le altre richieste sono libere
-                        .requestMatchers("/HousePage.html").permitAll()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JWTAuthenticationFilter(tokenManager), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-
     }
 }
