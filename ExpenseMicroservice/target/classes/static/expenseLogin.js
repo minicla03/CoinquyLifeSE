@@ -16,22 +16,53 @@ function addExpense() {
     const description = descriptionInput.value.trim();
     const amountStr = amountInput.value.trim().replace(",", ".");
     const amount = parseFloat(amountStr);
-    const payer = payerInput.value.trim();
+    const createdBy = payerInput.value.trim(); // User ID of who created the expense
     const category = categorySelect.value;
     const selectedParticipants = Array.from(document.querySelectorAll('input[name="participants"]:checked')).map(input => input.value);
 
-    if (!description || !payer || !category || isNaN(amount) || amount <= 0 || selectedParticipants.length === 0)
-    {
-        alert("Per favore, compila tutti i campi correttamente.");
+    console.log("Description:", description);
+    console.log("Amount:", amount);
+    console.log("Created By:", createdBy);
+    console.log("Category:", category);
+    console.log("Selected Participants:", selectedParticipants);
+
+    if (!description) {
+        alert("Descrizione non può essere vuota.");
         return;
     }
+    if (!createdBy) {
+        alert("Inserisci chi ha pagato.");
+        return;
+    }
+    if (!category) {
+        alert("Seleziona una categoria.");
+        return;
+    }
+    if (isNaN(amount) || amount <= 0) {
+        alert("Inserisci un importo valido maggiore di zero.");
+        return;
+    }
+    if (selectedParticipants.length === 0) {
+        alert("Seleziona almeno un partecipante.");
+        return;
+    }
+
+    const expenseData = {
+        description,
+        amount,
+        createdBy, // User ID of who created the expense
+        category, // Assuming category is a string, you may need to adjust this based on your CategoryExpense structure
+        houseId,
+        participants: selectedParticipants,
+        status: "PENDING" // Assuming the status is set to PENDING by default
+    };
 
     fetch('/expense/createExpense', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({description, amount, payer, category, selectedParticipants, houseId})
+        body: JSON.stringify(expenseData)
     })
         .then(response => {
             if (!response.ok) {
@@ -42,7 +73,7 @@ function addExpense() {
         .then(data => {
             console.log('Spesa creata con successo:', data);
             expenses.push(data);
-            renderSingleExpense(data, expenses.length-1);
+            renderExpenseList();
             updateTotal();
             balancesDiv.innerHTML = "<p>ℹ️ Nessun calcolo effettuato</p>";
         })
@@ -51,44 +82,47 @@ function addExpense() {
             alert('Si è verificato un errore durante la creazione della spesa.');
         });
 
+    // Reset dei campi di input
     descriptionInput.value = "";
     amountInput.value = "";
     payerInput.value = "";
     categorySelect.value = "";
-    balancesDiv.innerHTML = "<p>ℹ️ Nessun calcolo effettuato</p>";
+    document.querySelectorAll('input[name="participants"]:checked').forEach(el => el.checked = false);
 }
 
-function renderSingleExpense(expense, index) {
-    const li = document.createElement("li");
-    li.classList.toggle("paid", expense.paid);
+function renderExpenseList() {
+    expenseList.innerHTML = "";
+    expenses.forEach((expense, index) => {
+        const li = document.createElement("li");
+        li.classList.toggle("paid", expense.status === "PAID");
 
-    const detailsDiv = document.createElement("div");
-    detailsDiv.classList.add("details");
-    detailsDiv.innerHTML = `
-        <span class="title">${expense.description}</span>
-        <span class="meta">🍂 ${expense.category} • 🙋 ${expense.payer}</span>`;
+        const detailsDiv = document.createElement("div");
+        detailsDiv.classList.add("details");
+        detailsDiv.innerHTML = `
+            <span class="title">${expense.description}</span>
+            <span class="meta">🍂 ${expense.category} • 🙋 ${expense.createdBy}</span>`;
 
-    const amountDiv = document.createElement("div");
-    amountDiv.classList.add("amount");
-    amountDiv.textContent = `€${expense.amount.toFixed(2)}`;
+        const amountDiv = document.createElement("div");
+        amountDiv.classList.add("amount");
+        amountDiv.textContent = `€${expense.amount.toFixed(2)}`;
 
-    const paidBtn = document.createElement("button");
-    paidBtn.textContent = expense.paid ? "✅ Pagata" : "✔️ Saldata";
-    paidBtn.disabled = expense.paid;
-    paidBtn.classList.add("paid-btn");
+        const paidBtn = document.createElement("button");
+        paidBtn.textContent = expense.status === "PAID" ? "✅ Pagata" : "✔️ Saldata";
+        paidBtn.disabled = expense.status === "PAID";
+        paidBtn.classList.add("paid-btn");
 
-    paidBtn.addEventListener("click", () => {
-        expenses[index].paid = true;
-        expenseList.children[index].replaceWith(renderSingleExpense(expenses[index], index));
-        updateTotal();
+        paidBtn.addEventListener("click", () => {
+            expenses[index].status = "PAID";
+            renderExpenseList();
+            updateTotal();
+        });
+
+        li.appendChild(detailsDiv);
+        li.appendChild(amountDiv);
+        li.appendChild(paidBtn);
+
+        expenseList.appendChild(li);
     });
-
-    li.appendChild(detailsDiv);
-    li.appendChild(amountDiv);
-    li.appendChild(paidBtn);
-
-    expenseList.appendChild(li);
-    return li;
 }
 
 async function retriveExpenses() {
@@ -101,50 +135,20 @@ async function retriveExpenses() {
         })
         .then(data => {
             console.log('Spese recuperate con successo:', data);
-            data.forEach(expense => { expenses.push(expense); });
+            expenses.length = 0; // svuota array
+            expenses.push(...data);
+            renderExpenseList();
+            updateTotal();
         })
         .catch(error => {
             console.error('Errore:', error);
             alert('Si è verificato un errore durante il recupero delle spese.');
         });
-
-    expenseList.innerHTML = "";
-    expenses.forEach((expense, index) => {
-        const li = document.createElement("li");
-
-        li.classList.toggle("paid", expense.paid);
-
-        const detailsDiv = document.createElement("div");
-        detailsDiv.classList.add("details");
-        detailsDiv.innerHTML = `
-        <span class="title">${expense.description}</span>
-        <span class="meta">🍂 ${expense.category} • 🙋 ${expense.payer}</span>`;
-
-        const amountDiv = document.createElement("div");
-        amountDiv.classList.add("amount");
-        amountDiv.textContent = `€${expense.amount.toFixed(2)}`;
-
-        const paidBtn = document.createElement("button");
-        paidBtn.textContent = expense.paid ? "✅ Pagata" : "✔️ Saldata";
-        paidBtn.disabled = expense.paid;
-        paidBtn.classList.add("paid-btn");
-
-        paidBtn.addEventListener("click", () => {
-            expenses[index].paid = true;
-            updateTotal();
-        });
-
-        li.appendChild(detailsDiv);
-        li.appendChild(amountDiv);
-        li.appendChild(paidBtn);
-
-        expenseList.appendChild(li);
-    });
 }
 
 function updateTotal() {
     const total = expenses
-        .filter(exp => !exp.paid)
+        .filter(exp => exp.status !== "PAID")
         .reduce((sum, exp) => sum + exp.amount, 0);
     totalSpan.textContent = `€${total.toFixed(2)}`;
 }
@@ -155,40 +159,34 @@ function calculateBalances() {
         return;
     }
 
-    const unpaidExpenses = expenses.filter(expense => !expense.paid);
+    const unpaidExpenses = expenses.filter(expense => expense.status !== "PAID");
 
     if (unpaidExpenses.length === 0) {
         balancesDiv.innerHTML = "<p>✅ Tutte le spese sono state saldate!</p>";
         return;
     }
 
-    // Raccogli tutti i partecipanti che compaiono nelle spese non pagate
     const allParticipantsSet = new Set();
     unpaidExpenses.forEach(expense => {
-        expense.selectedParticipants.forEach(p => allParticipantsSet.add(p));
-        allParticipantsSet.add(expense.payer);  // il pagatore potrebbe non essere tra i partecipanti?
+        expense.participants.forEach(p => allParticipantsSet.add(p));
+        allParticipantsSet.add(expense.createdBy);
     });
     const allParticipants = Array.from(allParticipantsSet);
 
-    // Inizializza i saldi a zero
     const balances = {};
     allParticipants.forEach(p => balances[p] = 0);
 
-    // Per ogni spesa, suddividi l'importo solo tra i partecipanti
     unpaidExpenses.forEach(expense => {
-        const n = expense.selectedParticipants.length;
+        const n = expense.participants.length;
         const share = expense.amount / n;
 
-        // Ogni partecipante deve "dare" la sua quota (quindi decrementa saldo)
-        expense.selectedParticipants.forEach(p => {
+        expense.participants.forEach(p => {
             balances[p] -= share;
         });
 
-        // Chi ha pagato riceve l'importo intero (quindi incrementa saldo)
-        balances[expense.payer] += exp.amount;
+        balances[expense.createdBy] += expense.amount;
     });
 
-    // Ora separiamo i creditori e i debitori
     const creditors = [];
     const debtors = [];
 
@@ -215,63 +213,53 @@ function calculateBalances() {
         if (creditor.amount < 0.01) j++;
     }
 
-    if (transactions.length === 0) {
-        balancesDiv.innerHTML = "<p>✅ Tutti sono in pari!</p>";
-    } else {
-        balancesDiv.innerHTML = "";
-        transactions.forEach(t => {
-            const p = document.createElement("p");
-            p.textContent = t;
-            balancesDiv.appendChild(p);
-        });
-    }
+    balancesDiv.innerHTML = transactions.length === 0 ? "<p>✅ Tutti sono in pari!</p>" : "";
+    transactions.forEach(t => {
+        const p = document.createElement("p");
+        p.textContent = t;
+        balancesDiv.appendChild(p);
+    });
 }
 
-async function retriveCoinquys()
-{
+async function retriveCoinquys() {
     await fetch(`/auth/getuserByHouse?houseId=${encodeURIComponent(houseId)}`)
         .then(response => {
-            if (!response.ok)
-            {
+            if (!response.ok) {
                 throw new Error('Errore durante il recupero dei coinquilini.');
             }
             return response.json();
         })
         .then(data => {
-            //console.log('Coinquilini recuperati con successo:', data);
+            coinquilini.length = 0;
             data.forEach(coinquilino => {
                 coinquilini.push(coinquilino);
+            });
+            const container = document.getElementById('participants-container');
+            container.innerHTML = "";
+            coinquilini.forEach(coinquilino => {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.name = 'participants';
+                checkbox.value = coinquilino.id; // Assuming coinquilino has an ID
+                checkbox.id = `participant-${coinquilino.id}`;
+
+                const label = document.createElement('label');
+                label.htmlFor = checkbox.id;
+                label.textContent = coinquilino.name;
+
+                container.appendChild(checkbox);
+                container.appendChild(label);
+                container.appendChild(document.createElement('br'));
             });
         })
         .catch(error => {
             console.error('Errore:', error);
             alert('Si è verificato un errore durante il recupero dei coinquilini.');
         });
-
-    const container = document.getElementById('participants-container');
-
-    coinquilini.forEach(coinquilino => {
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.name = 'participants';
-        checkbox.value = coinquilino.name;
-        checkbox.id = `participant-${coinquilino.name}`;
-
-        const label = document.createElement('label');
-        label.htmlFor = checkbox.id;
-        label.textContent = coinquilino.name;
-
-        container.appendChild(checkbox);
-        container.appendChild(label);
-        container.appendChild(document.createElement('br'));
-    });
 }
 
-//per inizializzazione dei contenuti della pagina nel caso ci sono
-//delle informazioni salvate nel DB
 document.addEventListener('DOMContentLoaded', async () => {
-
-    await retriveCoinquys()
+    await retriveCoinquys();
     await retriveExpenses();
     updateTotal();
     calculateBalances();
