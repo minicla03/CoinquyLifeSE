@@ -23,21 +23,28 @@ function redirectToHouse() {
             }
         })
             .then(response => {
-                if (!response.ok) throw new Error("Errore nella risposta del server");
-                return response.text();
+                if (response.ok) {
+                    return response.json();  // <--- ATTENZIONE: bisogna restituire la Promise
+                } else {
+                    throw new Error("Errore: " + response.statusText);
+                }
             })
-            .then(html => {
-                document.open();       // Svuota il DOM
-                document.write(html);  // Scrive il nuovo HTML
-                document.close();      // Chiude il documento
+            .then(data => {
+                const link = data["path"];
+                if (link) {
+                    window.location.href = link;
+                } else {
+                    alert("Errore: 'path' non trovato nella risposta");
+                }
             })
             .catch(err => {
-                alert("Errore: " + err.message);
+                alert(err.message);
             });
     } else {
         alert("Token non trovato. Assicurati di essere autenticato.");
     }
 }
+
 
 // Aggiungi un listener per il click sul link "Registrati"
 document.querySelector("#registerForm button").addEventListener("click", async () => {
