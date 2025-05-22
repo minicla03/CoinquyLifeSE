@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gestione Spese Casa</title>
+    <link rel="stylesheet" href="exspenseStyle.css" />
+</head>
+<body>
+<div class="layout">
+
+    <!-- Blocca aggiunta spese -->
+    <div class="container" id="add-expense-container">
+        <h2>📝 Aggiungi Spesa</h2>
+        <div class="form-container">
+            <input type="text" id="description" placeholder="🖊️ Descrizione" />
+            <input type="text" id="amount" placeholder="💶 Importo (€)" min="0" />
+            <input type="text" id="payer" placeholder="🙋 Chi ha pagato?" />
+            <div id="participants-container"></div>
+            <select id="category">
+                <option value="">📂 Categoria</option>
+                <option value="BILLS">💡 Bollette</option>
+                <option value="FOOD">🍔 Cibo</option>
+                <option value="TRANSPORT">🚌 Trasporti</option>
+                <option value="ENTERTAINMENT">🎮 Intrattenimento</option>
+                <option value="SHOPPING">🛍️ Shopping</option>
+                <option value="HEALTH">💊 Salute</option>
+                <option value="OTHER">📦 Altro</option>
+            </select>
+            <button id="add-btn">➕ Aggiungi</button>
+        </div>
+    </div>
+
+    <!-- Blocco centrale: lista spese-->
+    <div class="container" id="expense-list-container">
+        <h2>🧾 Tutte le Spese</h2>
+        <ul id="expense-list"></ul>
+        <div class="summary">
+            Totale: <span id="total">€0.00</span> 💰
+        </div>
+    </div>
+
+    <!-- Blocca calcolo debiti -->
+    <div class="container" id="debt-container">
+        <h2>⚖️ Chi deve cosa?</h2>
+        <button id="calculate-btn">🧾 Calcola Debiti</button>
+        <div id="balances">
+            <p>ℹ️ Nessun calcolo effettuato</p>
+        </div>
+    </div>
+</div>
+<script src="expenseLogic.js"></script>
+</body>
+</html>

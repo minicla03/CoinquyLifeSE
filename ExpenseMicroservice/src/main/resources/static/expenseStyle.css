@@ -1,0 +1,206 @@
+body {
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, rgba(139, 0, 253, 0.94), #4500fd);
+    margin: 0;
+    min-height: 100vh;
+    box-sizing: border-box;
+    color: #333;
+}
+
+.layout {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    height: 100vh;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    color: #333;
+}
+
+/* Larghezze diverse */
+#add-expense-container,
+#debt-container {
+    flex: 1;
+    max-width: 320px;
+}
+
+#expense-list-container {
+    flex: 2.5;
+    max-width: 700px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-container input,
+.form-container select {
+    margin: 10px 0;
+    padding: 10px;
+    border: 2px solid #4500fd;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-container input:focus,
+.form-container select:focus {
+    border-color: rgba(139, 0, 253, 0.94);
+}
+
+.form-container button {
+    background: rgba(139, 0, 253, 0.94);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+}
+
+.form-container button:hover {
+    background: #4500fd;
+}
+
+#expense-list {
+    list-style: none;
+    padding-left: 0;
+    overflow-y: auto;
+    max-height: 400px;
+    border-top: 2px solid #4500fd;
+    margin-top: 15px;
+}
+
+#expense-list li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+}
+
+.summary {
+    margin-top: auto;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: right;
+    color: #4500fd;
+}
+
+#balances {
+    margin-top: 15px;
+    flex-grow: 1;
+    overflow-y: auto;
+    font-size: 1rem;
+    color: #333;
+}
+
+#balances p {
+    margin-bottom: 10px;
+}
+
+#balances p.positive {
+    color: green;
+}
+
+#balances p.negative {
+    color: red;
+}
+
+#balances p.neutral {
+    color: gray;
+}
+
+#expense-list li {
+    background-color: #f0eaff;
+    border-radius: 10px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(69, 0, 253, 0.2);
+    font-size: 1rem;
+    color: #4500fd;
+}
+
+#expense-list li .details {
+    display: flex;
+    flex-direction: column;
+}
+
+#expense-list li .details .title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+#expense-list li .details .meta {
+    font-size: 0.85rem;
+    color: #7a52f9; /* tonalità più chiara */
+}
+
+#expense-list li .amount {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #8b00fd;
+}
+
+#balances p {
+    font-size: 1rem;
+    color: #4b0082; /* un viola più scuro */
+    margin: 10px 0;
+    line-height: 1.4;
+    font-weight: 600;
+    text-align: center;
+}
+
+#calculate-btn {
+    background-color: rgba(139, 0, 253, 0.94); /* viola acceso */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#calculate-btn:hover {
+    background-color: #4500fd; /* viola scuro */
+}
+
+.paid-btn {
+    margin-left: 10px;
+    background-color: #4CAF50; /* verde */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.3s ease;
+}
+
+.paid-btn:hover:not(:disabled) {
+    background-color: #388E3C;
+}
+
+.paid-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
