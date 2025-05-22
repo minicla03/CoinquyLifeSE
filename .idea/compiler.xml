@@ -6,7 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ExpenseMicroService" />
+        <module name="ExpenseMicroservice" />
         <module name="HouseSelectionMicroService" />
         <module name="AuthMicroservice (1) (org.example)" />
         <module name="AuthMicroService" />
@@ -16,6 +16,7 @@
       <module name="AuthMicroservice" target="21" />
       <module name="AuthMicroservice (1) (org.example)" target="21" />
       <module name="CoinquyLifeSE" target="1.5" />
+      <module name="ExpenseMicroService" target="21" />
       <module name="HouseSelection" target="21" />
       <module name="PurchaseMicroService" target="21" />
     </bytecodeTargetLevel>
@@ -25,6 +26,7 @@
       <module name="AuthMicroService" options="-parameters" />
       <module name="AuthMicroservice" options="-parameters" />
       <module name="ExpenseMicroService" options="-parameters" />
+      <module name="ExpenseMicroservice" options="-parameters" />
       <module name="HouseSelectionMicroService" options="-parameters" />
     </option>
   </component>

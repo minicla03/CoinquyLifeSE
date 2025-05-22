@@ -8,24 +8,30 @@
 </head>
 <body>
 <div class="layout">
+
     <!-- Blocca aggiunta spese -->
     <div class="container" id="add-expense-container">
         <h2>📝 Aggiungi Spesa</h2>
         <div class="form-container">
-            <input type="text" id="title" placeholder="🖊️ Descrizione" />
+            <input type="text" id="description" placeholder="🖊️ Descrizione" />
             <input type="text" id="amount" placeholder="💶 Importo (€)" min="0" />
             <input type="text" id="payer" placeholder="🙋 Chi ha pagato?" />
+            <div id="participants-container"></div>
             <select id="category">
                 <option value="">📂 Categoria</option>
-                <option>🍎 Spesa alimentare</option>
-                <option>💡 Bollette</option>
-                <option>📦 Altro</option>
+                <option value="BILLS">💡 Bollette</option>
+                <option value="FOOD">🍔 Cibo</option>
+                <option value="TRANSPORT">🚌 Trasporti</option>
+                <option value="ENTERTAINMENT">🎮 Intrattenimento</option>
+                <option value="SHOPPING">🛍️ Shopping</option>
+                <option value="HEALTH">💊 Salute</option>
+                <option value="OTHER">📦 Altro</option>
             </select>
             <button id="add-btn">➕ Aggiungi</button>
         </div>
     </div>
 
-    <!-- Blocco centrale: lista spese (più grande) -->
+    <!-- Blocco centrale: lista spese-->
     <div class="container" id="expense-list-container">
         <h2>🧾 Tutte le Spese</h2>
         <ul id="expense-list"></ul>

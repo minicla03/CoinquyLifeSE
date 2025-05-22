@@ -11,6 +11,8 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/AuthMicroservice/pom.xml" />
+        <option value="$PROJECT_DIR$/ExpenseMicroService/pom.xml" />
+        <option value="$PROJECT_DIR$/ExpenseMicrosService/pom.xml" />
         <option value="$PROJECT_DIR$/coinquylife/pom.xml" />
       </set>
     </option>
