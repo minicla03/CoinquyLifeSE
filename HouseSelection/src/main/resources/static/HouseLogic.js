@@ -24,7 +24,7 @@ document.querySelector("#registerForm button").addEventListener("click", async (
     };
 
     try {
-        const res = await fetch("http://localhost:8080/rest/house/create", {
+        const res = await fetch("http://localhost:8083/rest/house/create", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -64,7 +64,7 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
     };
 
     try {
-        const res = await fetch(`/rest/house/loginHouse`, {
+        const res = await fetch(`http://localhost:8083/rest/house/loginHouse`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -77,7 +77,6 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
             //alert("Login effettuato!");
             out = document.getElementById("outputlog");
             out.innerHTML = "✅ Login effettuato!";
-            window.location.href = "/home";
         } else {
             //alert("Errore: " + result);
             out = document.getElementById("outputlog");
@@ -90,39 +89,6 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
     }
 });
 
-let currentUser = null;
-
-window.addEventListener("DOMContentLoaded", async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-        // Se non si ha un token si reindirizza al login
-        window.location.href = "/login.html";
-        return;
-    }
-
-    try {
-        const res = await fetch("http://localhost:8081/rest/auth/infoUser", {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
-
-        if (res.ok) {
-            const userData = await res.json();
-            currentUser
-            document.getElementById("usernameLabel").textContent = "Ciao " + userData.username;
-
-        } else {
-            const errorText = await res.text();
-            console.error("Errore:", errorText);
-            window.location.href = "/login.html";
-        }
-    } catch (error) {
-        console.error("Errore di rete:", error);
-        window.location.href = "/login.html";
-    }
-});
 
 // Aggiungi un listener per il click sul link "Hai già un account?"
 document.querySelector("#loginForm button").addEventListener("click", async (event) => {

@@ -16,7 +16,7 @@ function showLogin() {
 function redirectToHouse() {
     const token = localStorage.getItem("token");
     if (token) {
-        fetch("http://localhost:8080/rest/client/house", {
+        fetch("http://localhost:8080/Auth/rest/client/house", {
             method: "GET",
             headers: {
                 "Authorization": "Bearer " + token
@@ -58,7 +58,7 @@ document.querySelector("#registerForm button").addEventListener("click", async (
     };
 
     try {
-        const res = await fetch("http://localhost:8080/rest/auth/register", {
+        const res = await fetch("http://localhost:8080/Auth/rest/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -91,7 +91,7 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
     };
 
     try {
-        const res = await fetch(`/rest/auth/login`, {
+        const res = await fetch(`http://localhost:8080/Auth/rest/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
