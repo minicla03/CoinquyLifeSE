@@ -26,6 +26,7 @@ public class HouseController {
         String houseAddress = house.getHouseAddress();
         HouseResult houseResult=houseService.createHouse(houseName, houseAddress);
         String token = auth.substring(7);
+        System.out.println(token);
 
         if(houseResult.getHouseStatus()== HouseStatus.HOUSE_CREATED)
         {
@@ -33,7 +34,7 @@ public class HouseController {
 
             if (houseResult1.getHouseStatus() == HouseStatus.LINKED_SUCCES)
             {
-                return Response.ok("{\"message\":\"House created and linked successfully\"}").build();
+                return Response.ok("{\"code\":\""+houseResult.getMessage()+"\"}", "application/json").build();
             }
             else if(houseResult1.getHouseStatus() == HouseStatus.USER_NOT_FOUND)
             {

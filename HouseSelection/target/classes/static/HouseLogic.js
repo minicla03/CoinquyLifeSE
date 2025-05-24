@@ -23,15 +23,17 @@ document.querySelector("#registerForm button").addEventListener("click", async (
         houseAddress: inputs[1].value,
     };
 
+
     try {
-        const res = await fetch("http://localhost:8083/rest/house/create", {
+        const res = await fetch("http://localhost:8080/House/rest/house/create", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
+                "Authorization": "Bearer " + token,
             },
             body: JSON.stringify(data),
         });
+
 
         const result = await res.text();
         if (res.ok) {
@@ -40,7 +42,7 @@ document.querySelector("#registerForm button").addEventListener("click", async (
             const code = json["code"];
             out = document.getElementById("outputreg");
             out.innerHTML = "✅ Registrazione completata, il codice di accesso alla tua Coinquihouse è: <br>" + code;
-            //showHouseLogin();
+            showHouseLogin();
         } else {
             //alert("Errore: " + result);
             out = document.getElementById("outputreg");
@@ -60,14 +62,16 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
     const inputs = document.querySelectorAll("#loginForm input");
     const token = localStorage.getItem("token");
     const data = {
-        houseCode: inputs[0].value,
+        houseId: inputs[0].value,
     };
 
     try {
-        const res = await fetch(`http://localhost:8083/rest/house/loginHouse`, {
+        const res = await fetch(`http://localhost:8080/House/rest/house/loginHouse`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": "Bearer " + token,
+
             },
             body: JSON.stringify(data),
         });

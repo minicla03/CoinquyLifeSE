@@ -6,15 +6,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@ApplicationPath("rest")
+@ApplicationPath("/rest")
 public class HouseSelectionApplication extends ResourceConfig
 {
     public HouseSelectionApplication()
     {
-        packages("Controller");
-        packages("Service");
-        packages("Data");
-        packages("Confing");
+        packages("com/coinquyteam/houseSelectionApplication/Controller");
+        packages("com/coinquyteam/houseSelectionApplication/Service");
+        packages("com/coinquyteam/houseSelectionApplication/Data");
+        packages("com/coinquyteam/houseSelectionApplication/JWT");
+        packages("com/coinquyteam/houseSelectionApplication/Config");
     }
     public static void main(String[] args)
     {

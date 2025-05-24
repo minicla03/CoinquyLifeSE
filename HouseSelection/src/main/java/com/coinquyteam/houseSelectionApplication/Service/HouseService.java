@@ -55,7 +55,7 @@ public class HouseService {
 
     public HouseResult linkHouseToUser(String token, String houseCode)
     {
-        String url = "http://localhost:8080/auth/external/link-house";
+        String url = "http://localhost:8081/rest/auth/external/link-house";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
@@ -63,6 +63,7 @@ public class HouseService {
                 "houseCode", houseCode);
         HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
         ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+
 
         if (response.getStatusCode().is2xxSuccessful())
         {
@@ -74,6 +75,7 @@ public class HouseService {
         }
         else
         {
+            System.out.println("Errore");
             return new HouseResult(HouseStatus.LINKED_ERROR, "Failed to link house");
         }
     }
