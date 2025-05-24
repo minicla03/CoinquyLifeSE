@@ -42,6 +42,10 @@ public class WebAuthController
         {
             return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
         }
+        else if (authResult.getStatusAuth() == StatusAuth.USER_ALREADY_LINKED)
+        {
+            return Response.status(Response.Status.CONFLICT).entity("User already linked to a house").build();
+        }
         else
         {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Server error").build();

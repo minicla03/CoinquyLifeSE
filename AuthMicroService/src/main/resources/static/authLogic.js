@@ -70,7 +70,9 @@ document.querySelector("#registerForm button").addEventListener("click", async (
         if (res.ok) {
             var out = document.getElementById("outputreg");
             out.innerHTML = "✅ Registrazione completata!";
-            redirectToHouse();
+            setTimeout(() => {
+                showLogin()
+            }, 400);
         } else {
             var out = document.getElementById("outputreg");
             out.innerHTML = "❗️" + result;

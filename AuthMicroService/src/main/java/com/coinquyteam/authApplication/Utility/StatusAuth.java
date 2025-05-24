@@ -9,4 +9,5 @@ public enum StatusAuth
     TOKEN_EXPIRED,
     TOKEN_INVALID,
     LINKED_ERROR,
+    USER_ALREADY_LINKED,
 }

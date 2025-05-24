@@ -40,10 +40,23 @@ public class HouseController {
             {
                 return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
             }
+            else if(houseResult1.getHouseStatus() == HouseStatus.USER_ALREADY_LINKED)
+            {
+                HouseResult houseResult3 = houseService.deleteHouse(houseResult.getMessage());
+                if (houseResult3.getHouseStatus() == HouseStatus.HOUSE_DELETED)
+                {
+                    return Response.status(Response.Status.CONFLICT).entity("User already linked to a house").build();
+                }
+                else
+                {
+                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error deleting house").build();
+                }
+            }
             else
             {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error linking house to user").build();
             }
+
         }
         else if(houseResult.getHouseStatus()== HouseStatus.HOUSE_ALREADY_EXISTS)
         {
@@ -63,11 +76,29 @@ public class HouseController {
     @Path("/loginHouse")
     public Response loginHouse(@HeaderParam("Authorization") String auth, House house) {
         String houseCode = house.getHouseId();
+        String token = auth.substring(7);
         HouseResult houseResult = houseService.loginHouse(houseCode);
+        System.out.println(token);
 
-        if (houseResult.getHouseStatus() == HouseStatus.HOUSE_LOGGED_IN)
+        if (houseResult.getHouseStatus() == HouseStatus.HOUSE_FOUND)
         {
-            return Response.ok("{\"message\":\"House logged in successfully\"}").build();
+            HouseResult houseResult1 = houseService.linkHouseToUser(token, houseCode);
+            if (houseResult1.getHouseStatus() == HouseStatus.LINKED_SUCCES)
+            {
+                return Response.ok("message\":\"House linked successfully\"}", "application/json").build();
+            }
+            else if(houseResult1.getHouseStatus() == HouseStatus.USER_NOT_FOUND)
+            {
+                return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
+            }
+            else if(houseResult1.getHouseStatus() == HouseStatus.USER_ALREADY_LINKED)
+            {
+                return Response.status(Response.Status.CONFLICT).entity("User already linked to a house").build();
+            }
+            else
+            {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error linking house to user").build();
+            }
         }
         else if (houseResult.getHouseStatus() == HouseStatus.HOUSE_NOT_FOUND)
         {

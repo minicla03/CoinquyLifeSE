@@ -34,6 +34,14 @@ public class WebAuthClientService
             return new AuthResult(StatusAuth.USER_NOT_FOUND, "User not found");
         }
 
+        if (user.getHouseUser() != null) {
+
+            if( user.getHouseUser().equals(houseCode)) {
+                return new AuthResult(StatusAuth.SUCCESS, "User linked to his house");
+            }
+            return new AuthResult(StatusAuth.USER_ALREADY_LINKED, "User already linked to a house");
+        }
+
         try
         {
             userRepository.setHouseUser(user.getUsername(), houseCode);

@@ -49,7 +49,7 @@ public class HouseService {
         if (house == null) {
             return new HouseResult(HouseStatus.HOUSE_NOT_FOUND, "codice non valido");
         } else {
-            return new HouseResult(HouseStatus.HOUSE_LOGGED_IN, house.getHouseId());
+            return new HouseResult(HouseStatus.HOUSE_FOUND, house.getHouseId());
         }
     }
 
@@ -62,21 +62,46 @@ public class HouseService {
         Map<String, String> body = Map.of(
                 "houseCode", houseCode);
         HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
 
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.postForEntity(url, request, String.class);
+        } catch (org.springframework.web.client.HttpClientErrorException.Conflict e) {
+            // Gestione specifica per 409 Conflict
+            return new HouseResult(HouseStatus.USER_ALREADY_LINKED, "User already linked to a house");
+        } catch (org.springframework.web.client.HttpClientErrorException.NotFound e) {
+            // Gestione specifica per 404 Not Found
+            return new HouseResult(HouseStatus.USER_NOT_FOUND, "User not found");
+        } catch (Exception e) {
+            return new HouseResult(HouseStatus.LINKED_ERROR, "Failed to link house");
+        }
 
         if (response.getStatusCode().is2xxSuccessful())
         {
             return new HouseResult(HouseStatus.LINKED_SUCCES, "House linked successfully");
         }
-        else if (response.getStatusCode().is4xxClientError())
-        {
-            return new HouseResult(HouseStatus.USER_NOT_FOUND, "User not found");
-        }
         else
         {
-            System.out.println("Errore");
             return new HouseResult(HouseStatus.LINKED_ERROR, "Failed to link house");
+        }
+    }
+
+    public HouseResult deleteHouse(String houseCode) {
+
+        House house = houseRepository.findAll()
+                .stream()
+                .filter(h -> BCrypt.checkpw(houseCode, h.getHouseId()))
+                .findFirst()
+                .orElse(null);
+
+        if (house == null) {
+            return new HouseResult(HouseStatus.HOUSE_NOT_FOUND, "House not found");
+        }
+        try {
+            houseRepository.delete(house);
+            return new HouseResult(HouseStatus.HOUSE_DELETED, "House deleted successfully");
+        } catch (Exception e) {
+            return new HouseResult(HouseStatus.HOUSE_NOT_CREATED, "Error deleting house: " + e.getMessage());
         }
     }
 }
