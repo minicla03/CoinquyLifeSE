@@ -70,7 +70,9 @@ document.querySelector("#registerForm button").addEventListener("click", async (
         if (res.ok) {
             var out = document.getElementById("outputreg");
             out.innerHTML = "✅ Registrazione completata!";
-            redirectToHouse();
+            setTimeout(() => {
+                showLogin()
+            }, 400);
         } else {
             var out = document.getElementById("outputreg");
             out.innerHTML = "❗️" + result;
@@ -107,7 +109,6 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
             const token = json["token"];
             localStorage.setItem("token", token);
             redirectToHouse();
-            //window.location.href = "http://localhost:8081/HousePage.html";
         } else {
             var out = document.getElementById("outputlog");
             out.innerHTML = "❗️" + result;

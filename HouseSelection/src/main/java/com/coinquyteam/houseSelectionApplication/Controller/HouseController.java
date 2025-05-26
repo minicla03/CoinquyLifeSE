@@ -28,9 +28,12 @@ public class HouseController {
         String token = auth.substring(7);
         System.out.println(token);
 
+        System.out.println();
+
+
         if(houseResult.getHouseStatus()== HouseStatus.HOUSE_CREATED)
         {
-            HouseResult houseResult1= houseService.linkHouseToUser(token, house.getHouseAddress());
+            HouseResult houseResult1= houseService.linkHouseToUser(token, houseResult.getMessage());
 
             if (houseResult1.getHouseStatus() == HouseStatus.LINKED_SUCCES)
             {
@@ -78,7 +81,6 @@ public class HouseController {
         String houseCode = house.getHouseId();
         String token = auth.substring(7);
         HouseResult houseResult = houseService.loginHouse(houseCode);
-        System.out.println(token);
 
         if (houseResult.getHouseStatus() == HouseStatus.HOUSE_FOUND)
         {

@@ -27,6 +27,7 @@ public class WebAuthController
     {
         String token = auth.substring(7);
         String houseCode = body.get("houseCode");
+        System.out.println(houseCode);
 
         if (houseCode == null)
         {

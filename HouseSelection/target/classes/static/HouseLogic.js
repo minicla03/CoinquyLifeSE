@@ -42,7 +42,6 @@ document.querySelector("#registerForm button").addEventListener("click", async (
             const code = json["code"];
             out = document.getElementById("outputreg");
             out.innerHTML = "✅ Registrazione completata, il codice di accesso alla tua Coinquihouse è: <br>" + code;
-            showHouseLogin();
         } else {
             //alert("Errore: " + result);
             out = document.getElementById("outputreg");
@@ -81,7 +80,13 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
             //alert("Login effettuato!");
             out = document.getElementById("outputlog");
             out.innerHTML = "✅ Login effettuato!";
-        } else {
+            window.location.href = "/home";
+        } else if (res.status === 401 || res.status === 403) {
+            //alert("Codice di accesso errato");
+            out = document.getElementById("outputlog");
+            out.innerHTML = "❗️ Accesso negato";
+        }
+        else {
             //alert("Errore: " + result);
             out = document.getElementById("outputlog");
             out.innerHTML = "❗️" + result;

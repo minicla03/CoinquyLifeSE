@@ -5,6 +5,7 @@ import com.coinquyteam.authApplication.JWT.TokenManager;
 import com.coinquyteam.authApplication.Repository.IUserRepository;
 import com.coinquyteam.authApplication.Utility.AuthResult;
 import com.coinquyteam.authApplication.Utility.StatusAuth;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,7 +37,7 @@ public class WebAuthClientService
 
         if (user.getHouseUser() != null) {
 
-            if( user.getHouseUser().equals(houseCode)) {
+            if(BCrypt.checkpw(houseCode, user.getHouseUser())) {
                 return new AuthResult(StatusAuth.SUCCESS, "User linked to his house");
             }
             return new AuthResult(StatusAuth.USER_ALREADY_LINKED, "User already linked to a house");
@@ -44,7 +45,8 @@ public class WebAuthClientService
 
         try
         {
-            userRepository.setHouseUser(user.getUsername(), houseCode);
+            String hashedHouseCode = BCrypt.hashpw(houseCode, BCrypt.gensalt());
+            userRepository.setHouseUser(user.getUsername(), hashedHouseCode);
             return new AuthResult(StatusAuth.SUCCESS, "House linked successfully");
         }
         catch (Exception e)
