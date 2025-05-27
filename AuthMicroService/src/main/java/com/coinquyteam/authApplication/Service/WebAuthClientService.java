@@ -1,69 +1,73 @@
 package com.coinquyteam.authApplication.Service;
-
 import com.coinquyteam.authApplication.Data.User;
-import com.coinquyteam.authApplication.JWT.TokenManager;
 import com.coinquyteam.authApplication.Repository.IUserRepository;
 import com.coinquyteam.authApplication.Utility.AuthResult;
 import com.coinquyteam.authApplication.Utility.StatusAuth;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import java.util.Map;
 
-/**
- * Classe per gestire le comunicazioni esterne con il servizio
- * separato dal service di auth per motivi si separazione delle
- * responsabilità.
- */
-@Service
-public class WebAuthClientService
-{
+@Service("WebAuthClientService")
+public class WebAuthClientService {
+
     private final IUserRepository userRepository;
-    private final TokenManager tokenManager;
+    private final WebClient webClient;
 
-    public WebAuthClientService(IUserRepository userRepository, TokenManager tokenManager)
-    {
+    public WebAuthClientService(IUserRepository userRepository, WebClient webClient) {
         this.userRepository = userRepository;
-        this.tokenManager = tokenManager;
+        this.webClient = webClient;
     }
 
-    public AuthResult linkHouseToUser(String token, String houseCode)
-    {
+    public AuthResult linkHouseToUser(String token, String houseCode) {
         if (token == null || houseCode == null) {
             return new AuthResult(StatusAuth.INVALID_CREDENTIALS, "Invalid input");
         }
-        User user = getUserInfo(getUsernameFromToken(token));
+
+        String username = getUsernameFromTokenViaRest(token);
+        if (username == null) {
+            return new AuthResult(StatusAuth.USER_NOT_FOUND, "User not found or invalid token");
+        }
+
+        User user = getUserInfo(username);
         if (user == null) {
             return new AuthResult(StatusAuth.USER_NOT_FOUND, "User not found");
         }
 
         if (user.getHouseUser() != null) {
-
-            if(BCrypt.checkpw(houseCode, user.getHouseUser())) {
+            if (BCrypt.checkpw(houseCode, user.getHouseUser())) {
                 return new AuthResult(StatusAuth.SUCCESS, "User linked to his house");
             }
             return new AuthResult(StatusAuth.USER_ALREADY_LINKED, "User already linked to a house");
         }
 
-        try
-        {
+        try {
             String hashedHouseCode = BCrypt.hashpw(houseCode, BCrypt.gensalt());
             userRepository.setHouseUser(user.getUsername(), hashedHouseCode);
             return new AuthResult(StatusAuth.SUCCESS, "House linked successfully");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return new AuthResult(StatusAuth.LINKED_ERROR, "Failed to link house");
         }
     }
 
-    private String getUsernameFromToken(String token)
-    {
-        return tokenManager.verifyToken(token);
+    private String getUsernameFromTokenViaRest(String token) {
+        try {
+            Map<String, String> response = webClient.post()
+                    .uri("http://localhost:8080/gateway/verify-token")
+                    .bodyValue(Map.of("token", token))
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .block();
+
+            // La risposta JSON dovrebbe essere tipo {"username": "theUser"}
+            return response != null ? response.get("username") : null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    private User getUserInfo(String username)
-    {
-        assert username != null;
+    private User getUserInfo(String username) {
         return userRepository.findByUsername(username);
     }
-
 }

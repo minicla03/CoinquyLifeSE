@@ -1,27 +1,25 @@
 package com.coinquyteam.authApplication.Service;
 
 import com.coinquyteam.authApplication.Data.User;
-import com.coinquyteam.authApplication.JWT.TokenManager;
 import com.coinquyteam.authApplication.Repository.IUserRepository;
 import com.coinquyteam.authApplication.Utility.AuthResult;
 import com.coinquyteam.authApplication.Utility.StatusAuth;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import java.util.Map;
 
 @Service("AuthService")
-public class AuthService
-{
+public class AuthService {
     private final IUserRepository userRepository;
-    private final TokenManager tokenManager;
+    private final WebClient webClient;
 
-    public AuthService(IUserRepository userRepository, TokenManager tokenManager)
-    {
+    public AuthService(IUserRepository userRepository, WebClient webClient) {
         this.userRepository = userRepository;
-        this.tokenManager = tokenManager;
+        this.webClient = webClient;
     }
 
-    public AuthResult register(String username, String name, String password, String surname, String email)
-    {
+    public AuthResult register(String username, String name, String password, String surname, String email) {
         if (userRepository.findByUsername(username) != null) {
             return new AuthResult(StatusAuth.USER_ALREADY_EXISTS, null);
         }
@@ -30,21 +28,33 @@ public class AuthService
         User user = new User(username, name, hashedPassword, surname, email);
         userRepository.save(user);
 
-        return new AuthResult(StatusAuth.SUCCESS, tokenManager.generateToken(username));
+        String token = generateTokenViaRest(username);
+        return new AuthResult(StatusAuth.SUCCESS, token);
     }
 
-    public AuthResult login(String identifier, String password)
-    {
+    public AuthResult login(String identifier, String password) {
         User user = userRepository.findByUsername(identifier);
         if (user == null) {
             user = userRepository.findByEmail(identifier);
         }
-
-        if (user == null) return new AuthResult(StatusAuth.USER_NOT_FOUND, null);
-
+        if (user == null) {
+            return new AuthResult(StatusAuth.USER_NOT_FOUND, null);
+        }
         if (BCrypt.checkpw(password, user.getPassword())) {
-            return new AuthResult(StatusAuth.SUCCESS, tokenManager.generateToken(user.getUsername()));
+            String token = generateTokenViaRest(user.getUsername());
+            return new AuthResult(StatusAuth.SUCCESS, token);
         }
         return new AuthResult(StatusAuth.INVALID_CREDENTIALS, null);
+    }
+
+    private String generateTokenViaRest(String username) {
+        Map responseMap = webClient.post()
+                .uri("http://localhost:8080/gateway/generate-token")
+                .bodyValue(Map.of("username", username))
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block(); // blocca fino a ricevere risposta
+
+        return (String) responseMap.get("token");
     }
 }

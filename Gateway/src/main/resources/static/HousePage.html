@@ -4,7 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login / Register</title>
-    <link rel="stylesheet" href="HouseStyle.css" />
+    <link rel="stylesheet" href="css/HouseStyle.css" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Controlla se il token è presente, altrimenti mostra un'immagine di autenticazione
+            if (!localStorage.getItem("token")) {
+                document.body.innerHTML = `
+        <div class="container" style="background: #f9f9f9; border-radius: 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.10); padding: 40px 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 400px; margin: auto;">
+        <img src="/logo-blu.png" alt="Autenticazione richiesta" style="max-width:180px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+        <p style="font-size:1.2em; margin-top:10px; color: #2a3a4a; text-align: center;">Per favore, autenticati per continuare.</p>
+        </div>\
+             `   ;
+            }
+        })
+    </script>
 </head>
 <body>
 <div class="container">
@@ -32,6 +45,6 @@
         <p>Hai già una casa? <a href="#" onclick="showHouseLogin()">Entra</a></p>
     </div>
 </div>
-<script src="HouseLogic.js"></script>
+<script src="js/HouseLogic.js"></script>
 </body>
 </html>
