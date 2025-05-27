@@ -20,7 +20,8 @@
         <module>AuthMicroService</module>
         <module>HouseSelection</module>
         <module>ExpenseMicroService</module>
-        <module>Gateway</module>
+        <module>APIGatewayMS</module>
+        <module>DashboardMS</module>
     </modules>
 
     <properties>

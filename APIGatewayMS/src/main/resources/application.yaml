@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+jwt:
+  secret: unaChiaveSegretaMoltoSicura12345
+
+spring:
+  application:
+    name: APIGateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/rest/auth/**
+        - id: house-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/rest/house/**
+          filters:
+            - JwtAuthenticationFilter
+debug: true
+
+logging:
+  level:
+    org.springframework.boot.autoconfigure.condition: TRACE
+    org.springframework.security: DEBUG
+    org.springframework.cloud.gateway: DEBUG

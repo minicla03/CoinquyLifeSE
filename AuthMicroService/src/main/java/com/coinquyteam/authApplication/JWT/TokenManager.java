@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Component("tokenManager")
+@Component
 public class TokenManager
 {
     private final Algorithm algorithm;
@@ -21,7 +21,8 @@ public class TokenManager
         this.expiration = expirationMillis;
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username)
+    {
         return JWT.create()
                 .withSubject(username)
                 .withIssuedAt(new Date())
@@ -29,25 +30,31 @@ public class TokenManager
                 .sign(algorithm);
     }
 
-    public String verifyToken(String token) {
-        try {
+    public String verifyToken(String token)
+    {
+        try
+        {
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
-            return jwt.getSubject();
-        } catch (Exception e) {
-            System.err.println("Errore durante la verifica del token: " + e.getMessage());
+            return jwt.getSubject();  // ritorna lo username
+        }
+        catch (Exception e)
+        {
+            System.err.println("Token invalido: " + e.getMessage());
             return null;
         }
     }
 
-    // Nuovo metodo per ottenere la data di scadenza del token
-    public Date getTokenExpiration(String token) {
-        try {
+    public Date getTokenExpiration(String token)
+    {
+        try
+        {
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
             return jwt.getExpiresAt();
-        } catch (Exception e) {
-            System.err.println("Errore durante il recupero della data di scadenza del token: " + e.getMessage());
+        }
+        catch (Exception e)
+        {
             return null;
         }
     }
