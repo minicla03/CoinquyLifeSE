@@ -230,24 +230,6 @@ function calculateBalances() {
 
 async function retriveCoinquys()
 {
-    await fetch(`/auth/getuserByHouse?houseId=${encodeURIComponent(houseId)}`)
-        .then(response => {
-            if (!response.ok)
-            {
-                throw new Error('Errore durante il recupero dei coinquilini.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            //console.log('Coinquilini recuperati con successo:', data);
-            data.forEach(coinquilino => {
-                coinquilini.push(coinquilino);
-            });
-        })
-        .catch(error => {
-            console.error('Errore:', error);
-            alert('Si è verificato un errore durante il recupero dei coinquilini.');
-        });
 
     const container = document.getElementById('participants-container');
 

@@ -18,10 +18,6 @@ userLink.innerHTML = '';
 // Inserisce immagine
 userLink.appendChild(img);
 
-
-
-
-
 /*Logica per il calendario*/
 
 const monthYear = document.getElementById("monthYear");
@@ -133,87 +129,7 @@ mostraClassifica(classifica);
 
 /*funzione per mostrare il riepilogo della casa*/
 
-const personeInCasa = [
-    { nome: "Alice", cognome: "Rossi", img: "user-solid.svg" },
-    { nome: "Luca", cognome: "Bianchi", img: "user-solid.svg" },
-    { nome: "Giulia", cognome: "Verdi", img: "user-solid.svg" },
-    { nome: "Marco", cognome: "Neri", img: "user-solid.svg" },
-    { nome: "Sara", cognome: "Gialli", img: "user-solid.svg" }
-];
-
-const lista = document.getElementById("lista-persone");
-
-personeInCasa.forEach(persona => {
-    const li = document.createElement("li");
-    li.className = "persona-item";
-
-    li.innerHTML = `
-      <img src="${persona.img}" alt="${persona.nome} ${persona.cognome}">
-      <span>${persona.nome} ${persona.cognome}</span>
-    `;
-
-    lista.appendChild(li);
-});
-
-
-const eventi = [
-    {
-        titolo: "Oggi ospiti",
-        autore: {
-            nome: "Mario",
-            cognome: "Rossi"
-        },
-        data: "2025-05-16"
-    },
-    {
-        titolo: "Pulizie generali",
-        autore: {
-            nome: "Giulia",
-            cognome: "Verdi"
-        },
-        data: "2025-05-15"
-    },
-    {
-        titolo: "Compleanno di Luca",
-        autore: {
-            nome: "Anna",
-            cognome: "Bianchi"
-        },
-        data: "2025-05-13"
-    },
-    {
-        titolo: "Visita del padrone di casa",
-        autore: {
-            nome: "Marco",
-            cognome: "Neri"
-        },
-        data: "2025-05-10"
-    },
-    {
-        titolo: "Festa di fine sessione",
-        autore: {
-            nome: "Laura",
-            cognome: "Gialli"
-        },
-        data: "2025-05-08"
-    }
-];
-
-const listaEventi = document.getElementById("lista-eventi");
-eventi.forEach(evento => {
-    const li = document.createElement("li");
-    li.className = "events-item";
-
-    li.innerHTML = `
-      <strong>${evento.titolo}</strong>
-      <span>Creato da: ${evento.autore.nome} ${evento.autore.cognome}</span>
-      <span>Data: ${new Date(evento.data).toLocaleDateString()}</span>
-    `;
-
-    listaEventi.appendChild(li);
-});
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const navLinks = document.querySelectorAll('.nav_links a');
 
     navLinks.forEach(link => {
@@ -222,27 +138,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const text = link.textContent.trim().toLowerCase();
 
-            switch(text) {
-                case 'spese':
-                    redirect("spese");
-                    break;
-                case 'turni':
-                    redirect("turni");
-                    break;
-                case 'regole':
-                    redirect("regole");
-                    break;
-                case 'classifica':
-                    redirect("classifica");
-                    break;
-                case 'profile':
-                    redirect("profilo");
-                    break;
-                default:
-                    console.warn('Link non gestito:', text);
-            }
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const text = link.textContent.trim().toLowerCase();
+                    switch (text) {
+                        case 'spese': redirect("spese"); break;
+                        case 'turni': redirect("turni"); break;
+                        case 'regole': redirect("regole"); break;
+                        case 'classifica': redirect("classifica"); break;
+                        case 'profile': redirect("profilo"); break;
+                        default: console.warn('Link non gestito:', text);
+                    }
+                });
+            });
         });
     });
+    await caricaEventi();
+    await caricaPersoneInCasa();
 });
 
 async function redirect(path)
@@ -284,5 +197,99 @@ async function redirect(path)
     catch (err)
     {
         alert(err.message);
+    }
+}
+
+const coinquilini = [];
+const houseId = localStorage.getItem("houseId");
+
+async function caricaEventi()
+{
+    const listaEventi = document.getElementById("lista-eventi");
+    listaEventi.innerHTML = "";
+
+    try
+    {
+        const response = await fetch("http://localhost:8083/DashBard/rest/house/events");
+        const eventi = await response.json();
+
+        if (eventi.length === 0) {
+            const li = document.createElement("li");
+            li.textContent = "Nessun evento presente.";
+            li.className = "messaggio-vuoto";
+            listaEventi.appendChild(li);
+            return;
+        }
+
+        eventi.forEach(evento => {
+            const li = document.createElement("li");
+            li.className = "events-item";
+
+            li.innerHTML = `
+                <strong>${evento.titolo}</strong>
+                <span>Creato da: ${evento.autore.nome} ${evento.autore.cognome}</span>
+                <span>Data: ${new Date(evento.data).toLocaleDateString()}</span>
+            `;
+
+            listaEventi.appendChild(li);
+        });
+    } catch (err) {
+        console.error("Errore nel recupero eventi:", err);
+        listaEventi.innerHTML = "<li class='messaggio-vuoto'>Errore nel caricamento degli eventi.</li>";
+    }
+}
+
+async function caricaPersoneInCasa() {
+
+    const lista = document.getElementById("lista-persone");
+    lista.innerHTML = "";
+
+    try{
+        await fetch(`/auth/getuserByHouse?houseId=${encodeURIComponent(houseId)}`)
+            .then(response => {
+                if (!response.ok)
+                {
+                    throw new Error('Errore durante il recupero dei coinquilini.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                //console.log('Coinquilini recuperati con successo:', data);
+                data.forEach(coinquilino => {
+                    coinquilini.push(coinquilino);
+                });
+            })
+            .catch(error => {
+                console.error('Errore:', error);
+                alert('Si è verificato un errore durante il recupero dei coinquilini.');
+            });
+
+        localStorage.setItem("coinquilini", JSON.stringify(coinquilini));
+
+        if (coinquilini.length === 0)
+        {
+            const li = document.createElement("li");
+            li.textContent = "Nessuna persona presente in casa.";
+            li.className = "messaggio-vuoto";
+            lista.appendChild(li);
+            return;
+        }
+
+        coinquilini.forEach(coinquilino => {
+            const li = document.createElement("li");
+            li.className = "persona-item";
+
+            li.innerHTML = `
+                <img src="${coinquilino.img}" alt="${coinquilino.nome} ${coinquilino.cognome}">
+                <span>${coinquilino.nome} ${coinquilino.cognome}</span>
+            `;
+
+            lista.appendChild(li);
+        });
+    }
+    catch (err)
+    {
+        console.error("Errore nel recupero utenti:", err);
+        lista.innerHTML = "<li class='messaggio-vuoto'>Errore nel caricamento delle persone.</li>";
     }
 }

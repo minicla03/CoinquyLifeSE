@@ -405,5 +405,8 @@ button:hover{
     background-color: #4500FDFF; /* colore della scrollbar al passaggio del mouse */
 }
 
-
-/*   http://localhost:8080/new_homePageUI/homePageIndex.html   */
+.messaggio-vuoto {
+    font-style: italic;
+    color: #888;
+    padding: 0.5rem;
+}

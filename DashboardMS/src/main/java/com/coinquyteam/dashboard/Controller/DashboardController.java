@@ -1,5 +1,6 @@
 package com.coinquyteam.dashboard.Controller;
 
+import com.coinquyteam.dashboard.Service.DashboardService;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
