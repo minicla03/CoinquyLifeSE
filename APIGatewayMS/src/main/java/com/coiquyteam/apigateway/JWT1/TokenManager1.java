@@ -1,4 +1,4 @@
-package com.coiquyteam.apigateway.JWT;
+package com.coiquyteam.apigateway.JWT1;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -9,17 +9,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-
 @Component
-public class TokenManager
+public class TokenManager1
 {
-    private static final Logger logger = LoggerFactory.getLogger(TokenManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(TokenManager1.class);
 
     private final Algorithm algorithm;
     private final JWTVerifier verifier;
 
-    public TokenManager(@Value("${jwt.secret}") String secret)
+    public TokenManager1(@Value("${jwt.secret}") String secret)
     {
         this.algorithm = Algorithm.HMAC256(secret);
         this.verifier = JWT.require(algorithm).build();

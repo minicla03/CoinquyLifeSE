@@ -5,7 +5,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.coinquyteam.authApplication")
 @ApplicationPath("/rest")
 public class AuthMicroServiceApplication extends ResourceConfig
 {

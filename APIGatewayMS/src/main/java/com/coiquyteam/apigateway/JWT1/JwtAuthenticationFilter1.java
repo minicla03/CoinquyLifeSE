@@ -1,4 +1,4 @@
-package com.coiquyteam.apigateway.JWT;
+package com.coiquyteam.apigateway.JWT1;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -11,9 +11,9 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Component
-public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
+public class JwtAuthenticationFilter1 implements GlobalFilter, Ordered {
     @Autowired
-    private TokenManager tokenManager;
+    private TokenManager1 tokenManager;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
