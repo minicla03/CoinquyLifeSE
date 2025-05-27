@@ -1,6 +1,6 @@
 
 const expenses = [];
-const coinquilini = [];
+const coinquilini = localStorage.getItem("coinquilini");
 const houseId = localStorage.getItem("houseId");
 
 const descriptionInput = document.getElementById("description");
@@ -230,7 +230,6 @@ function calculateBalances() {
 
 async function retriveCoinquys()
 {
-
     const container = document.getElementById('participants-container');
 
     coinquilini.forEach(coinquilino => {
