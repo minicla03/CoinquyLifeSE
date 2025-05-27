@@ -15,6 +15,6 @@ public class ClientController
     @Path("/house")
     @Produces(MediaType.TEXT_HTML)
     public Response houseRegistrationPage() {
-        return Response.ok("{\"path\": \"http://localhost:8080/House/HousePage.html\"}", MediaType.APPLICATION_JSON).build();
+        return Response.ok("{\"path\": \"http://localhost:8083/Dash/dashPage.html\"}", MediaType.APPLICATION_JSON).build();
     }
 }

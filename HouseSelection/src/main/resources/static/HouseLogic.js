@@ -80,6 +80,7 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
             //alert("Login effettuato!");
             out = document.getElementById("outputlog");
             out.innerHTML = "✅ Login effettuato!";
+            redirect();
             window.location.href = "/home";
         } else if (res.status === 401 || res.status === 403) {
             //alert("Codice di accesso errato");
@@ -97,6 +98,39 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
         out.innerHTML = "❗️" + error.message;
     }
 });
+
+
+function redirec() {
+    const token = localStorage.getItem("token");
+    if (token) {
+        fetch("http://localhost:8081/House/rest/client/dash", {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();  // <--- ATTENZIONE: bisogna restituire la Promise
+                } else {
+                    throw new Error("Errore: " + response.statusText);
+                }
+            })
+            .then(data => {
+                const link = data["path"];
+                if (link) {
+                    window.location.href = link;
+                } else {
+                    alert("Errore: 'path' non trovato nella risposta");
+                }
+            })
+            .catch(err => {
+                alert(err.message);
+            });
+    } else {
+        alert("Token non trovato. Assicurati di essere autenticato.");
+    }
+}
 
 
 // Aggiungi un listener per il click sul link "Hai già un account?"
