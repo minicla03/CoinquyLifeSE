@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="css/exspenseStyle.css" />
 </head>
 <body>
+<!-- Barra di navigazione -->
+<nav class="navbar">
+    <button class="back-btn" onclick="window.location.href='dashPage.html'">⬅️</button>
+    <span class="navbar-title">Gestione Spese Casa</span>
+</nav>
+
 <div class="layout">
     <!-- Blocca aggiunta spese -->
     <div class="container" id="add-expense-container">
@@ -17,9 +23,15 @@
             <input type="text" id="payer" placeholder="🙋 Chi ha pagato?" />
             <select id="category">
                 <option value="">📂 Categoria</option>
-                <option>🍎 Spesa alimentare</option>
-                <option>💡 Bollette</option>
-                <option>📦 Altro</option>
+                <option value="food">🍽️ Cibo</option>
+                <option value="transport">🚌 Trasporti</option>
+                <option value="entertainment">🎬 Intrattenimento</option>
+                <option value="shopping">🛍️ Shopping</option>
+                <option value="health">🩺 Salute</option>
+                <option value="bills">💡 Bollette</option>
+                <option value="other">📦 Altro</option>
+            </select>
+
             </select>
             <button id="add-btn">➕ Aggiungi</button>
         </div>

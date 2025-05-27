@@ -204,3 +204,38 @@ body {
     opacity: 0.6;
     cursor: default;
 }
+
+.navbar {
+    display: flex;
+    align-items: center;
+    background-color: white; /* Barra bianca */
+    color: #4b0082; /* Testo viola */
+    padding: 10px 20px;
+    font-size: 1.2em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.back-btn {
+    background-color: #4b0082; /* Sfondo viola */
+    border: 2px solid #4b0082; /* Bordo viola */
+    color: white; /* Testo bianco */
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-right: 10px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.back-btn:hover {
+    background-color: white;
+    color: #4b0082;
+}
+
+.navbar-title {
+    flex-grow: 1;
+    text-align: left;
+    color: #4b0082; /* Titolo in viola */
+}

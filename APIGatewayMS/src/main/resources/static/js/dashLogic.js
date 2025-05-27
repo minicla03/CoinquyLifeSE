@@ -212,3 +212,77 @@ eventi.forEach(evento => {
 
     listaEventi.appendChild(li);
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const navLinks = document.querySelectorAll('.nav_links a');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault(); // blocca comportamento standard
+
+            const text = link.textContent.trim().toLowerCase();
+
+            switch(text) {
+                case 'spese':
+                    redirect("8083", "/Expense/expensePage.html");
+                    break;
+                case 'turni':
+                    redirect("8084", "/Shift/shiftPage.html");
+                    break;
+                case 'regole':
+                    redirect("8085", "/Rule/rulePage.html");
+                    break;
+                case 'classifica':
+                    redirect("8086", "/Rank/rankPage.html");
+                    break;
+                case 'profile':
+                    redirect("8087", "/Profile/profilePage.html");
+                    break;
+                default:
+                    console.warn('Link non gestito:', text);
+            }
+        });
+    });
+});
+
+async function redirect(port, path)
+{
+    const token = localStorage.getItem("token"); // o da sessionStorage, ecc.
+
+    if (!token)
+    {
+        alert("Token non trovato. Assicurati di essere autenticato.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:${port}${path}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token,
+            },
+        });
+
+        if (!response.ok)
+        {
+            throw new Error("Errore: " + response.statusText);
+        }
+
+        const data = await response.json();
+        const link = data["path"];
+
+        if (link)
+        {
+            window.location.href = link;
+        }
+        else
+        {
+            alert("Errore: 'path' non trovato nella risposta");
+        }
+    }
+    catch (err)
+    {
+        alert(err.message);
+    }
+}

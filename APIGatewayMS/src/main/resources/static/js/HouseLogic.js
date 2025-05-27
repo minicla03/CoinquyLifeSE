@@ -100,7 +100,7 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
 });
 
 
-function redirec() {
+function redirect() {
     const token = localStorage.getItem("token");
     if (token) {
         fetch("http://localhost:8081/House/rest/client/dash", {
