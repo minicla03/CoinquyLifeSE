@@ -224,19 +224,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
             switch(text) {
                 case 'spese':
-                    redirect("8083", "/Expense/expensePage.html");
+                    redirect("spese");
                     break;
                 case 'turni':
-                    redirect("8084", "/Shift/shiftPage.html");
+                    redirect("turni");
                     break;
                 case 'regole':
-                    redirect("8085", "/Rule/rulePage.html");
+                    redirect("regole");
                     break;
                 case 'classifica':
-                    redirect("8086", "/Rank/rankPage.html");
+                    redirect("classifica");
                     break;
                 case 'profile':
-                    redirect("8087", "/Profile/profilePage.html");
+                    redirect("profilo");
                     break;
                 default:
                     console.warn('Link non gestito:', text);
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-async function redirect(port, path)
+async function redirect(path)
 {
     const token = localStorage.getItem("token"); // o da sessionStorage, ecc.
 
@@ -256,7 +256,7 @@ async function redirect(port, path)
     }
 
     try {
-        const response = await fetch(`http://localhost:${port}${path}`, {
+        const response = await fetch(`http://localhost:8083/DashBard/rest/client/${path}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

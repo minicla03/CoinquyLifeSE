@@ -111,7 +111,7 @@ function redirect() {
         })
             .then(response => {
                 if (response.ok) {
-                    return response.json();  // <--- ATTENZIONE: bisogna restituire la Promise
+                    return response.json();
                 } else {
                     throw new Error("Errore: " + response.statusText);
                 }

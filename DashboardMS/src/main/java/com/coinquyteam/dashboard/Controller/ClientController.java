@@ -14,7 +14,7 @@ public class ClientController
     @Produces(MediaType.TEXT_HTML)
     public Response redirectExpense()
     {
-        return Response.ok("{\"path\": \"http://localhost:8083/Expense/expensePage.html\"}", MediaType.APPLICATION_JSON).build();
+        return Response.ok("{\"path\": \"http://localhost:8084/Expense/expensePage.html\"}", MediaType.APPLICATION_JSON).build();
     }
 
     @GET
@@ -22,7 +22,7 @@ public class ClientController
     @Produces(MediaType.TEXT_HTML)
     public Response redirectShift()
     {
-        return Response.ok("{\"path\": \"http://localhost:8084/Shift/shiftPage.html\"}", MediaType.APPLICATION_JSON).build();
+        return Response.ok("{\"path\": \"http://localhost:8085/Shift/shiftPage.html\"}", MediaType.APPLICATION_JSON).build();
     }
 
     @GET
@@ -30,7 +30,7 @@ public class ClientController
     @Produces(MediaType.TEXT_HTML)
     public Response redirectRule()
     {
-        return Response.ok("{\"path\": \"http://localhost:8085/Rule/rulePage.html\"}", MediaType.APPLICATION_JSON).build();
+        return Response.ok("{\"path\": \"http://localhost:8086/Rule/rulePage.html\"}", MediaType.APPLICATION_JSON).build();
     }
 
     @GET
@@ -38,7 +38,7 @@ public class ClientController
     @Produces(MediaType.TEXT_HTML)
     public Response redirectRank()
     {
-        return Response.ok("{\"path\": \"http://localhost:8086/Rank/rankPage.html\"}", MediaType.APPLICATION_JSON).build();
+        return Response.ok("{\"path\": \"http://localhost:8087/Rank/rankPage.html\"}", MediaType.APPLICATION_JSON).build();
     }
 
     @GET
@@ -46,7 +46,7 @@ public class ClientController
     @Produces(MediaType.TEXT_HTML)
     public Response redirectProfile()
     {
-        return Response.ok("{\"path\": \"http://localhost:8087/Profile/profilePage.html\"}", MediaType.APPLICATION_JSON).build();
+        return Response.ok("{\"path\": \"http://localhost:8088/Profile/profilePage.html\"}", MediaType.APPLICATION_JSON).build();
     }
 
 }
