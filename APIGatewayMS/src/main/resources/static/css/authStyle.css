@@ -61,3 +61,23 @@ body {
 .hidden {
     display: none;
 }
+
+/* Media query per dispositivi mobili */
+@media (max-width: 480px) {
+    .container {
+        width: 90%;         /* Occupa quasi tutta la larghezza del dispositivo */
+        padding: 1.5rem;    /* Riduce un po’ il padding */
+        border-radius: 15px;
+    }
+
+    .form-container input,
+    .form-container button {
+        font-size: 14px;    /* Dimensione font leggermente più piccola */
+        padding: 8px;
+    }
+
+    body {
+        height: auto;       /* Permette di scrollare se necessario */
+        padding: 20px 0;
+    }
+}

@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ExpenseMicroservice" />
+        <module name="ShiftMicroservice" />
         <module name="HouseSelectionMicroService" />
         <module name="Gateway" />
         <module name="ExpenseMicroService" />
@@ -29,6 +30,7 @@
       <module name="ExpenseMicroservice" options="-parameters" />
       <module name="Gateway" options="-parameters" />
       <module name="HouseSelectionMicroService" options="-parameters" />
+      <module name="ShiftMicroservice" options="-parameters" />
       <module name="coinquylife" options="" />
     </option>
   </component>

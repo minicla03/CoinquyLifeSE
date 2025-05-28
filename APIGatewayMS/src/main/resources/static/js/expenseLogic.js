@@ -1,7 +1,14 @@
 
 const expenses = [];
-const coinquilini = localStorage.getItem("coinquilini");
+const coinquiliniStr = localStorage.getItem("coinquilini");
 const houseId = localStorage.getItem("houseId");
+
+let coinquilini = [];
+try {
+    coinquilini = coinquiliniStr ? JSON.parse(coinquiliniStr) : [];
+} catch (e) {
+    console.error("Errore nel parsing di coinquilini da localStorage", e);
+}
 
 const descriptionInput = document.getElementById("description");
 const amountInput = document.getElementById("amount");
