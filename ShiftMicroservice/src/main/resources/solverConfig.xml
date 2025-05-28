@@ -1,0 +1,12 @@
+<solver>
+    <solutionClass>com.coinquyteam.shift.OptaPlanner.CleaningSchedule</solutionClass>
+    <entityClass>com.coinquyteam.shift.OptaPlanner.CleaningAssignment</entityClass>
+
+    <scoreDirectorFactory>
+        <constraintProviderClass>com.coinquyteam.shift.OptaPlanner.ScheduleConstraintProvider</constraintProviderClass>
+    </scoreDirectorFactory>
+
+    <termination>
+        <secondsSpentLimit>10</secondsSpentLimit>
+    </termination>
+</solver>
