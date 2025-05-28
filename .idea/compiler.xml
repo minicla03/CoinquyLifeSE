@@ -7,7 +7,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ExpenseMicroService" />
+        <module name="ExpenseMicroservice" />
         <module name="HouseSelectionMicroService" />
+        <module name="APIGateway" />
         <module name="AuthMicroService" />
         <module name="Gateway" />
       </profile>
@@ -18,8 +20,10 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="APIGateway" options="-parameters" />
       <module name="AuthMicroService" options="-parameters" />
       <module name="ExpenseMicroService" options="-parameters" />
+      <module name="ExpenseMicroservice" options="-parameters" />
       <module name="Gateway" options="-parameters" />
       <module name="HouseSelectionMicroService" options="-parameters" />
       <module name="coinquylife" options="" />
