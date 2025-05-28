@@ -1,0 +1,11 @@
+/Users/gius03/IDS/Prog.IDS/HouseSelection/src/main/java/com/coinquyteam/houseSelectionApplication/Config/RestTemplateConfig.java
+/Users/gius03/IDS/Prog.IDS/HouseSelection/src/main/java/com/coinquyteam/houseSelectionApplication/Controller/HouseController.java
+/Users/gius03/IDS/Prog.IDS/HouseSelection/src/main/java/com/coinquyteam/houseSelectionApplication/Data/House.java
+/Users/gius03/IDS/Prog.IDS/HouseSelection/src/main/java/com/coinquyteam/houseSelectionApplication/HouseSelectionApplication.java
+/Users/gius03/IDS/Prog.IDS/HouseSelection/src/main/java/com/coinquyteam/houseSelectionApplication/JWT/JWTAuthenticationFilter.java
+/Users/gius03/IDS/Prog.IDS/HouseSelection/src/main/java/com/coinquyteam/houseSelectionApplication/JWT/SecurityConfig.java
+/Users/gius03/IDS/Prog.IDS/HouseSelection/src/main/java/com/coinquyteam/houseSelectionApplication/JWT/TokenManager.java
+/Users/gius03/IDS/Prog.IDS/HouseSelection/src/main/java/com/coinquyteam/houseSelectionApplication/Repository/IHouseRepository.java
+/Users/gius03/IDS/Prog.IDS/HouseSelection/src/main/java/com/coinquyteam/houseSelectionApplication/Service/HouseService.java
+/Users/gius03/IDS/Prog.IDS/HouseSelection/src/main/java/com/coinquyteam/houseSelectionApplication/Utility/HouseResult.java
+/Users/gius03/IDS/Prog.IDS/HouseSelection/src/main/java/com/coinquyteam/houseSelectionApplication/Utility/HouseStatus.java
