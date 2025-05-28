@@ -1,13 +1,11 @@
 /Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/AuthMicroServiceApplication.java
 /Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/Config/CorsGlobalConfig.java
 /Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/Config/RestTemplateConfig.java
+/Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/Config/WebClientConfig.java
 /Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/Controller/AuthController.java
 /Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/Controller/ClientController.java
 /Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/Controller/WebAuthController.java
 /Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/Data/User.java
-/Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/JWT/JWTAuthenticationFilter.java
-/Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/JWT/SecurityConfig.java
-/Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/JWT/TokenManager.java
 /Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/Repository/IUserRepository.java
 /Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/Service/AuthService.java
 /Users/gius03/IDS/Prog.IDS/AuthMicroService/src/main/java/com/coinquyteam/authApplication/Service/WebAuthClientService.java

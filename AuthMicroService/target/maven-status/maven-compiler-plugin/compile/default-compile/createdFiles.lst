@@ -1,14 +1,12 @@
-com/coinquyteam/authApplication/JWT/JWTAuthenticationFilter.class
 com/coinquyteam/authApplication/Config/RestTemplateConfig.class
 com/coinquyteam/authApplication/Config/CorsGlobalConfig.class
 com/coinquyteam/authApplication/Controller/AuthController.class
 com/coinquyteam/authApplication/Config/CorsGlobalConfig$1.class
 com/coinquyteam/authApplication/Controller/WebAuthController.class
-com/coinquyteam/authApplication/JWT/TokenManager.class
+com/coinquyteam/authApplication/Config/WebClientConfig.class
 com/coinquyteam/authApplication/Service/WebAuthClientService.class
 com/coinquyteam/authApplication/Utility/StatusAuth.class
 com/coinquyteam/authApplication/AuthMicroServiceApplication.class
-com/coinquyteam/authApplication/JWT/SecurityConfig.class
 com/coinquyteam/authApplication/Repository/IUserRepository.class
 com/coinquyteam/authApplication/Service/AuthService.class
 com/coinquyteam/authApplication/Controller/ClientController.class

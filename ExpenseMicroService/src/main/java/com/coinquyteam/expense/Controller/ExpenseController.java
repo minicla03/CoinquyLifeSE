@@ -1,0 +1,76 @@
+package com.coinquyteam.expense.Controller;
+
+import com.coinquyteam.expense.Data.CategoryExpense;
+import com.coinquyteam.expense.Data.Expense;
+import com.coinquyteam.expense.Service.ExpenseService;
+import com.coinquyteam.expense.Utility.ExpenseResult;
+import com.coinquyteam.expense.Utility.ExpenseStatus;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import java.util.Date;
+import java.util.List;
+
+
+@Path("/expense")
+@Consumes("application/json")
+@Produces("application/json")
+public class ExpenseController
+{
+    @Autowired private ExpenseService expenseService;
+
+    @POST
+    @Path("/createExpense")
+    public Response createExpense(Expense expense)
+    {
+        String expenseDescription = expense.getDescription();
+        Date expenseDate = new Date(); // Assuming the current date is used for the expense
+        double expenseAmount = expense.getAmount();
+        String createdBy = expense.getCreatedBy();
+        String houseId = expense.getHouseId();
+        CategoryExpense category = expense.getCategory();
+        List<String> partecipants= expense.getParticipants();
+
+        ExpenseResult expenseResult =expenseService.createExpense(expenseDescription, expenseDate, expenseAmount, houseId, createdBy, category, partecipants);
+
+        if (expenseResult.getStatus() == ExpenseStatus.SUCCESS)
+        {
+            return Response.ok(expenseResult).build();
+        }
+        else if (expenseResult.getStatus() == ExpenseStatus.ERROR)
+        {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(expenseResult).build();
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Bad request").build();
+        }
+    }
+
+    @GET
+    @Path("/getAllExpenses")
+    public Response getAllExpenses(@QueryParam("houseId") String houseId)
+    {
+        ExpenseResult expenseResult=expenseService.getAllExpenses(houseId);
+        if (expenseResult.getStatus() == ExpenseStatus.SUCCESS)
+        {
+            return Response.ok(expenseResult).build();
+        }
+        else if (expenseResult.getStatus() == ExpenseStatus.NO_CONTENT)
+        {
+            return Response.status(Response.Status.NO_CONTENT).entity(expenseResult).build();
+        }
+        else
+        {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Server error").build();
+        }
+    }
+
+    @GET
+    @Path("/ping")
+    public Response ping() {
+        return Response.ok("Expense Microservice is running").build();
+    }
+}
