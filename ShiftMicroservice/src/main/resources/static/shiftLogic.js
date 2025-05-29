@@ -1,4 +1,4 @@
-const shift = [];
+
 const coinquiliniStr = localStorage.getItem("coinquilini");
 const houseId = localStorage.getItem("houseId");
 
@@ -9,41 +9,80 @@ try {
     console.error("Errore nel parsing di coinquilini da localStorage", e);
 }
 
-function init() {
+
+function unavailableForm()
+{
     const form = document.querySelector(".form-container");
 
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
         const selectedTenantId = document.getElementById("coinquys-select").value;
-        const selectedTenant = coinquilini.find(t => t.id == selectedTenantId)?.name || "Sconosciuto";
         const startTime = document.getElementById("start-time").value;
         const endTime = document.getElementById("end-time").value;
         const task = document.getElementById("task-select").value;
 
-        if (new Date(endTime) <= new Date(startTime)) {
-            alert("La data di fine deve essere successiva a quella di inizio.");
+        if (!selectedTenantId || !startTime || !endTime || !task) {
+            alert("⚠️ Tutti i campi sono obbligatori!");
             return;
         }
 
-        const entry = {
-            id: Date.now(),
-            tenantId: selectedTenantId,
-            tenantName: selectedTenant,
-            startTime,
-            endTime,
-            task
-        };
-
-        shift.push(entry);
-        localStorage.setItem("turni", JSON.stringify(shift));
-        renderCalendar();
-        alert("✅ Indisponibilità salvata!");
-        form.reset();
+        fetch(`https://localhost:8085/Shift/rest/shift/unAvailability?houseId=${houseId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem("token") || ""
+            },
+            body: JSON.stringify({
+                start: startTime,
+                end: endTime
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert("✅ Indisponibilità salvata con successo!");
+                form.reset();
+            })
+            .catch(error => {
+                console.error("Errore durante la richiesta:", error);
+                alert("⚠️ Errore: " + error.message);
+            });
     });
 }
 
-function retriveCoinquys() {
+document.getElementById("viewPlanningLink").addEventListener("click", (e) => {
+    e.preventDefault()
+
+    fetch("http://localhost:8085/Shift/rest/shif/calendar/getPlanning",{
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem("token") || ""
+        },
+        body: houseId
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => { throw new Error(text); });
+        }
+        return response.json();
+    })
+    .then(data => {
+        renderCalendar(data)
+    })
+    .catch(error => {
+        console.error("Errore durante la richiesta:", error);
+        alert("⚠️ Errore: " + error.message);
+    })
+})
+
+function retriveCoinquys()
+{
     const select = document.getElementById('coinquys-select');
     const swapSelect = document.getElementById('swapWith');
 
@@ -87,10 +126,12 @@ function renderReceivedRequests(requests) {
 renderReceivedRequests(receivedRequests);
 
 
-/*function renderCalendar() {
+function renderCalendar(data)
+{
     const container = document.getElementById("calendar");
     container.innerHTML = "";
 
+    dat.forEach(cl)
 
     if (calendarData.length === 0) {
       emptyMessage.style.display = "block";
@@ -117,7 +158,7 @@ renderReceivedRequests(receivedRequests);
     });
 
     container.appendChild(list);
-}*/
+}
 
 // Modale scambio
 const openModalBtn = document.getElementById('openSwapModal');
@@ -138,7 +179,6 @@ window.addEventListener('click', (event) => {
     }
 });
 
-// Pulsante "indietro"
 document.getElementById("back-btn").addEventListener("click", async () => {
     try {
         const response = await fetch('https://localhost:8085/Shift/rest/client/backToHome', {
@@ -160,6 +200,5 @@ document.getElementById("back-btn").addEventListener("click", async () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     retriveCoinquys();
-    init();
     renderCalendar();
 });

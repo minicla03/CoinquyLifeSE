@@ -16,6 +16,7 @@ public class UnAvailabilityController
     private UnAvailabilityService unAvailabilityService;
 
     @POST
+    @Path("/addAvailability")
     public Response addAvailability(@HeaderParam("Authorization") String auth, TimeSlot unavailability, String houseId)
     {
         if (unavailability == null || unavailability.getStart() == null || unavailability.getEnd() == null)

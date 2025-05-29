@@ -6,11 +6,13 @@
         <title>Turni di Pulizia</title>
         <link rel="stylesheet" href="shiftStyle.css" />
     </head>
+
     <body>
         <nav class="navbar">
             <button id="back-btn" class="back-btn" aria-label="Indietro">⬅️</button>
             <span class="navbar-title">Gestione Spese Casa</span>
         </nav>
+
         <div class="wrapper">
             <div class="container">
                 <form class="form-container">
@@ -20,7 +22,7 @@
                     </select>
                     <input type="datetime-local" placeholder="Inizio indisponibilità" />
                     <input type="datetime-local" placeholder="Fine indisponibilità" />
-                    <button type="submit">Salva indisponibilità</button>
+                    <button onclick="unavailableForm()">Salva indisponibilità</button>
                 </form>
             </div>
 
@@ -39,10 +41,10 @@
                 </table>
 
                 <div class="calendar">
-                    <p>Qui verranno mostrati i turni assegnati ai coinquilini.</p>
+                    <p style="text-align: center;">Qui verranno mostrati i turni assegnati ai coinquilini.</p>
                 </div>
                 <p style="text-align: center; margin-top: 15px;">
-                    <a href="#" style="color: #4500fd; font-weight: bold;">📋 Visualizza pianificazione</a>
+                    <a href="#" id="viewPlanningLink" style="color: #4500fd; font-weight: bold;">📋 Visualizza pianificazione</a>
                 </p>
             </div>
 
