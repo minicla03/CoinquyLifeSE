@@ -1,6 +1,6 @@
 package com.coinquyteam.shift.OptaPlanner;
 
-import com.coinquyteam.shift.Data.CleaningTask;
+import com.coinquyteam.shift.Data.HouseTask;
 import com.coinquyteam.shift.Data.Roommate;
 import com.coinquyteam.shift.Data.SwapRequest;
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
@@ -19,7 +19,7 @@ public class CleaningSchedule
     @ValueRangeProvider(id = "roommateRange")
     private List<Roommate> roommateList;
 
-    private List<CleaningTask> taskList;
+    private List<HouseTask> taskList;
 
     @PlanningEntityCollectionProperty
     private List<CleaningAssignment> assignmentList;
@@ -34,8 +34,8 @@ public class CleaningSchedule
     public List<Roommate> getRoommateList() { return roommateList; }
     public void setRoommateList(List<Roommate> roommateList) { this.roommateList = roommateList; }
 
-    public List<CleaningTask> getTaskList() { return taskList; }
-    public void setTaskList(List<CleaningTask> taskList) { this.taskList = taskList; }
+    public List<HouseTask> getTaskList() { return taskList; }
+    public void setTaskList(List<HouseTask> taskList) { this.taskList = taskList; }
 
     public List<CleaningAssignment> getAssignmentList() { return assignmentList; }
     public void setAssignmentList(List<CleaningAssignment> assignmentList) { this.assignmentList = assignmentList; }

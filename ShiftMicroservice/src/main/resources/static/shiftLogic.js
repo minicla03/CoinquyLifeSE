@@ -9,7 +9,6 @@ try {
     console.error("Errore nel parsing di coinquilini da localStorage", e);
 }
 
-// Inizializzazione
 function init() {
     const form = document.querySelector(".form-container");
 
@@ -59,9 +58,44 @@ function retriveCoinquys() {
     });
 }
 
-function renderCalendar() {
+function renderReceivedRequests(requests) {
+    const list = document.getElementById("receivedRequests");
+    list.innerHTML = "";
+
+    if (requests.length === 0) {
+        list.innerHTML = "<li>Nessuna richiesta ricevuta</li>";
+        return;
+    }
+
+    requests.forEach(req => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+      <strong>Da:</strong> ${req.from}<br>
+      <strong>Compito:</strong> ${req.task}<br>
+      <strong>Data:</strong> ${req.date}<br>
+      <strong>Stato:</strong> <span class="${req.status.toLowerCase()}">${req.status}</span>
+      ${req.status === "PENDING" ? `
+        <div style="margin-top: 5px;">
+          <button class="accept-btn">✅</button>
+          <button class="decline-btn">❌</button>
+        </div>` : ""}
+    `;
+        list.appendChild(li);
+    });
+}
+
+renderReceivedRequests(receivedRequests);
+
+
+/*function renderCalendar() {
     const container = document.getElementById("calendar");
     container.innerHTML = "";
+
+
+    if (calendarData.length === 0) {
+      emptyMessage.style.display = "block";
+      return;
+   }
 
     const stored = JSON.parse(localStorage.getItem("turni") || "[]");
 
@@ -83,7 +117,7 @@ function renderCalendar() {
     });
 
     container.appendChild(list);
-}
+}*/
 
 // Modale scambio
 const openModalBtn = document.getElementById('openSwapModal');

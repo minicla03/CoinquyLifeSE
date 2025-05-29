@@ -387,3 +387,109 @@ body {
     text-decoration: underline;
     color: #8b00fd;
 }
+
+#createTaskForm select {
+    font-family: "Segoe UI", sans-serif;
+    font-size: 16px;
+    margin-bottom: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    border: 2px solid #4500fd;
+    outline: none;
+    transition: border-color 0.3s ease;
+    width: 100%;
+    background: white;
+    color: #333;
+}
+
+#createTaskForm select:focus {
+    border-color: rgba(139, 0, 253, 0.94);
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 20px;
+    background: #f6f0ff;
+    border: none;
+    border-radius: 15px;
+    min-height: auto;
+}
+
+.calendar-day {
+    background: white;
+    padding: 10px;
+    border: 2px solid #8b00fd;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #4500fd;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.accept-btn,
+.decline-btn {
+    margin: 5px 2px 0;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+}
+
+.accept-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.decline-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.pending {
+    color: orange;
+    font-weight: bold;
+}
+
+.accepted {
+    color: green;
+    font-weight: bold;
+}
+
+.rejected {
+    color: red;
+    font-weight: bold;
+}
+
+.shift-calendar {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.shift-calendar th,
+.shift-calendar td {
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    text-align: left;
+}
+
+.shift-calendar thead {
+    background-color: #8b00fd;
+    color: white;
+}
+
+.shift-calendar tbody tr:nth-child(even) {
+    background-color: #f6f0ff;
+}
+
+.shift-calendar td {
+    color: #333;
+}

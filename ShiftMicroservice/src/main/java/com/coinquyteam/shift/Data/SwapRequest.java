@@ -11,20 +11,25 @@ import java.time.LocalDateTime;
 public class SwapRequest
 {
     @Id @Field("_idSwapRequest") private String idSwapRequest;
+    @Field("houseId") private String houseId;
     @Field("assigmentA") private CleaningAssignment assignmentA;
-    @Field("assigmentb")private CleaningAssignment assignmentB;
+    @Field("assigmentB")private CleaningAssignment assignmentB;
     @Field("accept") private boolean acceptedByB;
     @Field("requestTime") private LocalDateTime requestTime;
 
     public SwapRequest() { }
 
-    public SwapRequest(CleaningAssignment assignmentA, CleaningAssignment assignmentB, boolean b)
+    public SwapRequest(String houseId, CleaningAssignment assignmentA, CleaningAssignment assignmentB, boolean b)
     {
+        this.houseId = houseId;
         this.assignmentA = assignmentA;
         this.assignmentB = assignmentB;
         this.acceptedByB = false;
         this.requestTime = LocalDateTime.now();
     }
+
+    public String getHouseId() { return this.houseId; }
+    public void setHouseId(String houseId) { this.houseId = houseId; }
 
     public String getIdSwapRequest() { return this.idSwapRequest; }
     public void setIdSwapRequest(String idSwapRequest) { this.idSwapRequest = idSwapRequest; }

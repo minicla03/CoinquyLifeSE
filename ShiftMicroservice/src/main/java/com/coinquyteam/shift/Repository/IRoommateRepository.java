@@ -1,14 +1,13 @@
 package com.coinquyteam.shift.Repository;
 
-import com.coinquyteam.shift.Data.SwapRequest;
+import com.coinquyteam.shift.Data.Roommate;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
-public interface ISwapRequestRepository extends MongoRepository<SwapRequest, String>
+public interface IRoommateRepository extends MongoRepository<Roommate, String>
 {
-    //Null Object
     @Query("{ 'houseId' : ?0 }")
-    List<SwapRequest> findAllByHouseId(String houseId);
+    List<Roommate> findAllByHouseId(String houseId);
 }
