@@ -39,20 +39,20 @@ public class SwapController
     }
 
     @GET
-    @Path("{idRoommate}/getSwapRequests")
-    public Response getSwapRequests(@HeaderParam("Authorization") String auth,@PathParam("idRoommate") String idRoommate)
+    @Path("/getSwapRequests")
+    public Response getSwapRequests(@HeaderParam("Authorization") String auth, String houseId)
     {
         if(auth==null)
         {
             throw new WebApplicationException("Unauthorized", Response.Status.UNAUTHORIZED);
         }
 
-        if(idRoommate==null)
+        if(houseId==null)
         {
             throw new WebApplicationException("Roommate ID is required", Response.Status.BAD_REQUEST);
         }
 
-        List<SwapRequest> swapRequests = swapService.getSwapRequestsRelatedToRoommate(idRoommate);
+        List<SwapRequest> swapRequests = swapService.getSwapRequestsRelatedToHouse(auth,houseId);
         if(swapRequests == null || swapRequests.isEmpty())
         {
             return Response.status(Response.Status.NOT_FOUND).entity("No swap requests found for the specified roommate.").build();
@@ -76,8 +76,7 @@ public class SwapController
 
         try
         {
-            SwapRequest swapRequest = swapService.retriveSwapById(idSwap);
-            swapRequest.setAcceptedByB(true);
+            swapService.accept(idSwap);
             //TODO: Implement logic to update the swap request in the database
         }
         catch (Exception e)
@@ -100,7 +99,16 @@ public class SwapController
         {
             return Response.status(Response.Status.BAD_REQUEST).entity("Swap ID is required").build();
         }
-        return Response.ok("Rejecting swap request.").build();
+
+        try
+        {
+            swapService.reject(idSwap);
+            return Response.ok("Swap request processed successfully.").build();
+        }
+        catch (Exception e)
+        {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error rejecting swap request: " + e.getMessage()).build();
+        }
     }
 
     @DELETE

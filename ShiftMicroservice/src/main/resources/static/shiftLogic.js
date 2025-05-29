@@ -1,6 +1,7 @@
 
 const coinquiliniStr = localStorage.getItem("coinquilini");
 const houseId = localStorage.getItem("houseId");
+const shift = localStorage.getItem("shift");
 
 let coinquilini = [];
 try {
@@ -58,13 +59,12 @@ function unavailableForm()
 document.getElementById("viewPlanningLink").addEventListener("click", (e) => {
     e.preventDefault()
 
-    fetch("http://localhost:8085/Shift/rest/shif/calendar/getPlanning",{
+    fetch(`http://localhost:8085/Shift/rest/shif/calendar/getPlanning?houseId=${houseId}`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': localStorage.getItem("token") || ""
-        },
-        body: houseId
+        }
     })
     .then(response => {
         if (!response.ok) {
@@ -97,70 +97,143 @@ function retriveCoinquys()
     });
 }
 
-function renderReceivedRequests(requests) {
+function handleRequestAction(idSwap, accept) {
+    const action = accept ? "accept" : "decline";
+
+    fetch(`https://localhost:8085/Shift/rest/swaps/${idSwap}/${action}`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem("token") || ""
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text); });
+            }
+            alert(`✅ Richiesta ${accept ? "accettata" : "rifiutata"} con successo!`);
+            window.location.reload(); // o aggiorna dinamicamente la lista
+        })
+        .catch(error => {
+            console.error("Errore:", error);
+            alert("⚠️ Errore: " + error.message);
+        });
+}
+
+// Funzione per popolare entrambi i select dei turni (A e B)
+function populateAssignmentSelects(shifts) {
+    const currentTaskSelect = document.getElementById("currentTask");
+    const assignmentBSelect = document.getElementById("assignmentB");
+
+    // Svuota le select
+    currentTaskSelect.innerHTML = '<option value="" disabled selected>Seleziona il tuo turno</option>';
+    assignmentBSelect.innerHTML = '<option value="" disabled selected>Seleziona turno</option>';
+
+    if (!shifts || shifts.length === 0) {
+        fetch(`https://localhost:8085/Shift/rest/swaps/getSwapRequests?houseId=${localStorage.getItem("houseId")}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem("token") || ""
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text);
+                    });
+                }
+                return response.json();
+            })
+            .then(assignments => {
+                renderReceivedSwapRequests(assignments, currentTaskSelect, assignmentBSelect);
+            })
+            .catch(error => {
+                console.error("Errore durante il recupero delle richieste di scambio:", error);
+                alert("⚠️ Errore: " + error.message);
+            });
+    } else {
+        renderReceivedSwapRequests(shifts, currentTaskSelect, assignmentBSelect);
+    }
+}
+
+// Funzione per riempire le select con i dati
+function renderReceivedSwapRequests(assignments, currentTaskSelect, assignmentBSelect) {
     const list = document.getElementById("receivedRequests");
     list.innerHTML = "";
 
-    if (requests.length === 0) {
+    if (assignments.length === 0) {
         list.innerHTML = "<li>Nessuna richiesta ricevuta</li>";
         return;
     }
 
-    requests.forEach(req => {
+    assignments.forEach(assignment => {
+        // Aggiungi alle select
+        const optionA = document.createElement("option");
+        optionA.value = assignment.id;
+        optionA.textContent = `${assignment.task.task} - ${new Date(assignment.task.timeSlot.start).toLocaleString()}`;
+        currentTaskSelect.appendChild(optionA);
+
+        const optionB = optionA.cloneNode(true);
+        assignmentBSelect.appendChild(optionB);
+
+        // Aggiungi alla lista
         const li = document.createElement("li");
         li.innerHTML = `
-      <strong>Da:</strong> ${req.from}<br>
-      <strong>Compito:</strong> ${req.task}<br>
-      <strong>Data:</strong> ${req.date}<br>
-      <strong>Stato:</strong> <span class="${req.status.toLowerCase()}">${req.status}</span>
-      ${req.status === "PENDING" ? `
-        <div style="margin-top: 5px;">
-          <button class="accept-btn">✅</button>
-          <button class="decline-btn">❌</button>
-        </div>` : ""}
-    `;
+            <strong>Da:</strong> ${assignment.from}<br>
+            <strong>Compito:</strong> ${assignment.task.task}<br>
+            <strong>Data:</strong> ${new Date(assignment.task.timeSlot.start).toLocaleString()}<br>
+            <strong>Stato:</strong> <span class="${assignment.status.toLowerCase()}">${assignment.status}</span>
+            ${assignment.status === "PENDING" ? `
+                <div style="margin-top: 5px;">
+                    <button class="accept-btn" >✅</button>
+                    <button class="decline-btn">❌</button>
+                </div>` : ""}
+        `;
+
+        // Eventi su bottoni
+        if (assignment.status === "PENDING")
+        {
+            const acceptBtn = li.querySelector(".accept-btn");
+            const declineBtn = li.querySelector(".decline-btn");
+
+            acceptBtn.addEventListener("click", () => handleRequestAction(assignment.id, true));
+            declineBtn.addEventListener("click", () => handleRequestAction(assignment.id, false));
+        }
+
         list.appendChild(li);
     });
 }
 
-renderReceivedRequests(receivedRequests);
 
-
-function renderCalendar(data)
-{
+function renderCalendar(data) {
     const container = document.getElementById("calendar");
     container.innerHTML = "";
 
-    dat.forEach(cl)
+   localStorage.setItem("shifts", data)
 
-    if (calendarData.length === 0) {
-      emptyMessage.style.display = "block";
-      return;
-   }
-
-    const stored = JSON.parse(localStorage.getItem("turni") || "[]");
-
-    if (stored.length === 0) {
-        container.innerHTML = "<p>Nessun turno salvato.</p>";
+    if (!data || data.length === 0) {
+        const emptyMessage = document.getElementById("emptyMessage");
+        emptyMessage.style.display = "block";
         return;
     }
 
-    const list = document.createElement("ul");
-    list.style.listStyle = "none";
-    list.style.padding = "0";
+    data.forEach(cleaningAssignment => {
+        const { assignedRoommate, task } = cleaningAssignment;
+        const { task: taskName, description, timeSlot } = task;
+        const { start, end } = timeSlot;
 
-    stored.forEach(turno => {
-        const li = document.createElement("li");
-        li.innerHTML = `🧹 <strong>${turno.tenantName}</strong> - ${turno.task} <br>
-                        🕒 ${new Date(turno.startTime).toLocaleString()} → ${new Date(turno.endTime).toLocaleString()}`;
-        li.style.marginBottom = "1em";
-        list.appendChild(li);
+        const shiftDiv = document.createElement("div");
+        shiftDiv.className = "shift";
+        shiftDiv.innerHTML = `
+            <strong>${assignedRoommate.usernameRoommate}</strong> - ${taskName} <br>
+            - ${description} 🕒 ${new Date(start).toLocaleString()} → ${new Date(end).toLocaleString()}
+        `;
+        container.appendChild(shiftDiv);
     });
-
-    container.appendChild(list);
 }
 
-// Modale scambio
+//Poupop dello scambio
 const openModalBtn = document.getElementById('openSwapModal');
 const modal = document.getElementById('swapModal');
 const closeBtn = modal.querySelector('.close');
@@ -174,8 +247,48 @@ closeBtn.addEventListener('click', () => {
 });
 
 window.addEventListener('click', (event) => {
-    if (event.target == modal) {
+    if (event.target === modal) {
         modal.style.display = 'none';
+    }
+});
+
+//funzione per creare la richiesta di scambio
+document.getElementById("sendSwapBtn").addEventListener("click", async function(e) {
+    e.preventDefault();
+    const currentTask = document.getElementById("currentTask").value;
+    const assignmentB = document.getElementById("assignmentB").value;
+
+    if (!currentTask || !assignmentB) {
+        alert("⚠️ Seleziona entrambi i turni per lo scambio!");
+        return;
+    }
+
+    try
+    {
+        const response = await fetch("https://localhost:8085/Shift/rest/shift/swapRequest", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token") || ""
+            },
+            body: JSON.stringify({
+                fromAssignmentId: currentTask,
+                toAssignmentId: assignmentB,
+                houseId: localStorage.getItem("houseId")
+            })
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText);
+        }
+
+        alert("✅ Richiesta di scambio inviata!");
+        document.getElementById("swapForm").reset();
+        document.getElementById("swapModal").style.display = "none";
+    } catch (error)
+    {
+        alert("⚠️ Errore nell'invio della richiesta: " + error.message);
     }
 });
 
@@ -200,5 +313,6 @@ document.getElementById("back-btn").addEventListener("click", async () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     retriveCoinquys();
-    renderCalendar();
+    renderCalendar(shift);
+    populateAssignmentSelects(shift)
 });

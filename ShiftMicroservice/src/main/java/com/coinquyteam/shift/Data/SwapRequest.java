@@ -14,17 +14,17 @@ public class SwapRequest
     @Field("houseId") private String houseId;
     @Field("assigmentA") private CleaningAssignment assignmentA;
     @Field("assigmentB")private CleaningAssignment assignmentB;
-    @Field("accept") private boolean acceptedByB;
+    @Field("accept") private StatusSwap acceptedByB;
     @Field("requestTime") private LocalDateTime requestTime;
 
     public SwapRequest() { }
 
-    public SwapRequest(String houseId, CleaningAssignment assignmentA, CleaningAssignment assignmentB, boolean b)
+    public SwapRequest(String houseId, CleaningAssignment assignmentA, CleaningAssignment assignmentB)
     {
         this.houseId = houseId;
         this.assignmentA = assignmentA;
         this.assignmentB = assignmentB;
-        this.acceptedByB = false;
+        this.acceptedByB = StatusSwap.PENDING;
         this.requestTime = LocalDateTime.now();
     }
 
@@ -40,8 +40,8 @@ public class SwapRequest
     public CleaningAssignment getAssignmentB() { return this.assignmentB; }
     public void setAssignmentB(CleaningAssignment assignmentB) { this.assignmentB = assignmentB; }
 
-    public boolean isAcceptedByB() { return this.acceptedByB; }
-    public void setAcceptedByB(boolean acceptedByB) { this.acceptedByB = acceptedByB; }
+    public StatusSwap isAcceptedByB() { return this.acceptedByB; }
+    public void setAcceptedByB(StatusSwap acceptedByB) { this.acceptedByB = acceptedByB; }
 
     public LocalDateTime getRequestTime() { return this.requestTime; }
     public void setRequestTime(LocalDateTime requestTime) { this.requestTime = requestTime;}

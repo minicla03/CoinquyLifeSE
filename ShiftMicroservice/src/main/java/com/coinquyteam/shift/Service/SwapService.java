@@ -1,5 +1,6 @@
 package com.coinquyteam.shift.Service;
 
+import com.coinquyteam.shift.Data.StatusSwap;
 import com.coinquyteam.shift.Data.SwapRequest;
 import com.coinquyteam.shift.Repository.ISwapRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class SwapService
@@ -65,16 +67,29 @@ public class SwapService
         }
     }
 
-    public SwapRequest retriveSwapById(String idSwap)
+    public void accept(String idSwap) throws Exception
     {
         try
         {
-            return swapRequestRepository.findById(idSwap).orElse(null);
+            Objects.requireNonNull(swapRequestRepository.findById(idSwap).orElse(null)).setAcceptedByB(StatusSwap.ACCEPTED);
         }
         catch (Exception e)
         {
-            System.err.println("Error retrieving swap request by ID " + idSwap + ": " + e.getMessage());
-            return null;
+            throw new RuntimeException("Error accepting swap ID " + idSwap + ": " + e.getMessage());
+        }
+    }
+
+
+    public void reject(String idSwap)
+    {
+        try
+        {
+            Objects.requireNonNull(swapRequestRepository.findById(idSwap).orElse(null)).setAcceptedByB(StatusSwap.REJECTED);
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException("Error accepting swap ID " + idSwap + ": " + e.getMessage());
+
         }
     }
 
@@ -90,17 +105,14 @@ public class SwapService
         }
     }
 
-    public List<SwapRequest> getSwapRequestsRelatedToRoommate(String auth)
+    public List<SwapRequest> getSwapRequestsRelatedToHouse(String auth, String houseId)
     {
-        String usernameRoommate = getUsernameFromTokenViaRest(auth.substring(7));
-        if (usernameRoommate == null)
-        {
-            System.err.println("Invalid token or username not found.");
-            return List.of();
-        }
+        String token = auth.substring(7);
+        String usernameRoommate = getUsernameFromTokenViaRest(token);
+
         try
         {
-            return swapRequestRepository.findAll().stream()
+            return swapRequestRepository.findAllByHouseId(houseId).stream()
                     .filter(swapRequest -> swapRequest.getAssignmentA().getAssignedRoommate().getUsernameRoommate().equals(usernameRoommate) ||
                             swapRequest.getAssignmentB().getAssignedRoommate().getUsernameRoommate().equals(usernameRoommate))
                     .toList();
