@@ -1,15 +1,22 @@
 package com.coinquyteam.shift.Data;
 
 import com.coinquyteam.shift.OptaPlanner.CleaningAssignment;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 
+@Document("SwapRequest")
 public class SwapRequest
 {
-    private CleaningAssignment assignmentA;  // turno di A
-    private CleaningAssignment assignmentB;  // turno di B
-    private boolean acceptedByB;              // B accetta lo scambio
-    private LocalDateTime requestTime;        // quando è stata fatta la richiesta
+    @Id @Field("_idSwapRequest") private String idSwapRequest;
+    @Field("assigmentA") private CleaningAssignment assignmentA;
+    @Field("assigmentb")private CleaningAssignment assignmentB;
+    @Field("accept") private boolean acceptedByB;
+    @Field("requestTime") private LocalDateTime requestTime;
+
+    public SwapRequest() { }
 
     public SwapRequest(CleaningAssignment assignmentA, CleaningAssignment assignmentB, boolean b)
     {
@@ -18,6 +25,9 @@ public class SwapRequest
         this.acceptedByB = false;
         this.requestTime = LocalDateTime.now();
     }
+
+    public String getIdSwapRequest() { return this.idSwapRequest; }
+    public void setIdSwapRequest(String idSwapRequest) { this.idSwapRequest = idSwapRequest; }
 
     public CleaningAssignment getAssignmentA() { return this.assignmentA; }
     public void setAssignmentA(CleaningAssignment assignmentA) { this.assignmentA = assignmentA; }

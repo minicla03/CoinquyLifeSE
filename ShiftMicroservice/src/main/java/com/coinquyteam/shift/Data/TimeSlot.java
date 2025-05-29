@@ -1,11 +1,18 @@
 package com.coinquyteam.shift.Data;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.time.LocalDateTime;
 
+@Document("TimeSlot")
 public class TimeSlot
 {
-    private LocalDateTime start;
-    private LocalDateTime end;
+    @Id
+    @Field("_idTimeSlot") private String idTimeSlot;
+    @Field("start") private LocalDateTime start;
+    @Field("end") private LocalDateTime end;
 
     public TimeSlot() {}
 
@@ -13,6 +20,16 @@ public class TimeSlot
     {
         this.start = start;
         this.end = end;
+    }
+
+    public String getIdTimeSlot()
+    {
+        return this.idTimeSlot;
+    }
+
+    public void setIdTimeSlot(String idTimeSlot)
+    {
+        this.idTimeSlot = idTimeSlot;
     }
 
     public LocalDateTime getStart()

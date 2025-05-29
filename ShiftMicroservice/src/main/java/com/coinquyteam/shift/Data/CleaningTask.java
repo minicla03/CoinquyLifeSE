@@ -1,9 +1,15 @@
 package com.coinquyteam.shift.Data;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+@Document("CleaningTasks")
 public class CleaningTask
 {
-    private Tasks task;
-    private TimeSlot timeSlot;
+    @Id @Field("idTask") private String id;
+    @Field("task") private Tasks task;
+    @Field("TimeSlot") private TimeSlot timeSlot;
 
     public CleaningTask() { }
 

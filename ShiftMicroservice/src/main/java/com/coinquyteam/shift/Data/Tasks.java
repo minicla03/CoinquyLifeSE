@@ -3,7 +3,8 @@ package com.coinquyteam.shift.Data;
 public enum Tasks
 {
     CLEANING("Cleaning"),
-    MAINTENANCE("Maintenance");
+    MAINTENANCE("Maintenance"),
+    REPAIR("Repair");
 
     private final String taskName;
 

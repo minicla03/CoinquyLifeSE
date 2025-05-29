@@ -14,7 +14,7 @@
 <div class="wrapper">
     <div class="container">
         <form class="form-container">
-            <h2 style="text-align:center; color:#4500fd">Turni di Pulizia</h2>
+            <h2>Turni di Pulizia</h2>
             <select id="coinquys-select" required>
                 <option value="" disabled selected>Seleziona coinquilino</option>
             </select>
@@ -27,30 +27,8 @@
                 <option value="salotto">Pulire salotto</option>
             </select>
             <button type="submit">Salva indisponibilità</button>
-            <p><a href="#">Visualizza pianificazione</a></p>
         </form>
-        <button id="openSwapModal" class="swap-btn">Effettua Scambio</button>
-    </div>
 
-    <!-- Modale per lo scambio di turni -->
-    <div id="swapModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Richiesta di Scambio Turno</h2>
-            <form id="swapForm">
-                <label for="currentTask">Il tuo turno:</label>
-                <select id="currentTask" required>
-                    <option value="" disabled selected>Seleziona il tuo turno</option>
-                </select>
-
-                <label for="swapWith">Scambia con:</label>
-                <select id="swapWith" required>
-                    <option value="" disabled selected>Seleziona coinquilino</option>
-                </select>
-
-                <button type="submit">Invia Richiesta</button>
-            </form>
-        </div>
     </div>
 
     <div class="calendar-container">
@@ -58,6 +36,57 @@
         <div class="calendar">
             <p>Qui verranno mostrati i turni assegnati ai coinquilini.</p>
         </div>
+        <p style="text-align: center; margin-top: 15px;">
+            <a href="#" style="color: #4500fd; font-weight: bold;">📋 Visualizza pianificazione</a>
+        </p>
+    </div>
+
+    <div class="side-column">
+        <div class="swap-requests-container">
+            <h3>🔄 Richieste di Scambio</h3>
+            <div class="requests">
+                <h4>Ricevute</h4>
+                <ul id="receivedRequests">
+                    <li>Nessuna richiesta ricevuta</li>
+                </ul>
+                <h4>Inviate</h4>
+                <ul id="sentRequests">
+                    <li>Nessuna richiesta inviata</li>
+                </ul>
+                <button id="openSwapModal" class="swap-btn">Effettua Scambio</button>
+            </div>
+        </div>
+
+        <div class="create-task-container">
+            <h3>🧼 Crea Compito di Pulizia</h3>
+            <form id="createTaskForm">
+                <input type="text" placeholder="Titolo del compito" required />
+                <textarea placeholder="Descrizione" required></textarea>
+                <input type="datetime-local" required />
+                <button type="submit">Aggiungi Compito</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div id="swapModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2> Richiesta di Scambio Turno</h2>
+        <form id="swapForm">
+            <label for="currentTask">Il tuo turno:</label>
+            <select id="currentTask" required>
+                <option value="" disabled selected>Seleziona il tuo turno</option>
+            </select>
+
+            <label for="swapWith">Scambia con:</label>
+            <select id="swapWith" required>
+                <option value="" disabled selected>Seleziona coinquilino</option>
+            </select>
+
+            <button type="submit">Invia Richiesta</button>
+        </form>
     </div>
 </div>
 
