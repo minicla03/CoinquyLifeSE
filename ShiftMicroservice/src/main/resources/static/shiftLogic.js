@@ -311,6 +311,50 @@ document.getElementById("back-btn").addEventListener("click", async () => {
     }
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("createTaskForm");
+
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const description = form.querySelector("textarea").value;
+        const type = form.querySelector("#taskType").value;
+        const dateTime = form.querySelector("input[type='datetime-local']").value;
+
+        if (!description || !type || !dateTime) {
+            alert("⚠️ Compila tutti i campi!");
+            return;
+        }
+
+        try {
+            const response = await fetch("https://localhost:8085/Shift/rest/shift/createTask", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": localStorage.getItem("token") || ""
+                },
+                body: JSON.stringify({
+                    description: description,
+                    type: type,
+                    dateTime: dateTime,
+                    houseId: localStorage.getItem("houseId")
+                })
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText);
+            }
+
+            alert("✅ Compito creato con successo!");
+            form.reset();
+        } catch (error) {
+            alert("⚠️ Errore nella creazione del compito: " + error.message);
+        }
+    });
+});
+
+
 document.addEventListener("DOMContentLoaded", () => {
     retriveCoinquys();
     renderCalendar(shift);

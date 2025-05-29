@@ -16,7 +16,6 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class CalendarService
 {
-    @Autowired private CleaningSchedule cleaningSchedule;
     @Autowired private IRoommateRepository roommateRepository;
     @Autowired private HouseTaskService houseTaskService;
     @Autowired private SwapService swapService;
