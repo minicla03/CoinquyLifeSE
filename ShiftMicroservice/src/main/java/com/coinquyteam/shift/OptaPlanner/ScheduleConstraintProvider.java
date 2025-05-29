@@ -1,5 +1,6 @@
 package com.coinquyteam.shift.OptaPlanner;
 
+import com.coinquyteam.shift.Data.StatusSwap;
 import com.coinquyteam.shift.Data.SwapRequest;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.core.api.score.stream.Constraint;
@@ -80,7 +81,7 @@ public class ScheduleConstraintProvider implements ConstraintProvider
     private Constraint swapRequestBeforeDeadline(ConstraintFactory factory)
     {
         return factory.forEach(SwapRequest.class)
-                .filter(SwapRequest::isAcceptedByB)
+                .filter(req -> req.isAcceptedByB() == StatusSwap.ACCEPTED)
                 .filter(req -> {
                     // Controlla che la richiesta sia fatta almeno un giorno prima del turno
                     LocalDateTime requestTime = req.getRequestTime();
@@ -95,7 +96,7 @@ public class ScheduleConstraintProvider implements ConstraintProvider
     private Constraint swapRequestSatisfied(ConstraintFactory factory)
     {
         return factory.forEach(SwapRequest.class)
-                .filter(SwapRequest::isAcceptedByB)
+                .filter(req -> req.isAcceptedByB() == StatusSwap.ACCEPTED)
                 .filter(req -> {
                     CleaningAssignment a1 = req.getAssignmentA();
                     CleaningAssignment a2 = req.getAssignmentB();
