@@ -33,7 +33,6 @@ public class ScheduleSolution
         CleaningSchedule problem = new CleaningSchedule();
         problem.setRoommateList(roommates);
         problem.setTaskList(tasks);
-        problem.setSwapRequestList(swapRequests);
         problem.setAssignmentList(assignments);
 
         UUID problemId = UUID.randomUUID();

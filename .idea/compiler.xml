@@ -12,6 +12,7 @@
         <module name="Gateway" />
         <module name="ExpenseMicroService" />
         <module name="APIGatewayMS" />
+        <module name="RankMicroService" />
         <module name="AuthMicroService" />
         <module name="DashboardMS" />
       </profile>
@@ -30,6 +31,7 @@
       <module name="ExpenseMicroservice" options="-parameters" />
       <module name="Gateway" options="-parameters" />
       <module name="HouseSelectionMicroService" options="-parameters" />
+      <module name="RankMicroService" options="-parameters" />
       <module name="ShiftMicroservice" options="-parameters" />
       <module name="coinquylife" options="" />
     </option>

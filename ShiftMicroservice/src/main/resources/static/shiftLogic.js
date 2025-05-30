@@ -97,6 +97,7 @@ function retriveCoinquys()
     });
 }
 
+//funzione che gestisce l'accettazione o il rifiuto di una richiesta di scambio
 function handleRequestAction(idSwap, accept) {
     const action = accept ? "accept" : "decline";
 
@@ -112,12 +113,35 @@ function handleRequestAction(idSwap, accept) {
                 return response.text().then(text => { throw new Error(text); });
             }
             alert(`✅ Richiesta ${accept ? "accettata" : "rifiutata"} con successo!`);
-            window.location.reload(); // o aggiorna dinamicamente la lista
         })
         .catch(error => {
             console.error("Errore:", error);
             alert("⚠️ Errore: " + error.message);
         });
+
+    if(action==="accept")
+    {
+        fetch(`https://localhost:8085/Shift/rest/shif/calendar/getPlanning?houseId=${localStorage.getItem("houseId")}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem("token") || ""
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            renderCalendar(data)
+        })
+        .catch(error => {
+            console.error("Errore durante la richiesta:", error);
+            alert("⚠️ Errore: " + error.message);
+        })
+    }
 }
 
 // Funzione per popolare entrambi i select dei turni (A e B)
@@ -220,7 +244,7 @@ function renderCalendar(data) {
 
     data.forEach(cleaningAssignment => {
         const { assignedRoommate, task } = cleaningAssignment;
-        const { task: taskName, description, timeSlot } = task;
+        const { task: taskName, description, timeSlot ,point } = task;
         const { start, end } = timeSlot;
 
         const shiftDiv = document.createElement("div");
@@ -228,9 +252,39 @@ function renderCalendar(data) {
         shiftDiv.innerHTML = `
             <strong>${assignedRoommate.usernameRoommate}</strong> - ${taskName} <br>
             - ${description} 🕒 ${new Date(start).toLocaleString()} → ${new Date(end).toLocaleString()}
+            -${task.point}
+            <div style="margin-top: 5px;">
+                    <button class="done-btn" >✅</button>
+            </div>
         `;
+
+        shiftDiv.querySelector(".done-btn").addEventListener("click", ()=>handleDoneButton(cleaningAssignment))
         container.appendChild(shiftDiv);
     });
+}
+
+async function handleDoneButton(cleaningAssignment) {
+    try {
+        const response = await fetch("https://localhost:8086/Rank/rest/rank/done", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem("token") || ""
+            },
+            body: JSON.stringify(cleaningAssignment)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText);
+        }
+
+        alert("✅ Compito segnato come completato!");
+        window.location.reload();
+    } catch (error) {
+        console.error("Errore durante il completamento del compito:", error);
+        alert("⚠️ Errore: " + error.message);
+    }
 }
 
 //Poupop dello scambio

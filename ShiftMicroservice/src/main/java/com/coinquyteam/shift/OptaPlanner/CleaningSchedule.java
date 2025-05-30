@@ -29,8 +29,8 @@ public class CleaningSchedule
     @PlanningScore
     private HardSoftScore score;
 
-    @ProblemFactCollectionProperty
-    private List<SwapRequest> swapRequestList=new ArrayList<>();
+    //@ProblemFactCollectionProperty
+    //private List<SwapRequest> swapRequestList=new ArrayList<>();
 
 
     public List<Roommate> getRoommateList() { return roommateList; }
@@ -45,11 +45,11 @@ public class CleaningSchedule
     public HardSoftScore getScore() { return score; }
     public void setScore(HardSoftScore score) { this.score = score; }
 
-    public List<SwapRequest> getSwapRequestList() {
-        return this.swapRequestList;
-    }
+    //public List<SwapRequest> getSwapRequestList() {
+//        return this.swapRequestList;
+//    }
 
-    public void setSwapRequestList(List<SwapRequest> swapRequestList) {
-        this.swapRequestList = swapRequestList;
-    }
+//    public void setSwapRequestList(List<SwapRequest> swapRequestList) {
+//        this.swapRequestList = swapRequestList;
+//    }
 }

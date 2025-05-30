@@ -8,14 +8,14 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class HouseTask
 {
     @Id @Field("idTask") private String idTask;
-    @Field("task") private Tasks task;
+    @Field("task") private TaskCategory task;
     @Field("houseId") private String houseId;
     @Field("description") private String description;
     @Field("TimeSlot") private TimeSlot timeSlot;
 
     public HouseTask() { }
 
-    public HouseTask(Tasks task, String description, TimeSlot timeSlot)
+    public HouseTask(TaskCategory task, String description, TimeSlot timeSlot)
     {
         this.task = task;
         this.description = description;
@@ -32,12 +32,12 @@ public class HouseTask
         this.idTask = idTask;
     }
 
-    public Tasks getTask()
+    public TaskCategory getTaskCategory()
     {
         return this.task;
     }
 
-    public void setTask(Tasks task)
+    public void setTaskCategory(TaskCategory task)
     {
         this.task = task;
     }

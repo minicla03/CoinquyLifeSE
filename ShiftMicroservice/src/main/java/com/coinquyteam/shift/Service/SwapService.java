@@ -16,6 +16,8 @@ public class SwapService
 {
     @Autowired private ISwapRequestRepository swapRequestRepository;
     @Autowired private WebClient webClient;
+    @Autowired
+    private CalendarService calendarService;
 
     public boolean createSwapRequest(String auth, SwapRequest swapRequest) throws Exception {
         String token = auth.substring(7);
@@ -67,11 +69,13 @@ public class SwapService
         }
     }
 
-    public void accept(String idSwap) throws Exception
+    public boolean accept(String idSwap) throws Exception
     {
         try
         {
-            Objects.requireNonNull(swapRequestRepository.findById(idSwap).orElse(null)).setAcceptedByB(StatusSwap.ACCEPTED);
+            SwapRequest swapRequest = swapRequestRepository.findById(idSwap).orElse(null);
+            if(swapRequest==null){ throw new Exception("Invalid swap request");}
+            return calendarService.modifyScheduleAfterSwap(swapRequest);
         }
         catch (Exception e)
         {
