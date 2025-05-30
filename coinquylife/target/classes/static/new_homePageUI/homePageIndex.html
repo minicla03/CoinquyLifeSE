@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Bar Fix</title>
+    <link rel="stylesheet" href="homePageStyle_new.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="grid-container">
+        <div style="grid-area: header;">
+                <header>
+                    <img class="logo" src="logo-blu.png"  alt="Logo" style="height: 7em; margin-right: 2px;">
+                    <a class="cta" href="#" id="user"></a>
+                    <nav class="nav">
+                        <ul class="nav_links">
+                            <li><a href="#"><button>Home</button></a></li>
+                            <li><a href="#">Spese</a></li>
+                            <li><a href="#">Turni</a></li>
+                            <li><a href="#">Regole</a></li>
+                            <li><a href="#">Classifica</a></li>
+                        </ul>
+                    </nav>
+                </header>
+        </div>
+        <div style="grid-area: calendar;" class="calendar">
+            <div class="calendar-title">
+                <h1>🗓️Calendario</h1>
+            </div>
+            <div class="calendar-header">
+                <button id="prevMonth">&#8592;</button>
+                <h2 id="monthYear" class="month-title"></h2>
+                <button id="nextMonth">&#8594;</button>
+            </div>
+            <div class="calendar-weekdays">
+                <div>Lun</div>
+                <div>Mar</div>
+                <div>Mer</div>
+                <div>Gio</div>
+                <div>Ven</div>
+                <div>Sab</div>
+                <div>Dom</div>
+            </div>
+            <div class="calendar-days" id="calendarDays"></div>
+        </div>
+        <div style="grid-area: score;" class="score" id="classificaBox">
+            <div class="score-title"><h1>🥇Classifica</h1></div>
+            <!-- Qui JS inserirà la classifica -->
+        </div>
+        <div style="grid-area: casa;" class="casa">
+            <div class="casa-title"><h1>🏠Riepilogo Casa</h1></div>
+            <div class="scroll-menu">
+                <ul class="lista-persone" id="lista-persone"></ul>
+            </div>
+        </div>
+        <div style="grid-area: footer;" class="footer">
+            <div class="events-title"><h1>📍Eventi</h1></div>
+            <div class="events" id="lista-eventi">
+
+            </div>
+        </div>
+
+        <!-- Popups -->
+        <dialog id="calendar-dialog" style="grid-area: calendar;" class="calendar-dialog">
+            <div class="wrapper">
+                <h1 class="popup-header">📆Aggiungi Evento</h1>
+                <form id="calendar-form" class="calendar-form">
+
+                    <div class="event-name" style="grid-area: title">
+                        <label for="event-name">Nome Evento:</label>
+                        <input type="text" id="event-name" required>
+                    </div>
+
+                    <div class="time"  style="grid-area: hour">
+                        <label for="ora">Ora:</label>
+                        <select id="ora" name="ora"></select>
+
+                        <label for="minuti">Minuti:</label>
+                        <select id="minuti" name="minuti"></select>
+                    </div>
+                    <div class="event-description" style="grid-area: description">
+                        <label for="event-description" >Descrizione:</label>
+                        <input type="text" id="event-description">
+                    </div>
+
+                    <div class="calendarPopup-buttons" style="grid-area: popupButtons">
+                        <button type="submit">Aggiungi</button>
+                        <button onclick="closeCalendarDialog()" type="button" id="close-dialog">Chiudi</button>
+                    </div>
+
+                </form>
+            </div>
+        </dialog>
+
+    </div>
+</body>
+
+    <script src="homePageScript.js"></script>
+
+</html>
