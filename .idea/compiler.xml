@@ -9,10 +9,10 @@
         <module name="ExpenseMicroservice" />
         <module name="ShiftMicroservice" />
         <module name="HouseSelectionMicroService" />
+        <module name="RankMS" />
         <module name="Gateway" />
         <module name="ExpenseMicroService" />
         <module name="APIGatewayMS" />
-        <module name="RankMicroService" />
         <module name="AuthMicroService" />
         <module name="DashboardMS" />
       </profile>
@@ -20,6 +20,7 @@
     <bytecodeTargetLevel>
       <module name="ApiGateway" target="21" />
       <module name="ClientControllerService" target="21" />
+      <module name="RankMicroservice" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -31,7 +32,8 @@
       <module name="ExpenseMicroservice" options="-parameters" />
       <module name="Gateway" options="-parameters" />
       <module name="HouseSelectionMicroService" options="-parameters" />
-      <module name="RankMicroService" options="-parameters" />
+      <module name="RankMS" options="-parameters" />
+      <module name="RankMicroservice" options="-parameters" />
       <module name="ShiftMicroservice" options="-parameters" />
       <module name="coinquylife" options="" />
     </option>

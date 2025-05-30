@@ -23,7 +23,7 @@
         <module>APIGatewayMS</module>
         <module>DashboardMS</module>
         <module>ShiftMicroservice</module>
-        <module>RankMicroService</module>
+        <module>RankMS</module>
     </modules>
 
     <properties>

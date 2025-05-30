@@ -66,19 +66,19 @@ document.getElementById("viewPlanningLink").addEventListener("click", (e) => {
             'Authorization': localStorage.getItem("token") || ""
         }
     })
-    .then(response => {
-        if (!response.ok) {
-            return response.text().then(text => { throw new Error(text); });
-        }
-        return response.json();
-    })
-    .then(data => {
-        renderCalendar(data)
-    })
-    .catch(error => {
-        console.error("Errore durante la richiesta:", error);
-        alert("⚠️ Errore: " + error.message);
-    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            renderCalendar(data)
+        })
+        .catch(error => {
+            console.error("Errore durante la richiesta:", error);
+            alert("⚠️ Errore: " + error.message);
+        })
 })
 
 function retriveCoinquys()
@@ -128,19 +128,19 @@ function handleRequestAction(idSwap, accept) {
                 'Authorization': localStorage.getItem("token") || ""
             }
         })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => { throw new Error(text); });
-            }
-            return response.json();
-        })
-        .then(data => {
-            renderCalendar(data)
-        })
-        .catch(error => {
-            console.error("Errore durante la richiesta:", error);
-            alert("⚠️ Errore: " + error.message);
-        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                renderCalendar(data)
+            })
+            .catch(error => {
+                console.error("Errore durante la richiesta:", error);
+                alert("⚠️ Errore: " + error.message);
+            })
     }
 }
 
@@ -234,7 +234,7 @@ function renderCalendar(data) {
     const container = document.getElementById("calendar");
     container.innerHTML = "";
 
-   localStorage.setItem("shifts", data)
+    localStorage.setItem("shifts", data)
 
     if (!data || data.length === 0) {
         const emptyMessage = document.getElementById("emptyMessage");

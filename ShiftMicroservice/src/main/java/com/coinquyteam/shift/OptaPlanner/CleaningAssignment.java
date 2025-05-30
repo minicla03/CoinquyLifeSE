@@ -33,12 +33,4 @@ public class CleaningAssignment
 
     public Roommate getAssignedRoommate() { return assignedRoommate; }
     public void setAssignedRoommate(Roommate assignedRoommate) { this.assignedRoommate = assignedRoommate;}
-
-    public void swapAssignments(CleaningAssignment my, CleaningAssignment other)
-    {
-        Roommate temp = my.getAssignedRoommate();
-        my.setAssignedRoommate(other.getAssignedRoommate());
-        other.setAssignedRoommate(temp);
-    }
-
 }

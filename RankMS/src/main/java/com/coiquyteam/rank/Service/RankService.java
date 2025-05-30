@@ -8,14 +8,20 @@ public class RankService
 {
     private ICoiquyPointRepository coiquyPointRepository;
 
-    public void updateRank(CleaningAssignment cleaningAssignment)
+    public boolean updateRank(CleaningAssignment cleaningAssignment)
     {
         String username = cleaningAssignment.getAssignedRoommate().getUsernameRoommate();
         int point = cleaningAssignment.getTask().getTaskCategory().getPoints();
 
-        coiquyPointRepository.insert(new CoinquyPoint(username, point));
+        try
+        {
+            coiquyPointRepository.insert(new CoinquyPoint(username, point));
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
 
-
-
+        }
     }
 }

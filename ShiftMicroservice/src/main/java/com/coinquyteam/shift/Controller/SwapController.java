@@ -1,7 +1,6 @@
 package com.coinquyteam.shift.Controller;
 
 import com.coinquyteam.shift.Data.SwapRequest;
-import com.coinquyteam.shift.Repository.ISwapRequestRepository;
 import com.coinquyteam.shift.Service.SwapService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -18,8 +17,6 @@ import java.util.List;
 public class SwapController
 {
     @Autowired private SwapService swapService;
-    @Autowired
-    private ISwapRequestRepository iSwapRequestRepository;
 
     @POST
     @Path("/createSwapRequest")
@@ -77,24 +74,16 @@ public class SwapController
             return Response.status(Response.Status.BAD_REQUEST).entity("Swap ID is required").build();
         }
 
-
         try
         {
-            if(swapService.accept(idSwap))
-            {
-                return Response.ok("Swap request accepted successfully.").build();
-            }
-            else
-            {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error accepting swap request.").build();
-
-            }
+            swapService.accept(idSwap);
+            //TODO: Implement logic to update the swap request in the database
         }
         catch (Exception e)
         {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error accepting swap request: " + e.getMessage()).build();
         }
-
+        return Response.ok("Swap request processed successfully.").build();
     }
 
     @PUT

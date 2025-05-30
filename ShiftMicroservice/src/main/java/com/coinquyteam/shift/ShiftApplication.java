@@ -1,7 +1,6 @@
 package com.coinquyteam.shift;
 
 import jakarta.ws.rs.ApplicationPath;
-import jakarta.ws.rs.Path;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;

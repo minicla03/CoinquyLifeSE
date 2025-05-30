@@ -26,6 +26,12 @@ public class User
     @Field("email")
     private String email;
 
+    @Field("level")
+    private int level;
+
+    @Field("total_points")
+    private int total_points;
+
     @Field("language")
     private String language;
 
@@ -44,6 +50,8 @@ public class User
         this.password = password;
         this.surname = surname;
         this.email = email;
+        this.level = 0;
+        this.total_points = 0;
         this.profileImage = null;
         this.houseUser=null;
     }
@@ -100,6 +108,22 @@ public class User
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getTotal_points() {
+        return total_points;
+    }
+
+    public void setTotal_points(int total_points) {
+        this.total_points = total_points;
     }
 
     public String getLanguage() {

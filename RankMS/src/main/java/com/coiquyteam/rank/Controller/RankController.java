@@ -26,6 +26,15 @@ public class RankController
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid cleaning assignment").build();
         }
 
-        rankService.updateRank(cleaningAssignment);
+        try
+        {
+            rankService.updateRank(cleaningAssignment);
+            return Response.ok().build();
+        }
+        catch (Exception e)
+        {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error updating rank: " + e.getMessage()).build();
+        }
     }
 }
