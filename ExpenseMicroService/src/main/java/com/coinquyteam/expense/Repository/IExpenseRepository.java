@@ -3,14 +3,14 @@ package com.coinquyteam.expense.Repository;
 import com.coinquyteam.expense.Data.Expense;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Date;
+import java.util.Optional;
 
 
 public interface IExpenseRepository extends MongoRepository<Expense, String> {
-    
+
     @Query(value = "{ 'house_id' : ?0 }")
     List<Expense> findByHouseId(String houseId);
     

@@ -3,15 +3,18 @@ package com.coinquyteam.expense.Controller;
 import com.coinquyteam.expense.Data.CategoryExpense;
 import com.coinquyteam.expense.Data.Expense;
 import com.coinquyteam.expense.Service.ExpenseService;
+import com.coinquyteam.expense.Utility.ExpenseDebtResult;
 import com.coinquyteam.expense.Utility.ExpenseResult;
 import com.coinquyteam.expense.Utility.ExpenseStatus;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Request;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @Path("/expense")
@@ -68,9 +71,25 @@ public class ExpenseController
         }
     }
 
-    @GET
-    @Path("/ping")
-    public Response ping() {
-        return Response.ok("Expense Microservice is running").build();
+    @POST
+    @Path("/calculateDebt")
+    public Response calculateDebt(Map<String, String> requestBody)
+    {
+        String houseId = requestBody.get("houseId");
+        ExpenseDebtResult expenseResult = expenseService.calculateDebt(houseId);
+
+        if (expenseResult.getStatus() == ExpenseStatus.SUCCESS)
+        {
+            return Response.ok(expenseResult).build();
+        }
+        else if (expenseResult.getStatus() == ExpenseStatus.NO_CONTENT)
+        {
+            return Response.status(Response.Status.NOT_FOUND).entity(expenseResult).build();
+        }
+        else
+        {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Server error").build();
+        }
     }
+
 }

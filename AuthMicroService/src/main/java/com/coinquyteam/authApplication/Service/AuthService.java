@@ -4,9 +4,12 @@ import com.coinquyteam.authApplication.Data.User;
 import com.coinquyteam.authApplication.Repository.IUserRepository;
 import com.coinquyteam.authApplication.Utility.AuthResult;
 import com.coinquyteam.authApplication.Utility.StatusAuth;
+import com.coinquyteam.authApplication.Utility.UserResult;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.List;
 import java.util.Map;
 
 @Service("AuthService")
@@ -56,5 +59,18 @@ public class AuthService {
                 .block(); // blocca fino a ricevere risposta
 
         return (String) responseMap.get("token");
+    }
+
+    public UserResult getUserByHouseId(String houseId) {
+
+        List<User> users = userRepository.findAll()
+                .stream()
+                .filter(u -> BCrypt.checkpw(houseId, u.getHouseUser()))
+                .toList();
+
+        if (users != null) {
+            return new UserResult(StatusAuth.USERS_FOUNDED, users);
+        }
+        return new UserResult(StatusAuth.USERS_NOT_FOUND, null);
     }
 }

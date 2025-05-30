@@ -4,11 +4,13 @@ import com.coinquyteam.authApplication.Data.User;
 import com.coinquyteam.authApplication.Service.AuthService;
 import com.coinquyteam.authApplication.Utility.AuthResult;
 import com.coinquyteam.authApplication.Utility.StatusAuth;
+import com.coinquyteam.authApplication.Utility.UserResult;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -26,31 +28,24 @@ public class AuthController {
     @Path("/login")
     @Consumes("application/json")
     @Produces("application/json")
-    public Response login(User user)
-    {
+    public Response login(User user) {
         AuthResult result;
         String password = user.getPassword();
         String username = user.getUsername();
-        if (username == null ) {
+        if (username == null) {
             String email = user.getEmail();
             result = authService.login(email, password);
-        }
-        else {
+        } else {
             result = authService.login(username, password);
         }
 
-        if (result.getStatusAuth()== StatusAuth.SUCCESS)
-        {
+        if (result.getStatusAuth() == StatusAuth.SUCCESS) {
             System.out.println("Token: " + result.getToken());
             // Generate a token and return it in the response
             return Response.ok("{\"token\":\"" + result.getToken() + "\"}").type("application/json").build();
-        }
-        else if(result.getStatusAuth() == StatusAuth.USER_NOT_FOUND)
-        {
+        } else if (result.getStatusAuth() == StatusAuth.USER_NOT_FOUND) {
             return Response.status(Response.Status.NOT_FOUND).entity("Utente non trovato").build();
-        }
-        else if (result.getStatusAuth() == StatusAuth.INVALID_CREDENTIALS)
-        {
+        } else if (result.getStatusAuth() == StatusAuth.INVALID_CREDENTIALS) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Credenziali errate o non valide").build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Server error").build();
@@ -58,7 +53,7 @@ public class AuthController {
 
     @POST
     @Path("/register")
-    public Response register(User user){
+    public Response register(User user) {
 
         String username = user.getUsername();
         String password = user.getPassword();
@@ -66,8 +61,7 @@ public class AuthController {
         String surname = user.getSurname();
         String email = user.getEmail();
 
-        if(!validateEmail(email))
-        {
+        if (!validateEmail(email)) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Email invalido").build();
         }
 
@@ -80,10 +74,24 @@ public class AuthController {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
     }
 
-    private static boolean validateEmail(String email)
-    {
+    private static boolean validateEmail(String email) {
         if (email == null) return false;
         Matcher matcher = EMAIL_PATTERN.matcher(email);
         return matcher.matches();
+    }
+
+    @POST
+    @Path("/getUserByHouseId")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public Response getUserByHouseId(Map<String, String> requestBody) {
+        String houseId = requestBody.get("houseId");
+        UserResult result = authService.getUserByHouseId(houseId);
+        if (result.getStatusAuth() == StatusAuth.USERS_FOUNDED) {
+            return Response.ok(result.getUsers()).build();
+        } else if (result.getStatusAuth() == StatusAuth.USERS_NOT_FOUND) {
+            return Response.status(Response.Status.NOT_FOUND).entity("No users found for the given house ID").build();
+        }
+        return null;
     }
 }

@@ -10,4 +10,6 @@ public enum StatusAuth
     TOKEN_INVALID,
     LINKED_ERROR,
     USER_ALREADY_LINKED,
+    USERS_NOT_FOUND,
+    USERS_FOUNDED,
 }

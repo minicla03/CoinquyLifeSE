@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Gestione Spese Casa</title>
-    <link rel="stylesheet" href="exspenseStyle.css" />
+    <link rel="stylesheet" href="css/exspenseStyle.css" />
 </head>
 <body>
 <!-- Barra di navigazione -->
@@ -20,7 +20,7 @@
         <div class="form-container">
             <input type="text" id="description" placeholder="🖊️ Descrizione" />
             <input type="text" id="amount" placeholder="💶 Importo (€)" min="0" />
-            <input type="text" id="payer" placeholder="🙋 Chi ha pagato?" />
+            <div class="payer" id="payer-container"></div>
             <select id="category">
                 <option value="">📂 Categoria</option>
                 <option value="FOOD">🍽️ Cibo</option>
@@ -31,13 +31,9 @@
                 <option value="BILLS">💡 Bollette</option>
                 <option value="OTHER">📦 Altro</option>
             </select>
-            <box class="participants-box">
-                <label for="participants">👥 Partecipanti:</label>
-                <input type="text" id="participants" placeholder="Inserisci i nomi separati da virgola" />
-            </box>
+            <div class="participants-list" id="participants-container"></div>
             <button id="add-btn" onclick="addExpense()">➕Aggiungi</button>
         </div>
-        <div class="participants-list" id="participants-container"></div>
     </div>
 
     <!-- Blocco centrale: lista spese (più grande) -->
@@ -58,6 +54,6 @@
         </div>
     </div>
 </div>
-<script src="expenseLogic.js"></script>
+<script src="js/expenseLogic.js"></script>
 </body>
 </html>
