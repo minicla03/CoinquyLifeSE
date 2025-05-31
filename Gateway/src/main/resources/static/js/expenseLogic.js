@@ -320,11 +320,25 @@ function calculateDebts() {
                 let message = "";
 
                 if (allSameAmount) {
-                    const names = debtorNames.map(n => capitalize(n)).join(" e ");
-                    message = `💸 ${names} devono ${amounts[0]}$ a ${debt.createdBy}`;
+                    // Gestione della grammatica in base al numero di nomi
+                    const formattedAmount = parseFloat(amounts[0]).toFixed(2);
+                    if (debtorNames.length === 1) {
+                        message = `💸 ${capitalize(debtorNames[0])} deve ${formattedAmount}$ a ${debt.createdBy}`;
+                    } else if (debtorNames.length === 2) {
+                        const formattedNames = debtorNames.map(n => capitalize(n)).join(" e ");
+                        message = `💸 ${formattedNames} devono ${formattedAmount}$ a ${debt.createdBy}`;
+                    } else {
+                        // Per più di 2 nomi, usa la virgola e "e" prima dell'ultimo
+                        const capitalizedNames = debtorNames.map(n => capitalize(n));
+                        const lastIndex = capitalizedNames.length - 1;
+                        const namesExceptLast = capitalizedNames.slice(0, lastIndex).join(", ");
+                        const lastName = capitalizedNames[lastIndex];
+                        message = `💸 ${namesExceptLast} e ${lastName} devono ${formattedAmount}$ a ${debt.createdBy}`;
+                    }
                 } else {
                     const lines = debtorNames.map(name => {
-                        return `💸 ${capitalize(name)} deve ${debt.participants[name]}$ a ${debt.createdBy}`;
+                        const formattedAmount = parseFloat(debt.participants[name]).toFixed(2);
+                        return `💸 ${capitalize(name)} deve ${formattedAmount}$ a ${debt.createdBy}`;
                     });
                     message = lines.join("<br>");
                 }
@@ -334,6 +348,7 @@ function calculateDebts() {
                 balancesDiv.appendChild(p);
             });
         })
+
         .catch(error => {
             console.error("Errore nel calcolo dei debiti:", error);
             document.getElementById("balances").innerHTML = "<p>⚠️ Errore nella richiesta al server.</p>";
