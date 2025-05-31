@@ -10,15 +10,19 @@
         <module name="HouseSelectionMicroService" />
         <module name="AuthMicroService" />
         <module name="Gateway" />
+        <module name="DashboardMS" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="ClientControllerService" target="21" />
+      <module name="DashboardMicroService" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="AuthMicroService" options="-parameters" />
+      <module name="DashboardMS" options="-parameters" />
+      <module name="DashboardMicroService" options="-parameters" />
       <module name="ExpenseMicroService" options="-parameters" />
       <module name="Gateway" options="-parameters" />
       <module name="HouseSelectionMicroService" options="-parameters" />
