@@ -3,6 +3,7 @@ package com.coinquyteam.expense.Service;
 import com.coinquyteam.expense.Data.CategoryExpense;
 import com.coinquyteam.expense.Data.Debt;
 import com.coinquyteam.expense.Data.Expense;
+import com.coinquyteam.expense.Data.StatusExpense;
 import com.coinquyteam.expense.Repository.IExpenseRepository;
 import com.coinquyteam.expense.Utility.ExpenseDebtResult;
 import com.coinquyteam.expense.Utility.ExpenseResult;
@@ -10,6 +11,9 @@ import com.coinquyteam.expense.Utility.ExpenseStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import static com.coinquyteam.expense.Data.StatusExpense.PENDING;
+import static com.coinquyteam.expense.Data.StatusExpense.SETTLED;
 
 @Service
 public class ExpenseService {
@@ -23,12 +27,16 @@ public class ExpenseService {
     public ExpenseResult createExpense(String expenseDescription, Date expenseDate, Double expenseAmount,
                                        String houseId, String createdBy, CategoryExpense category, List<String> participants)
     {
+        if(participants.size() < 2){
+            return new ExpenseResult(ExpenseStatus.INVALID_INPUT, "At least two participants are required for an expense", null);
+        }
+
         Expense expense = new Expense(expenseDescription, expenseAmount, createdBy, expenseDate, category, houseId, participants);
 
         try
         {
             expenseRepository.insert(expense);
-            return new ExpenseResult(ExpenseStatus.SUCCESS, "Expense created successfully", null);
+            return new ExpenseResult(ExpenseStatus.SUCCESS, "Expense created successfully", expense);
         }
         catch (Exception e)
         {
@@ -61,7 +69,9 @@ public class ExpenseService {
 
         for (Expense expense : expenses) {
             // Creo una mappa partecipante->debito
-            if (expense.getParticipants() != null && !expense.getParticipants().isEmpty()) {
+            System.out.println(expense.getParticipants());
+
+            if (expense.getParticipants().size() > 1 && expense.getStatus().equals(PENDING)) {
 
                 Double amount = expense.getAmount()/expense.getParticipants().size();
 
@@ -89,4 +99,22 @@ public class ExpenseService {
 
         return new ExpenseDebtResult(ExpenseStatus.SUCCESS, "Debts calculated successfully", debts);
     }
+
+
+    public ExpenseResult updateExpenseStatus(String expenseId) {
+        Optional<Expense> optionalExpense = expenseRepository.findById(expenseId);
+        if (optionalExpense.isPresent()) {
+            Expense expense = optionalExpense.get();
+            if (expense.getStatus() == PENDING) {
+                expense.setStatus(SETTLED);
+                expenseRepository.save(expense);
+                return new ExpenseResult(ExpenseStatus.SUCCESS, "Expense status updated to SETTLED", expense);
+            } else {
+                return new ExpenseResult(ExpenseStatus.ERROR, "Expense is already SETTLED", null);
+            }
+        } else {
+            return new ExpenseResult(ExpenseStatus.ERROR, "Expense not found", null);
+        }
+    }
+
 }

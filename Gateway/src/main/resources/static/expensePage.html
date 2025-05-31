@@ -5,6 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Gestione Spese Casa</title>
     <link rel="stylesheet" href="css/exspenseStyle.css" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Controlla se il token è presente, altrimenti mostra l'immagine e il bottone per autenticarsi
+            if (!localStorage.getItem("token")) {
+                document.body.innerHTML = `
+                <div class="container" style="
+                    background: #f9f9f9;
+                    border-radius: 18px;
+                    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+                    padding: 40px 30px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    max-width: 400px;
+                    margin: auto;
+                    height: 100vh;
+                    box-sizing: border-box;
+                ">
+                    <img src="/logo-blu.png" alt="Autenticazione richiesta" style="
+                        max-width: 180px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                    ">
+                    <p style="
+                        font-size: 1.2em;
+                        margin-top: 10px;
+                        color: #2a3a4a;
+                        text-align: center;
+                        margin-bottom: 30px;
+                    ">
+                        Per favore, autenticati per continuare.
+                    </p>
+                    <button id="access-btn" style="
+                        background-color: #29297f;
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        padding: 12px 24px;
+                        font-size: 1em;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;
+                    ">Accedi</button>
+                </div>
+            `;
+                document.getElementById('access-btn').addEventListener('click', () => {
+                    window.location.href = '/authPage.html'; // Cambia l'URL qui se serve
+                });
+            }
+        });
+    </script>
+
 </head>
 <body>
 <!-- Barra di navigazione -->
@@ -48,7 +101,6 @@
     <!-- Blocca calcolo debiti -->
     <div class="container" id="debt-container">
         <h2>⚖️ Chi deve cosa?</h2>
-        <button id="calculate-btn">🧾 Calcola Debiti</button>
         <div id="balances">
             <p>ℹ️ Nessun calcolo effettuato</p>
         </div>

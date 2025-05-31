@@ -11,7 +11,6 @@ import java.util.List;
 public class Expense {
 
     @Id
-    @Field("_id")
     private String id;
 
     @Field("description")

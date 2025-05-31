@@ -28,6 +28,7 @@ public class ExpenseController
     @Path("/createExpense")
     public Response createExpense(Expense expense)
     {
+
         String expenseDescription = expense.getDescription();
         Date expenseDate = new Date(); // Assuming the current date is used for the expense
         double expenseAmount = expense.getAmount();
@@ -35,6 +36,7 @@ public class ExpenseController
         String houseId = expense.getHouseId();
         CategoryExpense category = expense.getCategory();
         List<String> partecipants= expense.getParticipants();
+
 
         ExpenseResult expenseResult =expenseService.createExpense(expenseDescription, expenseDate, expenseAmount, houseId, createdBy, category, partecipants);
 
@@ -46,9 +48,13 @@ public class ExpenseController
         {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(expenseResult).build();
         }
+        else if (expenseResult.getStatus() == ExpenseStatus.INVALID_INPUT){
+
+            return Response.status(Response.Status.BAD_REQUEST).entity(expenseResult).build();
+        }
         else
         {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Bad request").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(expenseResult).build();
         }
     }
 
@@ -91,5 +97,19 @@ public class ExpenseController
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Server error").build();
         }
     }
-
+    @POST
+    @Path("/updateExpenseStatus")
+    public Response updateExpenseStatus(Map<String, String> requestBody) {
+        try {
+            String expenseId = requestBody.get("expenseId");
+            ExpenseResult expenseResult = expenseService.updateExpenseStatus(expenseId);
+            if (expenseResult.getStatus() == ExpenseStatus.SUCCESS) {
+                return Response.ok(expenseResult).build();
+            } else {
+                return Response.status(Response.Status.BAD_REQUEST).entity(expenseResult).build();
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error updating expense status: " + e.getMessage()).build();
+        }
+    }
 }

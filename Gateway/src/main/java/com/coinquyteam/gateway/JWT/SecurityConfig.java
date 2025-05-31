@@ -22,8 +22,8 @@ public class SecurityConfig {
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers(HttpMethod.POST, "/gateway/generate-token").permitAll()
-                        .pathMatchers("http://localhost:8083/**").authenticated()
-                        .pathMatchers("http://localhost:8080/House/**").authenticated()
+                        .pathMatchers("/House/**").authenticated()
+                        .pathMatchers("/Expense/**").authenticated()
                         .pathMatchers("/actuator/**").permitAll()
                         .anyExchange().permitAll()
                 )

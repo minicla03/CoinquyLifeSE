@@ -60,8 +60,9 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
     event.preventDefault(); // Previene il comportamento predefinito del form
     const inputs = document.querySelectorAll("#loginForm input");
     const token = localStorage.getItem("token");
+    const houseId = inputs[0].value;
     const data = {
-        houseId: inputs[0].value,
+        houseId: houseId,
     };
 
     try {
@@ -80,7 +81,7 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
             //alert("Login effettuato!");
             out = document.getElementById("outputlog");
             out.innerHTML = "✅ Login effettuato!";
-            window.location.href = "/home";
+            window.location.href = `http://localhost:8080/expensePage.html?houseId=${houseId}`;
         } else if (res.status === 401 || res.status === 403) {
             //alert("Codice di accesso errato");
             out = document.getElementById("outputlog");

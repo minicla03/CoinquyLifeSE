@@ -1,8 +1,17 @@
+// Estrae houseId dalla query string
+const urlParams = new URLSearchParams(window.location.search);
+const houseId = urlParams.get("houseId");
+
+// Se houseId è presente, lo salva in localStorage (o lo usa direttamente)
+if (houseId) {
+    localStorage.setItem("houseId", houseId);
+} else {
+    alert("❌ Nessuna casa selezionata. Torna alla home.");
+    window.location.href = "/HousePage.html"; // o dove preferisci
+}
+
 
 const expenses = [];
-localStorage.setItem("houseId", "af106523-00fb-41a8-af03-ef9d23a00952"); // Imposta un valore di esempio per houseId, può essere modificato in base alle necessità
-const houseId = localStorage.getItem("houseId");
-
 let coinquilini = [];
 
 const descriptionInput = document.getElementById("description");
@@ -12,7 +21,6 @@ const categorySelect = document.getElementById("category");
 const addBtn = document.getElementById("add-btn");
 const expenseList = document.getElementById("expense-list");
 const totalSpan = document.getElementById("total");
-const calculateBtn = document.getElementById("calculate-btn");
 const balancesDiv = document.getElementById("balances");
 
 function addExpense() {
@@ -24,44 +32,44 @@ function addExpense() {
     const selectedParticipants = Array.from(document.querySelectorAll('input[name="participants"]:checked')).map(cb => cb.value);
     participants: selectedParticipants.map(name => name.charAt(0) + name.slice(1));
 
-    if (!description || !payer || !category || isNaN(amount) || amount <= 0 || selectedParticipants.length === 0)
-    {
+    // Validazione dei campi
+    if (!description || !amountStr || isNaN(amount) || !createdBy || !category || selectedParticipants.length === 0) {
         alert("Per favore, compila tutti i campi correttamente.");
+        return;
     }
 
     fetch('http://localhost:8080/Expense/rest/expense/createExpense', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("token")}` // Aggiungi il token di autenticazione
         },
         body: JSON.stringify({
-            description: description,
-            amount: amount,
-            createdBy: createdBy,
-            category: category,
-            participants: selectedParticipants,
-            houseId: houseId
+
+            description: description,          // ✅ String
+            amount: amount,        // ✅ Float, non stringa
+            createdBy: createdBy,              // ✅ String
+            category: category,                // ✅ Enum valido lato Java
+            participants: selectedParticipants,// ✅ Array di String
+            houseId: houseId                   // ✅ String
         })
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Errore durante la creazione della spesa.');
-            } else if (response.ok) {
-                alert('Spesa creata con successo');
-                let expense = {
-                    description: description,
-                    amount: amount,
-                    createdBy: createdBy,
-                    category: category,
-                    participants: selectedParticipants,
-                    houseId: houseId
+                if (response.status === 400) {
+                    alert("❌ Errore: uno o più campi non sono stati compilati correttamente.");
+                    throw new Error('Errore durante la creazione della spesa.');
                 }
-                expenses.push(expense);
-                renderSingleExpense(expense, expenses.length-1);
-                updateTotal();
-                balancesDiv.innerHTML = "<p>ℹ️ Nessun calcolo effettuato</p>"
-
+                throw new Error('Errore durante la creazione della spesa.');
             }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Spesa creata con successo:', data);
+            expenses.push(data.expenses); // Aggiungi la spesa all'array
+            renderSingleExpense(data.expenses, expenses.length - 1); // Usa funzione centralizzata per il rendering
+            updateTotal(); // Aggiorna il totale dopo l'aggiunta
+            calculateDebts(); // Ricalcola i debiti dopo l'aggiunta
         })
         .catch(error => {
             console.error('Errore:', error);
@@ -89,14 +97,33 @@ function renderSingleExpense(expense, index) {
     amountDiv.textContent = `€${expense.amount.toFixed(2)}`;
 
     const paidBtn = document.createElement("button");
-    paidBtn.textContent = expense.paid ? "✅ Pagata" : "✔️ Saldata";
-    paidBtn.disabled = expense.paid;
+    paidBtn.textContent = expense.status === "SETTLED" ? "✅ Pagata" : "✔️ Salda";
+    paidBtn.disabled = expense.status === "SETTLED";
     paidBtn.classList.add("paid-btn");
 
     paidBtn.addEventListener("click", () => {
-        expenses[index].paid = true;
-        expenseList.children[index].replaceWith(renderSingleExpense(expenses[index], index));
-        updateTotal();
+        // Chiama l'API per aggiornare lo stato dell'expense
+        fetch(`http://localhost:8080/Expense/rest/expense/updateExpenseStatus`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("token")}` // Aggiungi il token di autenticazione
+            },
+            body: JSON.stringify({
+                expenseId: expense.id
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    expenses[index].status = "SETTLED";
+                    li.classList.add("paid");
+                    paidBtn.textContent = "✅ Pagata";
+                    paidBtn.disabled = true;
+                    updateTotal();
+                    calculateDebts();
+                }
+            })
+            .catch(error => console.error('Errore nell\'aggiornamento dello stato:', error));
     });
 
     li.appendChild(detailsDiv);
@@ -107,8 +134,17 @@ function renderSingleExpense(expense, index) {
     return li;
 }
 
+
 async function retriveExpenses() {
-    await fetch(`http://localhost:8080/Expense/rest/expense/getAllExpenses?houseId=${houseId}`)
+    expenseList.innerHTML = ""; // pulisci DOM
+
+    await fetch(`http://localhost:8080/Expense/rest/expense/getAllExpenses?houseId=${houseId}`,{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("token")}` // Aggiungi il token di autenticazione
+        }
+        })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Errore durante il recupero delle spese.');
@@ -118,52 +154,22 @@ async function retriveExpenses() {
         .then(data => {
             console.log('Spese recuperate con successo:', data);
             if (Array.isArray(data.expenses)) {
-                data.expenses.forEach(expense => { expenses.push(expense); });
+                data.expenses.forEach((expense, index) => {
+                    expenses.push(expense);
+                    renderSingleExpense(expense, index); // usa funzione centralizzata
+                });
             }
         })
         .catch(error => {
             console.error('Errore:', error);
             alert('Si è verificato un errore durante il recupero delle spese.');
         });
-
-    expenseList.innerHTML = "";
-    console.log(expenses);
-    expenses.forEach((expense, index) => {
-        const li = document.createElement("li");
-
-        li.classList.toggle("paid", expense.paid);
-
-        const detailsDiv = document.createElement("div");
-        detailsDiv.classList.add("details");
-        detailsDiv.innerHTML = `
-        <span class="title">${expense.description}</span>
-        <span class="meta">🍂 ${expense.category} • 🙋 ${expense.createdBy}</span>`;
-
-        const amountDiv = document.createElement("div");
-        amountDiv.classList.add("amount");
-        amountDiv.textContent = `€${expense.amount.toFixed(2)}`;
-
-        const paidBtn = document.createElement("button");
-        paidBtn.textContent = expense.paid ? "✅ Pagata" : "✔️ Saldata";
-        paidBtn.disabled = expense.paid;
-        paidBtn.classList.add("paid-btn");
-
-        paidBtn.addEventListener("click", () => {
-            expenses[index].paid = true;
-            updateTotal();
-        });
-
-        li.appendChild(detailsDiv);
-        li.appendChild(amountDiv);
-        li.appendChild(paidBtn);
-
-        expenseList.appendChild(li);
-    });
 }
+
 
 function updateTotal() {
     const total = expenses
-        .filter(exp => !exp.paid)
+        .filter(exp => exp.status !== "SETTLED") // Filtra le spese non pagate
         .reduce((sum, exp) => sum + exp.amount, 0);
     totalSpan.textContent = `€${total.toFixed(2)}`;
 }
@@ -173,7 +179,8 @@ async function retriveCoinquys() {
         const response = await fetch('http://localhost:8080/Auth/rest/auth/getUserByHouseId', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("token")}` // Aggiungi il token di autenticazione se necessario
             },
             body: JSON.stringify({
                 houseId: houseId
@@ -209,6 +216,11 @@ async function retriveCoinquys() {
         participantsGrid.style.display = "grid";
         participantsGrid.style.gridTemplateColumns = "1fr 1fr";
         participantsGrid.style.gap = "8px";
+        participantsGrid.style.maxHeight = "100px"; // Limita altezza visibile
+        participantsGrid.style.overflowY = "auto";  // Scroll verticale
+        participantsGrid.style.paddingRight = "6px"; // Spazio per scrollbar
+        participantsGrid.style.border = "1px solid #ccc"; // (Opzionale) per chiarezza
+        participantsGrid.style.borderRadius = "8px";
 
         coinquilini.forEach(coinquilino => {
             const div = document.createElement('div');
@@ -228,7 +240,7 @@ async function retriveCoinquys() {
             checkbox.style.accentColor = "#29297f";
 
             const label = document.createElement('label');
-            label.textContent = "👤 " + coinquilino.username;
+            label.textContent = coinquilino.username;
             label.style.cursor = "pointer";
             label.style.userSelect = "none";
 
@@ -257,6 +269,20 @@ async function retriveCoinquys() {
         });
         containerSelect.appendChild(selectPayer);
 
+        // Funzione per sincronizzare checkbox con select
+        function syncCheckboxes() {
+            const payerValue = selectPayer.value;
+            const checkboxes = container.querySelectorAll('input[name="participants"]');
+            checkboxes.forEach(cb => {
+                // Se il checkbox corrisponde al payer, lo seleziono di default
+                cb.checked = (cb.value === payerValue);
+                cb.disabled = (cb.value === payerValue); // Disabilita il checkbox del payer
+            });
+        }
+
+// Al cambio della select aggiorno i checkbox
+        selectPayer.addEventListener('change', syncCheckboxes);
+
 
     } catch (error) {
         console.error('Errore nel recupero dei coinquilini:', error);
@@ -264,14 +290,73 @@ async function retriveCoinquys() {
     }
 }
 
+// Funzione riutilizzabile per calcolare e mostrare i debiti
+function calculateDebts() {
+    fetch("http://localhost:8080/Expense/rest/expense/calculateDebt", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${localStorage.getItem("token")}` // Aggiungi il token di autenticazione
+        },
+        body: JSON.stringify({
+            houseId: houseId
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            const balancesDiv = document.getElementById("balances");
+            balancesDiv.innerHTML = ""; // Svuota il contenuto
+
+            if (!data.debts || data.debts.length === 0) {
+                balancesDiv.innerHTML = "<p>ℹ️ Nessun debito trovato.</p>";
+                return;
+            }
+
+            data.debts.forEach(debt => {
+                const debtorNames = Object.keys(debt.participants);
+                const amounts = Object.values(debt.participants);
+
+                const allSameAmount = amounts.every(amount => amount === amounts[0]);
+                let message = "";
+
+                if (allSameAmount) {
+                    const names = debtorNames.map(n => capitalize(n)).join(" e ");
+                    message = `💸 ${names} devono ${amounts[0]}$ a ${debt.createdBy}`;
+                } else {
+                    const lines = debtorNames.map(name => {
+                        return `💸 ${capitalize(name)} deve ${debt.participants[name]}$ a ${debt.createdBy}`;
+                    });
+                    message = lines.join("<br>");
+                }
+
+                const p = document.createElement("p");
+                p.innerHTML = message;
+                balancesDiv.appendChild(p);
+            });
+        })
+        .catch(error => {
+            console.error("Errore nel calcolo dei debiti:", error);
+            document.getElementById("balances").innerHTML = "<p>⚠️ Errore nella richiesta al server.</p>";
+        });
+
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+}
+
+
 //per inizializzazione dei contenuti della pagina nel caso ci sono
 //delle informazioni salvate nel DB
 document.addEventListener('DOMContentLoaded', async () => {
 
-    await retriveCoinquys()
+
+    await retriveCoinquys();
     payerInput = document.getElementById("payer");
     await retriveExpenses();
+    await calculateDebts();
     updateTotal();
 });
 
+
 addBtn.addEventListener("click", addExpense);
+
