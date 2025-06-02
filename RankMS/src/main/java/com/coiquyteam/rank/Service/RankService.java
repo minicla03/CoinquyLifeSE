@@ -4,6 +4,8 @@ import com.coinquyteam.shift.OptaPlanner.CleaningAssignment;
 import com.coiquyteam.rank.Data.CoinquyPoint;
 import com.coiquyteam.rank.Repository.ICoiquyPointRepository;
 
+import java.util.List;
+
 public class RankService
 {
     private ICoiquyPointRepository coiquyPointRepository;
@@ -23,5 +25,10 @@ public class RankService
             return false;
 
         }
+    }
+
+    public List<CoinquyPoint> getClassificaByHouseId(String houseId) throws Exception
+    {
+        return coiquyPointRepository.findByHouseId(houseId);
     }
 }

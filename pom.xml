@@ -23,6 +23,7 @@
         <module>DashboardMS</module>
         <module>ShiftMicroservice</module>
         <module>RankMS</module>
+        <module>Gateway</module>
     </modules>
 
     <properties>

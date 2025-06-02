@@ -73,4 +73,11 @@ public class AuthService {
         }
         return new UserResult(StatusAuth.USERS_NOT_FOUND, null);
     }
+
+    public List<String> getCoinquilinibyHouseId(String houseId)
+    {
+        return userRepository.findAll()
+                .stream()
+                .map(User::getUsername).toList();
+    }
 }
