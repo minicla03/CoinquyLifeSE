@@ -5,21 +5,21 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.coinquyteam.expense")
 @ApplicationPath("/rest")
 public class ExpenseMicroServiceApplication extends ResourceConfig
 {
-    public ExpenseMicroServiceApplication()
-    {
-        packages("Controller");
-        packages("Data");
-        packages("Service");
-        packages("Repository");
-        packages("Utility");
-    }
+	public ExpenseMicroServiceApplication()
+	{
+		packages("com.coinquyteam.expense.Controller");
+		packages("Data");
+		packages("Service");
+		packages("Repository");
+		packages("Utility");
+	}
 
-    public static void main(String[] args)
-    {
-        SpringApplication.run(ExpenseMicroServiceApplication.class, args);
-    }
+	public static void main(String[] args)
+	{
+		SpringApplication.run(ExpenseMicroServiceApplication.class, args);
+	}
 }

@@ -6,35 +6,26 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ExpenseMicroservice" />
-        <module name="ShiftMicroservice" />
-        <module name="HouseSelectionMicroService" />
-        <module name="RankMS" />
-        <module name="Gateway" />
         <module name="ExpenseMicroService" />
-        <module name="APIGatewayMS" />
+        <module name="HouseSelectionMicroService" />
         <module name="AuthMicroService" />
+        <module name="Gateway" />
         <module name="DashboardMS" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="ApiGateway" target="21" />
       <module name="ClientControllerService" target="21" />
-      <module name="RankMicroservice" target="21" />
+      <module name="DashboardMicroService" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="APIGatewayMS" options="-parameters" />
       <module name="AuthMicroService" options="-parameters" />
       <module name="DashboardMS" options="-parameters" />
+      <module name="DashboardMicroService" options="-parameters" />
       <module name="ExpenseMicroService" options="-parameters" />
-      <module name="ExpenseMicroservice" options="-parameters" />
       <module name="Gateway" options="-parameters" />
       <module name="HouseSelectionMicroService" options="-parameters" />
-      <module name="RankMS" options="-parameters" />
-      <module name="RankMicroservice" options="-parameters" />
-      <module name="ShiftMicroservice" options="-parameters" />
       <module name="coinquylife" options="" />
     </option>
   </component>
