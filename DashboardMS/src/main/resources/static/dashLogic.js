@@ -60,13 +60,18 @@ renderCalendar();
 document.querySelectorAll(".nav_links a").forEach(link => {
     link.addEventListener("click", async (e) => {
 
+        const section = link.getAttribute("data-section"); // definisci subito section
+
         if (section === "home") {
             return;
         }
 
-        e.preventDefault();
+        if(section==="regole"){
+            window.location.href = "notYet.html";
+            return;
+        }
 
-        const section = link.getAttribute("data-section");
+        e.preventDefault();
 
         try {
             const response = await fetch(`/rest/client/${section}`, {

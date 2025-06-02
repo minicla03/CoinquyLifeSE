@@ -25,13 +25,13 @@ public class ClientController
         return Response.ok("{\"path\": \"http://localhost:8085/Shift/shiftPage.html\"}", MediaType.APPLICATION_JSON).build();
     }
 
-    @GET
+    /*@GET
     @Path("/regole")
     @Produces(MediaType.TEXT_HTML)
     public Response redirectRule()
     {
         return Response.ok("{\"path\": \"http://localhost:8086/Rule/rulePage.html\"}", MediaType.APPLICATION_JSON).build();
-    }
+    }*/
 
     @GET
     @Path("/classifica")
