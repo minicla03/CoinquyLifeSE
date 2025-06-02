@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;;
 
 @SpringBootApplication(scanBasePackages = "com.coinquyteam.authApplication")
 @ApplicationPath("/rest")
-@En
 public class AuthMicroServiceApplication extends ResourceConfig
 {
     public AuthMicroServiceApplication()

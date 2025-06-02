@@ -81,7 +81,7 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
             //alert("Login effettuato!");
             out = document.getElementById("outputlog");
             out.innerHTML = "✅ Login effettuato!";
-            window.location.href = `http://localhost:8080/expensePage.html?houseId=${houseId}`;
+            window.location.href = `http://localhost:8080/dashPage.html?houseId=${houseId}`;
         } else if (res.status === 401 || res.status === 403) {
             //alert("Codice di accesso errato");
             out = document.getElementById("outputlog");

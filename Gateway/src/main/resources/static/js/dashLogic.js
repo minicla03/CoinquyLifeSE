@@ -1,6 +1,9 @@
-/*Logica per il calendario*/
-
-const houseId= localStorage.getItem("houseId");
+// Estrae houseId dai parametri della URL e lo salva in localStorage
+const urlParams = new URLSearchParams(window.location.search);
+const houseId = urlParams.get('houseId');
+if (houseId) {
+    localStorage.setItem('houseId', houseId);
+}
 
 const monthYear = document.getElementById("monthYear");
 const calendarDays = document.getElementById("calendarDays");
@@ -74,7 +77,7 @@ document.querySelectorAll(".nav_links a").forEach(link => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`/rest/client/${section}`, {
+            const response = await fetch(`http://localhost:8080/Dashboard/rest/client/${section}`, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json"
@@ -107,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //TODO: CONTROLLA IL MAPPING OBJ
 async function retrieveCoinquy() {
-    fetch(`http://localhost:8085/restdash/retrieveCoinquy?houseId=${houseId}`,
+    fetch(`http://localhost:8085/rest/dash/retrieveCoinquy?houseId=${houseId}`,
         {
             method: 'GET',
             headers: {
