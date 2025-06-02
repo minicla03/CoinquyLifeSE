@@ -20,7 +20,6 @@
         <module>AuthMicroService</module>
         <module>HouseSelection</module>
         <module>ExpenseMicroService</module>
-        <module>APIGatewayMS</module>
         <module>DashboardMS</module>
         <module>ShiftMicroservice</module>
         <module>RankMS</module>
