@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Gestione Spese Casa</title>
-    <link rel="stylesheet" href="css/exspenseStyle.css" />
+    <link rel="stylesheet" href="css/new_exspenseStyle.css" />
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Controlla se il token è presente, altrimenti mostra l'immagine e il bottone per autenticarsi
@@ -60,56 +60,56 @@
 
 </head>
 <body>
-<div class = "grid-container">
-    <div style="grid-area: header">
-        <header>
-            <img class="logo" src="logo-blu.png" alt="Logo" style="height: 7em; margin-right: 2px; margin-top: 10px;">
-            <a class="cta" href="#" id="user"></a>
-            <nav class="nav">
-                <ul class="nav_links">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#"><button>Spese</button></a></li>
-                    <li><a href="#">Turni</a></li>
-                    <li><a href="#">Regole</a></li>
-                    <li><a href="#">Classifica</a></li>
-                </ul>
-            </nav>
-        </header>
-    </div>
-    <div style="grid-area: spesa;" class="spesa" id="add-expense-container">
-        <h2>📝 Aggiungi Spesa</h2>
-        <div class="form-container">
-            <input type="text" id="description" placeholder="🖊️ Descrizione" />
-            <input type="text" id="amount" placeholder="💶 Importo (€)" min="0" />
-            <div class="payer" id="payer-container"></div>
-            <select id="category">
-                <option value="">📂 Categoria</option>
-                <option value="FOOD">🍽️ Cibo</option>
-                <option value="TRANSPORT">🚌 Trasporti</option>
-                <option value="ENTERTAINMENT">🎬 Intrattenimento</option>
-                <option value="SHOPPING">🛍️ Shopping</option>
-                <option value="HEALTH">🩺 Salute</option>
-                <option value="BILLS">💡 Bollette</option>
-                <option value="OTHER">📦 Altro</option>
-            </select>
-            <div class="participants-list" id="participants-container"></div>
-            <button id="add-btn" onclick="addExpense()">➕Aggiungi</button>
+    <div class = "grid-container">
+        <div style="grid-area: header">
+          <header>
+              <img class="logo" src="logo-blu.png" alt="Logo" style="height: 7em; margin-right: 2px; margin-top: 10px;">
+              <a class="cta" href="#" id="user"></a>
+              <nav class="nav">
+                  <ul class="nav_links">
+                      <li><a href="#">Home</a></li>
+                      <li><a href="#"><button>Spese</button></a></li>
+                      <li><a href="#">Turni</a></li>
+                      <li><a href="#">Regole</a></li>
+                      <li><a href="#">Classifica</a></li>
+                  </ul>
+              </nav>
+          </header>
+        </div>
+        <div style="grid-area: spesa;" class="spesa" id="add-expense-container">
+            <h2>📝 Aggiungi Spesa</h2>
+            <div class="form-container">
+                <input type="text" id="description" placeholder="🖊️ Descrizione" />
+                <input type="text" id="amount" placeholder="💶 Importo (€)" min="0" />
+                <div class="payer" id="payer-container"></div>
+                <select id="category">
+                    <option value="">📂 Categoria</option>
+                    <option value="FOOD">🍽️ Cibo</option>
+                    <option value="TRANSPORT">🚌 Trasporti</option>
+                    <option value="ENTERTAINMENT">🎬 Intrattenimento</option>
+                    <option value="SHOPPING">🛍️ Shopping</option>
+                    <option value="HEALTH">🩺 Salute</option>
+                    <option value="BILLS">💡 Bollette</option>
+                    <option value="OTHER">📦 Altro</option>
+                </select>
+                <div class="participants-list" id="participants-container"></div>
+                <button id="add-btn" onclick="addExpense()">➕Aggiungi</button>
         </div>
     </div>
     <div style="grid-area: recap" class="recap" id="expense-list-container">
-        <h2>🧾 Tutte le Spese</h2>
-        <ul id="expense-list"></ul>
-        <div class="summary">
-            Totale: <span id="total">€0.00</span> 💰
-        </div>
+            <h2>🧾 Tutte le Spese</h2>
+            <ul id="expense-list"></ul>
+            <div class="summary">
+                Totale: <span id="total">€0.00</span> 💰
+            </div>
     </div>
     <div style="grid-area: debt" class="debt" id="debt-container">
-        <h2>⚖️ Chi deve cosa?</h2>
-        <div id="balances">
-            <p>ℹ️ Nessun calcolo effettuato</p>
-        </div>
+            <h2>⚖️ Chi deve cosa?</h2>
+            <div id="balances">
+                <p>ℹ️ Nessun calcolo effettuato</p>
+            </div>
     </div>
-</div>
+
 </body>
-<script src="js/expenseLogic.js"></script>
+<script src="js/new_expenseLogic.js"></script>
 </html>

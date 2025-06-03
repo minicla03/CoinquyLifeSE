@@ -1,0 +1,498 @@
+body {
+    font-family: "Segoe UI", sans-serif;
+    background: rgba(139, 0, 253, 0.94);
+    margin: 0;
+    min-height: 100vh;
+    box-sizing: border-box;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    color: #4b0082;
+    padding: 10px 40px;
+    font-size: 1.2em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    min-height: 60px;
+    box-sizing: border-box;
+}
+
+.back-btn {
+    CONTAIN-INTRINSIC-BLOCK-SIZE: AUTO 100PX;
+    background-color: #4b008200;
+    border: 0px solid #4b0082;
+    color: #ffffff;
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-right: 10px;
+    padding: 0px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.back-btn:hover {
+    background-color: white;
+    color: #4b0082;
+}
+
+.navbar-title {
+    flex-grow: 1;
+    text-align: left;
+    color: #4b0082;
+}
+
+.wrapper {
+    display: flex;
+    gap: 30px;
+    padding: 20px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    padding: 80px 40px 40px 40px;
+    box-sizing: border-box;
+    flex-wrap: nowrap;
+}
+
+.container {
+    background: white;
+    padding: 20px 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    color: #333;
+    flex: 0 0 380px;
+    box-sizing: border-box;
+    position: sticky;
+    top: 80px;
+}
+
+.swap-btn {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #8b00fd; /* Colore viola */
+    color: white;
+    border: 2px solid #8b00fd;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.swap-btn:hover {
+    background-color: #0066ff; /* Colore blu */
+    color: white;
+}
+
+.calendar-container {
+    flex-grow: 1;
+    background: white;
+    padding: 20px 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    color: #333;
+    min-width: 400px;
+    box-sizing: border-box;
+    position: sticky;
+    top: 80px;
+}
+
+.swap-requests-container {
+    background: white;
+    padding: 20px 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    color: #333;
+    min-width: 300px;
+    max-width: 350px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.container h2::before {
+    content: "🧹 ";
+}
+
+.calendar-container h3::before {
+    content: "📅 ";
+}
+
+.container h2, .calendar-container h3, .swap-requests-container h3, .swap-requests-container h4 {
+    color: #4500fd;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-container input,
+.form-container select {
+    margin: 10px 0;
+    padding: 12px;
+    border: 2px solid #4500fd;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-container input:focus,
+.form-container select:focus {
+    border-color: rgba(139, 0, 253, 0.94);
+}
+
+.form-container button {
+    background: rgba(139, 0, 253, 0.94);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+}
+
+.form-container button:hover {
+    background: #4500fd;
+}
+
+.form-container p {
+    font-size: 14px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.form-container a {
+    color: rgba(139, 0, 253, 0.94);
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.calendar {
+    font-size: 1rem;
+    color: #4500fd;
+    min-height: 300px;
+    border: 2px dashed #8b00fd;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    background: #f6f0ff;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background: white;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    position: relative;
+    color: #333;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #4500fd;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+}
+
+.modal-content .close:hover {
+    color: rgba(139, 0, 253, 0.94);
+}
+
+.modal-content h2 {
+    text-align: center;
+    color: #4500fd;
+    margin-bottom: 20px;
+}
+
+#swapForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#swapForm select,
+#swapForm button {
+    margin: 10px 0;
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #4500fd;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+}
+
+#swapForm select:focus {
+    border-color: rgba(139, 0, 253, 0.94);
+}
+
+#swapForm button {
+    background: rgba(139, 0, 253, 0.94);
+    color: white;
+    border: none;
+}
+
+#swapForm button:hover {
+    background: #4500fd;
+}
+
+.swap-requests-container ul {
+    list-style-type: none;
+    padding-left: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 2px solid #8b00fd;
+    border-radius: 10px;
+    background: #f6f0ff;
+}
+
+.swap-requests-container ul li {
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    color: #4500fd;
+}
+
+.swap-requests-container ul li:last-child {
+    border-bottom: none;
+}
+
+
+@media (max-width: 800px) {
+    .wrapper {
+        flex-direction: column;
+        flex-wrap: wrap;
+        margin: 80px 20px 40px;
+        width: auto;
+        max-width: 100%;
+    }
+    .container, .calendar-container, .swap-requests-container {
+        max-width: 100%;
+        min-width: auto;
+        flex: none;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+}
+
+
+.create-task-container {
+    background: white;
+    padding: 20px 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    color: #333;
+    margin-top: 30px;
+}
+
+.create-task-container h3 {
+    color: #4500fd;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+#createTaskForm input,
+#createTaskForm textarea,
+#createTaskForm button {
+    font-family: "Segoe UI", sans-serif;
+    font-size: 16px;
+    margin-bottom: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+#createTaskForm input,
+#createTaskForm textarea {
+    border: 2px solid #4500fd;
+    outline: none;
+    transition: border-color 0.3s ease;
+    width: 100%;
+}
+
+#createTaskForm input:focus,
+#createTaskForm textarea:focus {
+    border-color: rgba(139, 0, 253, 0.94);
+}
+
+#createTaskForm textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+#createTaskForm button {
+    background: rgba(139, 0, 253, 0.94);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+}
+
+#createTaskForm button:hover {
+    background: #4500fd;
+}
+
+.side-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-shrink: 0;
+    max-width: 350px;
+}
+
+.calendar-container a {
+    text-decoration: none;
+    color: #8b00fd;
+    font-weight: bold;
+}
+
+.calendar-container a:hover {
+    text-decoration: underline;
+    color: #8b00fd;
+}
+
+#createTaskForm select {
+    font-family: "Segoe UI", sans-serif;
+    font-size: 16px;
+    margin-bottom: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    border: 2px solid #4500fd;
+    outline: none;
+    transition: border-color 0.3s ease;
+    width: 100%;
+    background: white;
+    color: #333;
+}
+
+#createTaskForm select:focus {
+    border-color: rgba(139, 0, 253, 0.94);
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 20px;
+    background: #f6f0ff;
+    border: none;
+    border-radius: 15px;
+    min-height: auto;
+}
+
+.calendar-day {
+    background: white;
+    padding: 10px;
+    border: 2px solid #8b00fd;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #4500fd;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.accept-btn,
+.decline-btn {
+    margin: 5px 2px 0;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+}
+
+.accept-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.decline-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.pending {
+    color: orange;
+    font-weight: bold;
+}
+
+.accepted {
+    color: green;
+    font-weight: bold;
+}
+
+.rejected {
+    color: red;
+    font-weight: bold;
+}
+
+.shift-calendar {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.shift-calendar th,
+.shift-calendar td {
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    text-align: left;
+}
+
+.shift-calendar thead {
+    background-color: #8b00fd;
+    color: white;
+}
+
+.shift-calendar tbody tr:nth-child(even) {
+    background-color: #f6f0ff;
+}
+
+.shift-calendar td {
+    color: #333;
+}

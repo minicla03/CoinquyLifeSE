@@ -1,3 +1,24 @@
+
+/*Logica per il profilo utente*/
+
+const utente = {
+    immagineProfilo: "user-solid.svg"
+};
+
+const userLink = document.getElementById('user');
+
+// Crea l'immagine
+const img = document.createElement('img');
+img.src = utente.immagineProfilo;
+img.className = 'profile-img';
+
+// Pulisce il contenuto esistente (opzionale)
+userLink.innerHTML = '';
+
+// Inserisce immagine
+userLink.appendChild(img);
+
+
 // Estrae houseId dalla query string
 const urlParams = new URLSearchParams(window.location.search);
 const houseId = urlParams.get("houseId");
@@ -9,6 +30,12 @@ if (houseId) {
     alert("❌ Nessuna casa selezionata. Torna alla home.");
     window.location.href = "/HousePage.html"; // o dove preferisci
 }
+
+// Redirige l'utente alla pagina delle spese selezionata
+
+const homeLink = 'http://localhost:8080/dashPage?houseId=' + houseId;
+document.querySelector('.nav_links li:nth-child(1) a').href = homeLink;
+
 
 
 const expenses = [];
@@ -83,7 +110,7 @@ function addExpense() {
 }
 
 function renderSingleExpense(expense, index) {
-    const li = document.createElement("li");
+    const li = document.createElement("li-expense");
     li.classList.toggle("paid", expense.paid);
 
     const detailsDiv = document.createElement("div");
@@ -144,7 +171,7 @@ async function retriveExpenses() {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem("token")}` // Aggiungi il token di autenticazione
         }
-        })
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Errore durante il recupero delle spese.');
@@ -374,4 +401,3 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 addBtn.addEventListener("click", addExpense);
-

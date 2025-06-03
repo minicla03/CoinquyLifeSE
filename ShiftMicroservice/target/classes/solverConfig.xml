@@ -1,0 +1,32 @@
+<solver>
+    <solutionClass>com.coinquyteam.shift.OptaPlanner.CleaningSchedule</solutionClass>
+    <entityClass>com.coinquyteam.shift.OptaPlanner.CleaningAssignment</entityClass>
+
+    <scoreDirectorFactory>
+        <constraintProviderClass>com.coinquyteam.shift.OptaPlanner.ScheduleConstraintProvider</constraintProviderClass>
+    </scoreDirectorFactory>
+
+    <termination>
+        <secondsSpentLimit>20</secondsSpentLimit>
+    </termination>
+
+    <phase>
+        <constructionHeuristic>
+            <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
+        </constructionHeuristic>
+    </phase>
+
+    <phase>
+        <localSearch>
+            <moveSelector>
+                <swapMoveSelector>
+                    <entitySelector>
+                        <entityClass>com.coinquyteam.shift.OptaPlanner.CleaningAssignment</entityClass>
+                    </entitySelector>
+                    <variableName>assignedRoommate</variableName>
+                </swapMoveSelector>
+            </moveSelector>
+        </localSearch>
+    </phase>
+
+</solver>

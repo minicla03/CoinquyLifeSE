@@ -20,19 +20,19 @@ public class DashService
 
     public List<?> getCoinquy(String houseId)
     {
-        String url = "http://localhost:8081/rest/client/retrieveCoinquy?houseId=" + houseId;
+        String url = "http://localhost:8080/Auth/rest/client/retrieveCoinquy?houseId=" + houseId;
         return makeGetRequest(url);
     }
 
     public List<?> getTurni(String houseId)
     {
-        String url = "http://localhost:8085/rest/client/retriveShift?houseId=" + houseId;
+        String url = "http://localhost:8080/Shift/rest/client/retriveShift?houseId=" + houseId;
         return makeGetRequest(url);
     }
 
     public List<?> getClassifica(String houseId)
     {
-        String url = "http://localhost/rest/client/retrieveClassifica?houseId=" + houseId;
+        String url = "http://localhost:8080/Rank/rest/client/retrieveClassifica?houseId=" + houseId;
         return makeGetRequest(url);
     }
 
