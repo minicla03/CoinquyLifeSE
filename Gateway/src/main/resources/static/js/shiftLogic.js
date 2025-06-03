@@ -21,14 +21,13 @@ function unavailableForm()
         const selectedTenantId = document.getElementById("coinquys-select").value;
         const startTime = document.getElementById("start-time").value;
         const endTime = document.getElementById("end-time").value;
-        const task = document.getElementById("task-select").value;
 
-        if (!selectedTenantId || !startTime || !endTime || !task) {
+        if (!selectedTenantId || !startTime || !endTime) {
             alert("⚠️ Tutti i campi sono obbligatori!");
             return;
         }
 
-        fetch(`https://localhost:8085/Shift/rest/shift/unAvailability?houseId=${houseId}`, {
+        fetch(`https://localhost:8080/Shift/rest/shift/unAvailability?houseId=${houseId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -156,9 +155,9 @@ function populateAssignmentSelects(shifts) {
     assignmentBSelect.innerHTML = '<option value="" disabled selected>Seleziona turno</option>';
 
     if (!shifts || shifts.length === 0) {
-        fetch(`https://localhost:8085/Shift/rest/swaps/getSwapRequests?houseId=${localStorage.getItem("houseId")}`, {
+        fetch(`https://localhost:8080/Shift/rest/swaps/getSwapRequests?houseId=${localStorage.getItem("houseId")}`, {
             method: "GET",
-            headers: {
+            headers: { //TODO: body mancante
                 'Content-Type': 'application/json',
                 'Authorization': localStorage.getItem("token") || ""
             }
@@ -404,7 +403,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         try {
-            const response = await fetch("https://localhost:8085/Shift/rest/shift/createTask", {
+            const response = await fetch("https://localhost:8080/Shift/rest/shift/createTask", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
