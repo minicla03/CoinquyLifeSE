@@ -10,7 +10,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>com.coinquyteam</groupId>
     <artifactId>DashboardMS</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>DashboardMS</name>
