@@ -59,7 +59,74 @@ nextBtn.addEventListener("click", () => {
 
 renderCalendar();
 
-// per la navigazione tra le sezioni
+document.getElementById("btnHome").addEventListener("click", function()
+{
+    window.reload();
+});
+document.getElementById("btnSpese").addEventListener("click", function()
+{
+    fetch("http://localhost:8080/Dashboard/rest/client/spese", {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            "Accept": "application/json"
+        }
+    }).then(
+        response => {
+            if (!response.ok) {
+                throw new Error(`Errore ${response.status}`);
+            }
+            return response.json();
+        }).then(
+        data => {
+            if (data.path) {
+                window.location.href = data.path;
+            } else {
+                console.error("Nessuna URL di redirezione fornita.");
+            }
+        }
+    ).catch(
+        err => {
+            console.error("Errore nella navigazione:", err);
+        }
+    )
+});
+document.getElementById("btnTurni").addEventListener("click", function()
+{
+    fetch("http://localhost:8080/Dashboard/rest/client/turni", {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            "Accept": "application/json"
+        }
+    }).then(
+        response => {
+            if (!response.ok) {
+                throw new Error(`Errore ${response.status}`);
+            }
+            return response.json();
+        }).then(
+        data => {
+            if (data.path) {
+                window.location.href = data.path;
+            } else {
+                console.error("Nessuna URL di redirezione fornita.");
+            }
+        }
+    ).catch(
+        err => {
+            console.error("Errore nella navigazione:", err);
+        }
+    )
+});
+document.getElementById("btnRegole").addEventListener("click", function() {
+    window.location.href = "notYet.html";
+});
+document.getElementById("btnClassifica").addEventListener("click", function() {
+    // Azione per Classifica
+});
+
+/*// per la navigazione tra le sezioni
 document.querySelectorAll(".nav_links a").forEach(link => {
     link.addEventListener("click", async (e) => {
 
@@ -70,7 +137,7 @@ document.querySelectorAll(".nav_links a").forEach(link => {
         }
 
         if(section==="regole"){
-            window.location.href = "notYet.html";
+
             return;
         }
 
@@ -129,7 +196,7 @@ document.querySelectorAll(".nav_links a").forEach(link => {
             console.error("Errore nella navigazione:", err);
         }
     });
-});
+});*/
 
 document.addEventListener("DOMContentLoaded", () => {
     retrieveCoinquy();
