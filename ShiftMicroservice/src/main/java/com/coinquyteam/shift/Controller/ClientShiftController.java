@@ -48,6 +48,7 @@ public class ClientShiftController
     }
 
     @POST
+    @Path("/toRank")
     public Response toRank(@HeaderParam("Authorization") String token, CleaningAssignment cleaningAssignment)
     {
         if (token == null || token.isEmpty())
@@ -64,7 +65,17 @@ public class ClientShiftController
                     .build();
         }
 
-        calendarService.toRank(token,cleaningAssignment);
+        try {
+            String body=calendarService.toRank(token,cleaningAssignment);
+            if(body == null || body.isEmpty()) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity("{\"error\":\"Failed to process the cleaning assignment\"}")
+                        .build();
+            }
+            return Response.ok(body).build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

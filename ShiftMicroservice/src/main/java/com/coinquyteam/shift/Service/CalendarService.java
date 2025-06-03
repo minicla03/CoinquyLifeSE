@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -22,42 +23,37 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Service
-public class CalendarService
-{
-    @Autowired private IRoommateRepository roommateRepository;
-    @Autowired private HouseTaskService houseTaskService;
-    @Autowired private RestTemplate restTemplate;
+public class CalendarService {
+    @Autowired
+    private IRoommateRepository roommateRepository;
+    @Autowired
+    private HouseTaskService houseTaskService;
+    @Autowired
+    private RestTemplate restTemplate;
 
-    public CleaningSchedule getSchedule(String houseId) throws ExecutionException, InterruptedException
-    {
+    public CleaningSchedule getSchedule(String houseId) throws ExecutionException, InterruptedException {
         ScheduleSolution solution = new ScheduleSolution();
         List<Roommate> roommates = roommateRepository.findAllByHouseId(houseId);
         List<HouseTask> tasks = houseTaskService.getTasksByHouseId(houseId);
 
-        if (roommates.isEmpty() || tasks.isEmpty())
-        {
+        if (roommates.isEmpty() || tasks.isEmpty()) {
             throw new IllegalArgumentException("House must have at least one roommate and one task.");
         }
         return solution.solve(roommates, tasks);
     }
 
-    public void markTaskAsDone(CleaningAssignment cleaningAssignment)
-    {
-        if (cleaningAssignment == null || cleaningAssignment.getId() == null)
-        {
+    public void markTaskAsDone(CleaningAssignment cleaningAssignment) {
+        if (cleaningAssignment == null || cleaningAssignment.getId() == null) {
             throw new IllegalArgumentException("Cleaning assignment ID is required.");
         }
         cleaningAssignment.setDone(true);
     }
 
-    public void toRank(String token, CleaningAssignment cleaningAssignment)
-    {
-        if (token == null || token.isEmpty())
-        {
+    public String toRank(String token, CleaningAssignment cleaningAssignment) {
+        if (token == null || token.isEmpty()) {
             throw new IllegalArgumentException("Missing or invalid authorization token.");
         }
-        if (cleaningAssignment == null || cleaningAssignment.getTask() == null)
-        {
+        if (cleaningAssignment == null || cleaningAssignment.getTask() == null) {
             throw new IllegalArgumentException("Cleaning assignment and task must not be null.");
         }
 
@@ -66,18 +62,17 @@ public class CalendarService
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
         Map<String, CleaningAssignment> body = Map.of(
-                "cleaningAssignmet", cleaningAssignment);
+                "cleaningAssignment", cleaningAssignment);
         HttpEntity<Map<String, CleaningAssignment>> request = new HttpEntity<>(body, headers);
 
         try {
-            //TODO: Handle the response properly
-            Response response = restTemplate.postForEntity(url, request, Response.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                throw new RuntimeException("Failed with status: " + response.getStatusCode());
+            }
+            return response.getBody();
+        } catch (RestClientException e) {
+            throw new RuntimeException("Error calling /rank/done: " + e.getMessage(), e);
         }
-        catch (RestClientException e)
-        {
-            throw new RuntimeException(e);
-        }
-
-
     }
 }
