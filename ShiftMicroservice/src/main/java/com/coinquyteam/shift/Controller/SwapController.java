@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-@Controller
 @Path("/swaps")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)

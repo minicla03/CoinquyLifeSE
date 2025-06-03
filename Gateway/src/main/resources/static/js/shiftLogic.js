@@ -27,7 +27,7 @@ function unavailableForm()
             return;
         }
 
-        fetch(`https://localhost:8080/Shift/rest/shift/unAvailability?houseId=${houseId}`, {
+        fetch(`http://localhost:8080/Shift/rest/shift/unAvailability?houseId=${houseId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function unavailableForm()
 document.getElementById("viewPlanningLink").addEventListener("click", (e) => {
     e.preventDefault()
 
-    fetch(`http://localhost:8085/Shift/rest/shif/calendar/getPlanning?houseId=${houseId}`, {
+    fetch(`http://localhost:8080/Shift/rest/shif/calendar/getPlanning?houseId=${houseId}`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ function retriveCoinquys()
 function handleRequestAction(idSwap, accept) {
     const action = accept ? "accept" : "decline";
 
-    fetch(`https://localhost:8085/Shift/rest/swaps/${idSwap}/${action}`, {
+    fetch(`http://localhost:8080/Shift/rest/swaps/${idSwap}/${action}`, {
         method: "PUT",
         headers: {
             'Content-Type': 'application/json',
@@ -155,7 +155,7 @@ function populateAssignmentSelects(shifts) {
     assignmentBSelect.innerHTML = '<option value="" disabled selected>Seleziona turno</option>';
 
     if (!shifts || shifts.length === 0) {
-        fetch(`https://localhost:8080/Shift/rest/swaps/getSwapRequests?houseId=${localStorage.getItem("houseId")}`, {
+        fetch(`http://localhost:8080/Shift/rest/swaps/getSwapRequests?houseId=${localStorage.getItem("houseId")}`, {
             method: "GET",
             headers: { //TODO: body mancante
                 'Content-Type': 'application/json',
@@ -265,7 +265,7 @@ function renderCalendar(data) {
 
 async function handleDoneButton(cleaningAssignment) {
     try {
-        const response = await fetch("https://localhost:8085/rest/calendar/taskDone", {
+        const response = await fetch("http://localhost:8080/Shift/rest/calendar/taskDone", {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -290,7 +290,7 @@ async function handleDoneButton(cleaningAssignment) {
 
 function assignedPoint(cleaningAssignments)
 {
-    fetch("https://localhost:8085/rest/client/toRank", {
+    fetch("http://localhost:8080/Rank/rest/client/toRank", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -341,7 +341,7 @@ document.getElementById("sendSwapBtn").addEventListener("click", async function(
 
     try
     {
-        const response = await fetch("https://localhost:8085/Shift/rest/shift/swapRequest", {
+        const response = await fetch("http://localhost:8080/Shift/rest/shift/swapRequest", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -370,7 +370,7 @@ document.getElementById("sendSwapBtn").addEventListener("click", async function(
 
 document.getElementById("back-btn").addEventListener("click", async () => {
     try {
-        const response = await fetch('https://localhost:8085/Shift/rest/client/backToHome', {
+        const response = await fetch('http://localhost:8080/Shift/rest/client/backToHome', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -387,52 +387,50 @@ document.getElementById("back-btn").addEventListener("click", async () => {
     }
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("createTaskForm");
+const form = document.getElementById("createTaskForm");
+form.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-    form.addEventListener("submit", async function (e) {
-        e.preventDefault();
+    const description = form.querySelector("textarea").value;
+    const type = form.querySelector("#taskType").value;
+    const dateTime = form.querySelector("input[type='datetime-local']").value;
 
-        const description = form.querySelector("textarea").value;
-        const type = form.querySelector("#taskType").value;
-        const dateTime = form.querySelector("input[type='datetime-local']").value;
+    if (!description || !type || !dateTime) {
+        alert("⚠️ Compila tutti i campi!");
+        return;
+    }
 
-        if (!description || !type || !dateTime) {
-            alert("⚠️ Compila tutti i campi!");
-            return;
+    try {
+        const response = await fetch("http://localhost:8080/Shift/rest/shift/createTask", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token") || ""
+            },
+            body: JSON.stringify({
+                description: description,
+                type: type,
+                dateTime: dateTime,
+                houseId: localStorage.getItem("houseId")
+            })
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText);
         }
 
-        try {
-            const response = await fetch("https://localhost:8080/Shift/rest/shift/createTask", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": localStorage.getItem("token") || ""
-                },
-                body: JSON.stringify({
-                    description: description,
-                    type: type,
-                    dateTime: dateTime,
-                    houseId: localStorage.getItem("houseId")
-                })
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(errorText);
-            }
-
-            alert("✅ Compito creato con successo!");
-            form.reset();
-        } catch (error) {
-            alert("⚠️ Errore nella creazione del compito: " + error.message);
-        }
-    });
+        alert("✅ Compito creato con successo!");
+        form.reset();
+    } catch (error) {
+        alert("⚠️ Errore nella creazione del compito: " + error.message);
+    }
 });
-
 
 document.addEventListener("DOMContentLoaded", () => {
     retriveCoinquys();
-    renderCalendar(shift);
+    //if(shift.length!==0){
+    //    renderCalendar(shift);
+    //}
     populateAssignmentSelects(shift)
 });

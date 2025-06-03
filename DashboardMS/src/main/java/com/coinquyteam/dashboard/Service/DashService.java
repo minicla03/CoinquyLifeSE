@@ -40,7 +40,6 @@ public class DashService
     {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        // headers.set("Authorization", "Bearer " + token);
         HttpEntity<Void> entity = new HttpEntity<>(headers);
         ResponseEntity<List> response = restTemplate.exchange(
                 url,

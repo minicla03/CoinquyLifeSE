@@ -11,6 +11,8 @@ public class ClientController
 {
     @GET
     @Path("/spese")
+    @Produces(MediaType.TEXT_HTML)
+
     public Response redirectExpense()
     {
         return Response.ok("{\"path\": \"http://localhost:8080/expensePage.html\"}", MediaType.APPLICATION_JSON).build();
@@ -18,6 +20,7 @@ public class ClientController
 
     @GET
     @Path("/turni")
+    @Produces(MediaType.TEXT_HTML)
     public Response redirectShift()
     {
         return Response.ok("{\"path\": \"http://localhost:8080/shiftPage.html\"}", MediaType.APPLICATION_JSON).build();

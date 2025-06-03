@@ -74,12 +74,41 @@ document.querySelectorAll(".nav_links a").forEach(link => {
             return;
         }
 
+        if(section==="spese") {
+            fetch("http://localhost:8080/Dashboard/rest/client/spese", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                    "Accept": "application/json"
+                }
+            }).then(
+                response => {
+                    if (!response.ok) {
+                        throw new Error(`Errore ${response.status}`);
+                    }
+                    return response.json();
+                }).then(
+                data => {
+                    if (data.path) {
+                        window.location.href = data.path;
+                    } else {
+                        console.error("Nessuna URL di redirezione fornita.");
+                    }
+                }
+            ).catch(
+                err => {
+                    console.error("Errore nella navigazione:", err);
+                }
+            )
+            return
+        }
         e.preventDefault();
 
         try {
             const response = await fetch(`http://localhost:8080/Dashboard/rest/client/${section}`, {
                 method: "GET",
                 headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
                     "Accept": "application/json"
                 }
             });
@@ -110,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //TODO: CONTROLLA IL MAPPING OBJ
 async function retrieveCoinquy() {
-    fetch(`http://localhost:8085/rest/dash/retrieveCoinquy?houseId=${houseId}`,
+    fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveCoinquy?houseId=${houseId}`,
         {
             method: 'GET',
             headers: {
@@ -140,7 +169,7 @@ async function retrieveCoinquy() {
 
 
 function retriveTurni() {
-    return fetch(`http://localhost:8085/rest/dash/retrieveTurni?houseId=${houseId}`, {
+    return fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveTurni?houseId=${houseId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -160,7 +189,7 @@ function retriveTurni() {
 }
 
 function retrieveClassifica(houseId) {
-    return fetch(`http://localhost:8080/rest/dash/retrieveClassifica?houseId=${houseId}`, {
+    return fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveClassifica?houseId=${houseId}`, {
         method: "GET",
         headers: {
             "Accept": "application/json"

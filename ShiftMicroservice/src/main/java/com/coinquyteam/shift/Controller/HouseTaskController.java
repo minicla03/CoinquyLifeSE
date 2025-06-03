@@ -8,7 +8,9 @@ import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-@Controller
+import java.util.Map;
+
+
 @Path("/tasks")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -19,7 +21,7 @@ public class HouseTaskController
 
     @POST
     @Path("/create")
-    public Response createTask(@HeaderParam("Authorization") String auth, HouseTask cleaningTask, String houseId)
+    public Response createTask(@HeaderParam("Authorization") String auth, HouseTask cleaningTask)
     {
         if (auth == null || auth.isEmpty()) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -28,6 +30,8 @@ public class HouseTaskController
         if (cleaningTask == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("HouseTask cannot be null").build();
         }
+
+        String houseId=cleaningTask.getHouseId();
 
         if (houseId == null || houseId.isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("House ID is required").build();

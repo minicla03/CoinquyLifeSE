@@ -11,9 +11,9 @@ public class DashApplication extends ResourceConfig
 {
     public void register()
     {
-        packages("com.coinquyteam.dashboard.Controller");
-        packages("com.coinquyteam.dashboard.Service");
-        packages("com.coinquyteam.dashboard.Config");
+        packages("Controller");
+        packages("Service");
+        packages("Config");
     }
 
     public static void main(String[] args)

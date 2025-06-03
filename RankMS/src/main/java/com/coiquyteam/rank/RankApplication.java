@@ -12,9 +12,9 @@ public class RankApplication extends ResourceConfig
 {
     public RankApplication()
     {
-        packages("com.coiquyteam.rank.Controller");
-        packages("com.coiquyteam.rank.Service");
-        packages("com.coiquyteam.rank.Repository");
+        packages("Controller");
+        packages("Service");
+        packages("Repository");
     }
     public static void main(String[] args) {
         SpringApplication.run(RankApplication.class, args);
