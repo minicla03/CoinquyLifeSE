@@ -76,8 +76,7 @@ public class SwapController
 
         try
         {
-            swapService.accept(idSwap);
-            //TODO: Implement logic to update the swap request in the database
+            swapService.acceptSwap(idSwap);
         }
         catch (Exception e)
         {
@@ -102,7 +101,7 @@ public class SwapController
 
         try
         {
-            swapService.reject(idSwap);
+            swapService.rejectSwap(idSwap);
             return Response.ok("Swap request processed successfully.").build();
         }
         catch (Exception e)

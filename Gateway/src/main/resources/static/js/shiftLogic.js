@@ -263,6 +263,7 @@ function renderCalendar(data) {
     });
 }
 
+//TODO: Segnare come fatta e rimuoverla dal calendario
 async function handleDoneButton(cleaningAssignment) {
     try {
         const response = await fetch("https://localhost:8086/Rank/rest/rank/done", {

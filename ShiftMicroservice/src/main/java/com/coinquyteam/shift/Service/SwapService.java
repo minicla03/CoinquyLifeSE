@@ -17,7 +17,7 @@ public class SwapService
     @Autowired private ISwapRequestRepository swapRequestRepository;
     @Autowired private WebClient webClient;
 
-    public boolean createSwapRequest(String auth, SwapRequest swapRequest) throws Exception {
+    public void createSwapRequest(String auth, SwapRequest swapRequest) throws Exception {
         String token = auth.substring(7);
         String username = getUsernameFromTokenViaRest(token);
 
@@ -28,11 +28,10 @@ public class SwapService
         try
         {
             swapRequestRepository.insert(swapRequest);
-            return true;
         }
         catch (Exception e)
         {
-            return false;
+            throw new Exception("Error creating swap request: " + e.getMessage());
         }
     }
 
@@ -67,20 +66,24 @@ public class SwapService
         }
     }
 
-    public void accept(String idSwap) throws Exception
+    public void acceptSwap(String idSwap) throws Exception
     {
-        try
-        {
-            Objects.requireNonNull(swapRequestRepository.findById(idSwap).orElse(null)).setAcceptedByB(StatusSwap.ACCEPTED);
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException("Error accepting swap ID " + idSwap + ": " + e.getMessage());
-        }
+        SwapRequest swapRequest = swapRequestRepository.findById(idSwap).orElseThrow(() -> new Exception("Swap request not found"));
+
+        var assignmentA = swapRequest.getAssignmentA();
+        var assignmentB = swapRequest.getAssignmentB();
+
+        var tempRoommate = assignmentA.getAssignedRoommate();
+        assignmentA.setAssignedRoommate(assignmentB.getAssignedRoommate());
+        assignmentB.setAssignedRoommate(tempRoommate);
+
+        swapRequest.setAcceptedByB(StatusSwap.ACCEPTED);
+
+        swapRequestRepository.save(swapRequest);
     }
 
 
-    public void reject(String idSwap)
+    public void rejectSwap(String idSwap)
     {
         try
         {
