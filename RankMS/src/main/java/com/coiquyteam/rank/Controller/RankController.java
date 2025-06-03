@@ -3,6 +3,7 @@ package com.coiquyteam.rank.Controller;
 import com.coinquyteam.shift.OptaPlanner.CleaningAssignment;
 import com.coiquyteam.rank.Service.RankService;
 import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ public class RankController
     @Autowired
     private RankService rankService;
 
+    @POST
     @Path("/done")
     public Response updateRank(@HeaderParam("Authorization") String auth, CleaningAssignment cleaningAssignment)
     {

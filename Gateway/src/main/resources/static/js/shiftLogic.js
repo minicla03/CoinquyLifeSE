@@ -121,7 +121,9 @@ function handleRequestAction(idSwap, accept) {
 
     if(action==="accept")
     {
-        fetch(`https://localhost:8085/Shift/rest/shif/calendar/getPlanning?houseId=${localStorage.getItem("houseId")}`, {
+        window.location.reload();
+
+        /*fetch(`https://localhost:8085/Shift/rest/shif/calendar/getPlanning?houseId=${localStorage.getItem("houseId")}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -140,7 +142,7 @@ function handleRequestAction(idSwap, accept) {
             .catch(error => {
                 console.error("Errore durante la richiesta:", error);
                 alert("⚠️ Errore: " + error.message);
-            })
+            })*/
     }
 }
 
@@ -229,7 +231,6 @@ function renderReceivedSwapRequests(assignments, currentTaskSelect, assignmentBS
     });
 }
 
-
 function renderCalendar(data) {
     const container = document.getElementById("calendar");
     container.innerHTML = "";
@@ -263,11 +264,10 @@ function renderCalendar(data) {
     });
 }
 
-//TODO: Segnare come fatta e rimuoverla dal calendario
 async function handleDoneButton(cleaningAssignment) {
     try {
-        const response = await fetch("https://localhost:8086/Rank/rest/rank/done", {
-            method: 'POST',
+        const response = await fetch("https://localhost:8085/rest/calendar/taskDone", {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': localStorage.getItem("token") || ""
@@ -281,11 +281,33 @@ async function handleDoneButton(cleaningAssignment) {
         }
 
         alert("✅ Compito segnato come completato!");
+        assignedPoint(cleaningAssignment)
         window.location.reload();
     } catch (error) {
         console.error("Errore durante il completamento del compito:", error);
         alert("⚠️ Errore: " + error.message);
     }
+}
+
+function assignedPoint(cleaningAssignments)
+{
+    fetch("https://localhost:8085/rest/client/toRank", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem("token") || ""
+        },
+        body: JSON.stringify({cleaningAssignments})
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => { throw new Error(text); });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("Punti assegnati correttamente:", data);
+    })
 }
 
 //Poupop dello scambio

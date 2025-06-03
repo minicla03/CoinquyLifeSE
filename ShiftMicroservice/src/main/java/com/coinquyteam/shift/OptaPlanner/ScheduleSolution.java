@@ -23,7 +23,7 @@ public class ScheduleSolution
         this.solverManager = SolverManager.create(solverFactory);
     }
 
-    public CleaningSchedule solve(List<Roommate> roommates, List<HouseTask> tasks, List<SwapRequest> swapRequests) throws ExecutionException, InterruptedException {
+    public CleaningSchedule solve(List<Roommate> roommates, List<HouseTask> tasks) throws ExecutionException, InterruptedException {
 
         List<CleaningAssignment> assignments = new ArrayList<>();
         IntStream.range(0, tasks.size()).forEach(i ->
@@ -33,7 +33,6 @@ public class ScheduleSolution
         CleaningSchedule problem = new CleaningSchedule();
         problem.setRoommateList(roommates);
         problem.setTaskList(tasks);
-        problem.setSwapRequestList(swapRequests);
         problem.setAssignmentList(assignments);
 
         UUID problemId = UUID.randomUUID();

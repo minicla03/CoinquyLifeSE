@@ -1,11 +1,9 @@
 package com.coinquyteam.shift.Controller;
 
+import com.coinquyteam.shift.OptaPlanner.CleaningAssignment;
 import com.coinquyteam.shift.OptaPlanner.CleaningSchedule;
 import com.coinquyteam.shift.Service.CalendarService;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,4 +46,26 @@ public class ClientShiftController
                     .build();
         }
     }
+
+    @POST
+    public Response toRank(@HeaderParam("Authorization") String token, CleaningAssignment cleaningAssignment)
+    {
+        if (token == null || token.isEmpty())
+        {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\":\"Missing or invalid authorization token\"}")
+                    .build();
+        }
+
+        if (cleaningAssignment == null || cleaningAssignment.getTask() == null)
+        {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\":\"Invalid cleaning assignment data\"}")
+                    .build();
+        }
+
+        calendarService.toRank(token,cleaningAssignment);
+    }
+
+
 }

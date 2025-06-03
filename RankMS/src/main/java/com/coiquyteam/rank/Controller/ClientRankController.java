@@ -1,11 +1,9 @@
 package com.coiquyteam.rank.Controller;
 
+import com.coinquyteam.shift.OptaPlanner.CleaningAssignment;
 import com.coiquyteam.rank.Data.CoinquyPoint;
 import com.coiquyteam.rank.Service.RankService;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
