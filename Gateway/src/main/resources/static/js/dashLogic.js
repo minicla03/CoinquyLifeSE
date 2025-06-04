@@ -115,9 +115,8 @@ function retrieveCoinquy() {
                 li.className = "coinquy-item";
                 console.log(data);
                 li.innerHTML = `
-                <span><strong>${user.username}</strong> - ${user.name} ${user.surname}</span>
-        `;
-                coinquyList.appendChild(li);h
+                <span><strong>${user.username}</strong> - ${user.name} ${user.surname}</span>`;
+                coinquyList.appendChild(li);
             });
             localStorage.setItem("listCoiquy", JSON.stringify(data));
         })
