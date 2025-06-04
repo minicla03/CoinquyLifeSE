@@ -203,19 +203,21 @@ button:hover{
 
 
 
-
-/* stile per la classifica */
-
-.score{
-    box-sizing: border-box;
-    height: calc(50vh - 62px);
-    grid-area: score; /* area del punteggio */
+/* Rende entrambi estensibili alla stessa altezza */
+.score, .casa {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    height: min(45vh, 600px); /* altezza minima di 45% della viewport o 600px */
+    flex-grow: 1; /* permette di espandersi per riempire lo spazio disponibile */
     background-color: white; /* colore di sfondo */
     border-radius: 50px; /* angoli arrotondati */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* ombra */
     padding: 1rem 2rem;
-
+    box-sizing: border-box;
 }
+
+/* stile per la classifica */
 
 .score-title{
     color: #8b00fd;
@@ -257,17 +259,6 @@ button:hover{
 
 /* stile per il riepilogo della casa */
 
-
-.casa{
-    box-sizing: border-box;
-    height: calc(50vh - 62px);
-    grid-area: casa; /* area della casa */
-    background-color: white; /* colore di sfondo */
-    border-radius: 50px; /* angoli arrotondati */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* ombra */
-    padding: 1rem 2rem;
-}
-
 .casa-title {
     color: #8b00fd;
     display: flex;
@@ -277,10 +268,11 @@ button:hover{
 }
 
 
-#lista-persone {
+
+.lista-persone {
     list-style: none;
-    padding: 0;
-    margin: 0;
+    padding: 1rem 2rem;
+    margin: 20px 0;
 }
 
 .persona-item {
@@ -290,8 +282,8 @@ button:hover{
 }
 
 .persona-item img {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     object-fit: cover;
     border-radius: 50%;
     margin-right: 10px;

@@ -112,10 +112,12 @@ function retrieveCoinquy() {
             coinquyList.innerHTML = "";
             data.forEach(user => {
                 const li = document.createElement("li");
-                li.className = "coinquy-item";
-                console.log(data);
+                li.className = "persona-item";
                 li.innerHTML = `
-                <span><strong>${user.username}</strong> - ${user.name} ${user.surname}</span>`;
+                <img src="${user.profileImage}" alt="${user.name} ${user.surname}" class="persona-img">
+                <span>${user.name} ${user.surname}</span>
+                 `;
+
                 coinquyList.appendChild(li);
             });
             localStorage.setItem("listCoiquy", JSON.stringify(data));
