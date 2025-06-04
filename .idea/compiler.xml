@@ -17,7 +17,10 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="ClientControllerService" target="21" />
+      <module name="DashboardMicroservice" target="21" />
       <module name="DashboardMicroService" target="21" />
+      <module name="PROVA" target="21" />
+      <module name="PROVA1" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -25,9 +28,14 @@
       <module name="AuthMicroService" options="-parameters" />
       <module name="DashboardMS" options="-parameters" />
       <module name="DashboardMicroService" options="-parameters" />
+      <module name="DashboardMicroservice" options="-parameters" />
       <module name="ExpenseMicroService" options="-parameters" />
       <module name="Gateway" options="-parameters" />
       <module name="HouseSelectionMicroService" options="-parameters" />
+      <module name="PROVA" options="-parameters" />
+      <module name="PROVA.main" options="-parameters" />
+      <module name="PROVA.test" options="-parameters" />
+      <module name="PROVA1" options="-parameters" />
       <module name="RankMS" options="-parameters" />
       <module name="ShiftMicroservice" options="-parameters" />
       <module name="coinquylife" options="" />

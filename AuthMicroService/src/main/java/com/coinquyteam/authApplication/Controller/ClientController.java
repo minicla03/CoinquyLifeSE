@@ -22,7 +22,6 @@ public class ClientController
     public Response houseRegistrationPage() {
         return Response.ok("{\"path\": \"http://localhost:8080/HousePage.html\"}", MediaType.APPLICATION_JSON).build();
     }
-
     @GET
     @Path("/retrieveCoinquy")
     @Produces(MediaType.APPLICATION_JSON)

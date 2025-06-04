@@ -1,15 +1,14 @@
 
-const coinquiliniStr = localStorage.getItem("coinquilini");
-const houseId = localStorage.getItem("houseId");
+const coinquilini = localStorage.getItem("coinquilini");
 const shift = localStorage.getItem("shift");
 
-let coinquilini = [];
-try {
-    coinquilini = coinquiliniStr ? JSON.parse(coinquiliniStr) : [];
-} catch (e) {
-    console.error("Errore nel parsing di coinquilini da localStorage", e);
-}
+const houseId = localStorage.getItem("houseId");
 
+document.querySelector('.nav_links li:nth-child(1) a').href = 'http://localhost:8080/dashPage.html?houseId=' + houseId;
+document.querySelector('.nav_links li:nth-child(2) a').href = 'http://localhost:8080/expensePage.html?houseId=' + houseId;
+document.querySelector('.nav_links li:nth-child(3) a').href = 'http://localhost:8080/shiftPage.html?houseId=' + houseId;
+document.querySelector('.nav_links li:nth-child(4) a').href = 'http://localhost:8080/notYet.html';
+document.querySelector('.nav_links li:nth-child(5) a').href = 'http://localhost:8080/notYet.html';
 
 function unavailableForm()
 {

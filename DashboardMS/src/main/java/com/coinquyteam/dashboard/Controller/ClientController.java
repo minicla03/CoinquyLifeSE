@@ -6,13 +6,12 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/client")
+@Path("/clientDash")
 public class ClientController
 {
     @GET
     @Path("/spese")
     @Produces(MediaType.TEXT_HTML)
-
     public Response redirectExpense()
     {
         return Response.ok("{\"path\": \"http://localhost:8080/expensePage.html\"}", MediaType.APPLICATION_JSON).build();

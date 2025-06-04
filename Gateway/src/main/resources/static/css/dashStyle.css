@@ -7,7 +7,6 @@ body{
     /*background-color: #c2c2f6; /* colore di sfondo */
 
 }
-
 /* stile per la griglia  */
 
 .grid-container{
@@ -31,14 +30,20 @@ body{
     top: 0; /* posizione fissa */
     position: sticky; /* posizione fissa */
     grid-area: header; /* area del menu */
+
 }
 
-li, a, button{
+li, button{
     font-family: "Segoe UI", sans-serif; /* font-family del testo */
     font-weight: 500; /* peso del font */
     font-size: 16px; /* dimensione del font */
     color: #8b00fd; /* colore del testo */
     text-decoration: none; /* rimuove la sottolineatura */
+}
+
+li:hover, button:hover{
+    scale: 1.1;
+
 }
 
 /* stile per il menu */
@@ -48,9 +53,8 @@ header{
     align-items: center; /* allinea gli elementi al centro */
     padding: 30px 0.2px; /* 30px di padding sopra e sotto, 10% a sinistra e a destra */
 
-    position: sticky;
-    top: 0; /* posizione fissa */
-    z-index: 1000; /* porta il menu in primo piano */
+    /*width: 90%; /* larghezza del 90% */
+    /*max-width: 1000px; /* larghezza massima */
 
     background: white;
     /*margin-top: 10px;*/
@@ -63,8 +67,8 @@ header{
 .logo{
     padding: 10px;
     cursor: pointer; /* cambia il cursore quando si passa sopra */
-    margin-left: auto; /* margine a destra per spingere gli altri elementi a sinistra */
-    order: 3; /* ordine per disporre gli elementi */
+    margin-right: auto; /* margine a destra per spingere gli altri elementi a sinistra */
+    order: 1; /* ordine per disporre gli elementi */
 }
 
 .nav{
@@ -77,11 +81,11 @@ header{
 
 .nav_links li{
     display: inline-block; /* inline-block dispone gli elementi di fianco non sopra e sotto */
-    padding: 0px 20px; /* padding di 0px sopra e sotto, 20px a sinistra e a destra */
+    padding: 0 20px; /* padding di 0px sopra e sotto, 20px a sinistra e a destra */
 }
 
 .nav_links li:nth-child(1){ /* seleziona il primo elemento della lista */
-    padding: 0px 20px 0 0; /* padding di 0px sopra e sotto, 20px a sinistra, 0px a destra */
+    padding: 0 20px 0 0; /* padding di 0px sopra e sotto, 20px a sinistra, 0px a destra */
 }
 
 .nav_links li a {
@@ -94,11 +98,10 @@ header{
 
 .cta{
     display: flex;
-    order: 1; /* ordine per disporre gli elementi */
+    order: 3; /* ordine per disporre gli elementi */
 }
 
 button{
-    margin-left: 20px; /* margine a sinistra */
     padding: 9px 25px; /* padding di 9px sopra e sotto, 25px a sinistra e a destra */
     color: white;
     background-color: rgba(139, 0, 235, 1); /* colore di sfondo */
@@ -111,7 +114,14 @@ button:hover{
     background-color: rgba(139, 0, 235, 0.8); /* colore di sfondo */
 }
 
-
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #8b00fd;
+    margin-right: 20px;
+}
 /* stile per il calendario */
 
 .calendar{

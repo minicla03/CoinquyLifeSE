@@ -1,63 +1,133 @@
-body {
+
+body{
     font-family: "Segoe UI", sans-serif;
-    background: rgba(139, 0, 253, 0.94);
-    margin: 0;
     min-height: 100vh;
-    box-sizing: border-box;
-    color: #333;
+    margin: 0; /* rimuove il margine */
+    background: linear-gradient(135deg, rgba(139, 0, 253, 0.94), #4500fd);
+    /*background-color: #c2c2f6; /* colore di sfondo */
+
+}
+/* stile per la griglia  */
+
+.grid-container{
+    box-sizing: border-box; /* include il padding e il bordo nella larghezza e altezza */
+    min-height: 100vh;
+    padding: 10px 10px 10px 10px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* due colonne */
+    grid-auto-rows: auto auto auto auto;
+    grid-template-areas:
+    "header header header"
+    "calendar score casa"
+    "calendar footer footer"; /* tre righe */
+    gap: 1rem;
+}
+
+/* stile per la navbar */
+.nav_bar {
+    top: 0; /* posizione fissa */
+    position: sticky; /* posizione fissa */
+    grid-area: header; /* area del menu */
+
+}
+
+li, a, button{
+    font-family: "Segoe UI", sans-serif; /* font-family del testo */
+    font-weight: 500; /* peso del font */
+    font-size: 16px; /* dimensione del font */
+    color: #8b00fd; /* colore del testo */
+    text-decoration: none; /* rimuove la sottolineatura */
+}
+
+li:hover,  a:hover, button:hover{
+    scale: 1.1;
+
+}
+
+/* stile per il menu */
+header{
+    display: flex; /* flexbox per disporre gli elementi */
+    justify-content: space-between; /* distribuisce lo spazio tra gli elementi */
+    align-items: center; /* allinea gli elementi al centro */
+    padding: 30px 0.2px; /* 30px di padding sopra e sotto, 10% a sinistra e a destra */
+
+    /*width: 90%; /* larghezza del 90% */
+    /*max-width: 1000px; /* larghezza massima */
+
+    background: white;
+    /*margin-top: 10px;*/
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    height: 2px;
+    /*overflow: hidden;*/ /* nasconde gli elementi che escono dalla barra */
+}
+
+.logo{
+    padding: 10px;
+    cursor: pointer; /* cambia il cursore quando si passa sopra */
+    margin-right: auto; /* margine a destra per spingere gli altri elementi a sinistra */
+    order: 1; /* ordine per disporre gli elementi */
+}
+
+.nav{
+    order: 2; /* ordine per disporre gli elementi */
+}
+.nav_links{
+    list-style: none; /* rimuove i pallini */
+    background-color: transparent;
+}
+
+.nav_links li{
+    display: inline-block; /* inline-block dispone gli elementi di fianco non sopra e sotto */
+    padding: 0 20px; /* padding di 0px sopra e sotto, 20px a sinistra e a destra */
+}
+
+.nav_links li:nth-child(1){ /* seleziona il primo elemento della lista */
+    padding: 0 20px 0 0; /* padding di 0px sopra e sotto, 20px a sinistra, 0px a destra */
+}
+
+.nav_links li a {
+    transition : all 0.3s ease 0s; /* transizione per il colore */
+}
+
+.nav_links li a:hover{
+    color: rgba(139, 0, 235, 0.8); /* colore al passaggio del mouse */
+}
+
+.cta{
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    order: 3; /* ordine per disporre gli elementi */
 }
 
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    background-color: white;
-    color: #4b0082;
-    padding: 10px 40px;
-    font-size: 1.2em;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    min-height: 60px;
-    box-sizing: border-box;
+button{
+    padding: 9px 25px; /* padding di 9px sopra e sotto, 25px a sinistra e a destra */
+    color: white;
+    background-color: rgba(139, 0, 235, 1); /* colore di sfondo */
+    border: none; /* nessun bordo */
+    border-radius: 50px; /* angoli arrotondati */
+    cursor: pointer; /* cambia il cursore quando si passa sopra */
+    transition : all 0.3s ease 0s; /* transizione per il colore */
+}
+button:hover{
+    background-color: rgba(139, 0, 235, 0.8); /* colore di sfondo */
 }
 
-.back-btn {
-    CONTAIN-INTRINSIC-BLOCK-SIZE: AUTO 100PX;
-    background-color: #4b008200;
-    border: 0px solid #4b0082;
-    color: #ffffff;
-    font-size: 1.5em;
-    cursor: pointer;
-    margin-right: 10px;
-    padding: 0px;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.back-btn:hover {
-    background-color: white;
-    color: #4b0082;
-}
-
-.navbar-title {
-    flex-grow: 1;
-    text-align: left;
-    color: #4b0082;
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #8b00fd;
+    margin-right: 20px;
 }
 
 .wrapper {
     display: flex;
     gap: 30px;
-    padding: 20px;
     justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
-    padding: 80px 40px 40px 40px;
     box-sizing: border-box;
     flex-wrap: nowrap;
 }
@@ -95,16 +165,20 @@ body {
 }
 
 .calendar-container {
-    flex-grow: 1;
     background: white;
     padding: 20px 25px;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     color: #333;
-    min-width: 400px;
     box-sizing: border-box;
     position: sticky;
     top: 80px;
+
+    /* Rimozione/minimizzazione per adattarsi al contenuto */
+    min-width: unset; /* oppure rimuovi del tutto */
+    width: fit-content;
+    max-width: 100%; /* opzionale per evitare che esca dallo schermo */
+    flex-grow: 0; /* impedisce che cresca oltre il contenuto */
 }
 
 .swap-requests-container {

@@ -6,14 +6,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @ApplicationPath("/rest")
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.coinquyteam.dashboard")
 public class DashApplication extends ResourceConfig
 {
-    public void register()
+    public DashApplication()
     {
-        packages("Controller");
-        packages("Service");
-        packages("Config");
+        packages("com/coinquyteam/dashboard/Controller");
+        packages("com/coinquyteam/dashboard/Service");
+        packages("com/coinquyteam/dashboard/Service");
     }
 
     public static void main(String[] args)

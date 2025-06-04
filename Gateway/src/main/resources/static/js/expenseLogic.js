@@ -20,7 +20,7 @@ userLink.appendChild(img);
 
 
 // Estrae houseId dalla query string
-const urlParams = new URLSearchParams(window.location.search);
+/*const urlParams = new URLSearchParams(window.location.search);
 const houseId = urlParams.get("houseId");
 
 // Se houseId è presente, lo salva in localStorage (o lo usa direttamente)
@@ -28,15 +28,15 @@ if (houseId) {
     localStorage.setItem("houseId", houseId);
 } else {
     alert("❌ Nessuna casa selezionata. Torna alla home.");
-    window.location.href = "/HousePage.html"; // o dove preferisci
-}
+    window.location.href = "/dashPage.html"; // o dove preferisci
+}*/
+const houseId = localStorage.getItem("houseId");
 
-// Redirige l'utente alla pagina delle spese selezionata
-
-const homeLink = 'http://localhost:8080/dashPage?houseId=' + houseId;
-document.querySelector('.nav_links li:nth-child(1) a').href = homeLink;
-
-
+document.querySelector('.nav_links li:nth-child(1) a').href = 'http://localhost:8080/dashPage.html?houseId=' + houseId;
+document.querySelector('.nav_links li:nth-child(2) a').href = 'http://localhost:8080/expensePage.html?houseId=' + houseId;
+document.querySelector('.nav_links li:nth-child(3) a').href = 'http://localhost:8080/shiftPage.html?houseId=' + houseId;
+document.querySelector('.nav_links li:nth-child(4) a').href = 'http://localhost:8080/notYet.html';
+document.querySelector('.nav_links li:nth-child(5) a').href = 'http://localhost:8080/notYet.html';
 
 const expenses = [];
 let coinquilini = [];
@@ -69,16 +69,16 @@ function addExpense() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem("token")}` // Aggiungi il token di autenticazione
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
         },
         body: JSON.stringify({
 
-            description: description,          // ✅ String
-            amount: amount,        // ✅ Float, non stringa
-            createdBy: createdBy,              // ✅ String
-            category: category,                // ✅ Enum valido lato Java
-            participants: selectedParticipants,// ✅ Array di String
-            houseId: houseId                   // ✅ String
+            description: description,
+            amount: amount,
+            createdBy: createdBy,
+            category: category,
+            participants: selectedParticipants,
+            houseId: houseId
         })
     })
         .then(response => {
