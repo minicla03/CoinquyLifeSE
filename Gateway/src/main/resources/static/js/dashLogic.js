@@ -114,12 +114,11 @@ function retrieveCoinquy() {
         .then(data => {
             const coinquyList = document.getElementById("lista-persone");
             coinquyList.innerHTML = "";
-            data.forEach(coinquy => {
+            data.forEach(user => {
                 const li = document.createElement("li");
                 li.className = "coinquy-item";
                 li.innerHTML = `
-          <img src="${coinquy.img}" alt="${coinquy.nome} ${coinquy.cognome}" />
-          <span>${coinquy.nome} ${coinquy.cognome}</span>
+                <span><strong>${user.username}</strong> - ${user.name} ${user.surname}</span>
         `;
                 coinquyList.appendChild(li);
             });
