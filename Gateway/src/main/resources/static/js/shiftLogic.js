@@ -1,7 +1,6 @@
 
-const coinquilini = localStorage.getItem("coinquilini");
-const shift = localStorage.getItem("shift");
-
+const coinquilini = localStorage.getItem("listCoiquy");
+//const shift = localStorage.getItem("shift");
 const houseId = localStorage.getItem("houseId");
 
 document.querySelector('.nav_links li:nth-child(1) a').href = 'http://localhost:8080/dashPage.html?houseId=' + houseId;

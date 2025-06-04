@@ -31,6 +31,7 @@ if (houseId) {
     window.location.href = "/dashPage.html"; // o dove preferisci
 }*/
 const houseId = localStorage.getItem("houseId");
+console.log("House ID:", houseId);
 
 document.querySelector('.nav_links li:nth-child(1) a').href = 'http://localhost:8080/dashPage.html?houseId=' + houseId;
 document.querySelector('.nav_links li:nth-child(2) a').href = 'http://localhost:8080/expensePage.html?houseId=' + houseId;
@@ -39,7 +40,8 @@ document.querySelector('.nav_links li:nth-child(4) a').href = 'http://localhost:
 document.querySelector('.nav_links li:nth-child(5) a').href = 'http://localhost:8080/notYet.html';
 
 const expenses = [];
-let coinquilini = [];
+let coinquilini = localStorage.getItem("listCoiquy");
+console.log(coinquilini);
 
 const descriptionInput = document.getElementById("description");
 const amountInput = document.getElementById("amount");
@@ -165,7 +167,7 @@ function renderSingleExpense(expense, index) {
 async function retriveExpenses() {
     expenseList.innerHTML = ""; // pulisci DOM
 
-    await fetch(`http://localhost:8080/Expense/rest/expense/getAllExpenses?houseId=${houseId}`,{
+    await fetch(`http://localhost:8080/Expense/rest/expense/getAllExpenses?houseId=${localStorage.getItem("houseId")}`,{
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -203,29 +205,7 @@ function updateTotal() {
 
 async function retriveCoinquys() {
     try {
-        const response = await fetch('http://localhost:8080/Auth/rest/auth/getUserByHouseId', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem("token")}` // Aggiungi il token di autenticazione se necessario
-            },
-            body: JSON.stringify({
-                houseId: houseId
-            })
-        });
 
-        if (!response.ok) {
-            throw new Error('Errore durante il recupero dei coinquilini.');
-        }
-
-        coinquilini = await response.json(); // <-- await qui è fondamentale
-        console.log('Coinquilini recuperati con successo:', coinquilini);
-
-
-        // Assicurati che sia un array
-        if (!Array.isArray(coinquilini)) {
-            throw new Error("Il valore ricevuto non è un array");
-        }
 
         // Participants Checkbox (scelta multipla)
         const container = document.getElementById('participants-container');
@@ -307,10 +287,7 @@ async function retriveCoinquys() {
             });
         }
 
-// Al cambio della select aggiorno i checkbox
         selectPayer.addEventListener('change', syncCheckboxes);
-
-
     } catch (error) {
         console.error('Errore nel recupero dei coinquilini:', error);
         alert("Errore durante il caricamento dei coinquilini.");
@@ -332,7 +309,7 @@ function calculateDebts() {
         .then(response => response.json())
         .then(data => {
             const balancesDiv = document.getElementById("balances");
-            balancesDiv.innerHTML = ""; // Svuota il contenuto
+            balancesDiv.innerHTML = "";
 
             if (!data.debts || data.debts.length === 0) {
                 balancesDiv.innerHTML = "<p>ℹ️ Nessun debito trovato.</p>";
@@ -391,13 +368,11 @@ function calculateDebts() {
 //delle informazioni salvate nel DB
 document.addEventListener('DOMContentLoaded', async () => {
 
-
     await retriveCoinquys();
     payerInput = document.getElementById("payer");
     await retriveExpenses();
     await calculateDebts();
     updateTotal();
 });
-
 
 addBtn.addEventListener("click", addExpense);

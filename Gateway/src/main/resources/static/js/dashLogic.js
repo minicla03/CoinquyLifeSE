@@ -1,8 +1,4 @@
-const urlParams = new URLSearchParams(window.location.search);
-const houseId = urlParams.get('houseId');
-if (houseId) {
-    localStorage.setItem('houseId', houseId);
-}
+const houseId = localStorage.getItem('houseId');
 
 const monthYear = document.getElementById("monthYear");
 const calendarDays = document.getElementById("calendarDays");
@@ -117,12 +113,13 @@ function retrieveCoinquy() {
             data.forEach(user => {
                 const li = document.createElement("li");
                 li.className = "coinquy-item";
+                console.log(data);
                 li.innerHTML = `
                 <span><strong>${user.username}</strong> - ${user.name} ${user.surname}</span>
         `;
-                coinquyList.appendChild(li);
+                coinquyList.appendChild(li);h
             });
-            localStorage.setItem("listCoiquy", JSON.stringify(data));
+            localStorage.setItem("listCoiquy", JSON.stringify(Array.from(data)));
         })
         .catch(error => console.error('Errore:', error));
 }

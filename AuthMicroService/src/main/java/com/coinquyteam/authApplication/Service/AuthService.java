@@ -74,10 +74,12 @@ public class AuthService {
         return new UserResult(StatusAuth.USERS_NOT_FOUND, null);
     }
 
-    public List<String> getCoinquilinibyHouseId(String houseId)
+    public List<User> getCoinquilinibyHouseId(String houseId)
     {
-        return userRepository.findAll()
-                .stream()
-                .map(User::getUsername).toList();
+        List<User> list = userRepository.findAll().stream()
+                .filter(u -> BCrypt.checkpw(houseId, u.getHouseUser()))
+                .toList();
+        list.forEach(System.out::println);
+        return list;
     }
 }

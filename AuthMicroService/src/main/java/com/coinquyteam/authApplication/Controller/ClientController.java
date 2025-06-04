@@ -1,5 +1,6 @@
 package com.coinquyteam.authApplication.Controller;
 
+import com.coinquyteam.authApplication.Data.User;
 import com.coinquyteam.authApplication.Service.AuthService;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -34,7 +35,7 @@ public class ClientController
                     .build();
         }
 
-        List<String> coinquilini = authService.getCoinquilinibyHouseId(houseId);
+        List<User> coinquilini = authService.getCoinquilinibyHouseId(houseId);
         return Response.status(Response.Status.OK).entity(coinquilini).build();
     }
 }
