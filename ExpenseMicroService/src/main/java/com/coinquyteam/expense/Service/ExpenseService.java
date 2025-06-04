@@ -27,7 +27,7 @@ public class ExpenseService {
     public ExpenseResult createExpense(String expenseDescription, Date expenseDate, Double expenseAmount,
                                        String houseId, String createdBy, CategoryExpense category, List<String> participants)
     {
-        if(participants.size() < 2){
+        if(participants.isEmpty()){
             return new ExpenseResult(ExpenseStatus.INVALID_INPUT, "At least two participants are required for an expense", null);
         }
 
@@ -69,8 +69,6 @@ public class ExpenseService {
 
         for (Expense expense : expenses) {
             // Creo una mappa partecipante->debito
-            System.out.println(expense.getParticipants());
-
             if (expense.getParticipants().size() > 1 && expense.getStatus().equals(PENDING)) {
 
                 Double amount = expense.getAmount()/expense.getParticipants().size();
@@ -94,8 +92,6 @@ public class ExpenseService {
                 debts.add(debt);
             }
         }
-
-        System.out.println(debts);
 
         return new ExpenseDebtResult(ExpenseStatus.SUCCESS, "Debts calculated successfully", debts);
     }

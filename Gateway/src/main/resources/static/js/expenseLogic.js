@@ -56,8 +56,7 @@ function addExpense() {
     const createdBy = payerInput.value.trim();
     const category = categorySelect.value;
     const selectedParticipants = Array.from(document.querySelectorAll('input[name="participants"]:checked')).map(cb => cb.value);
-    participants: selectedParticipants.map(name => name.charAt(0) + name.slice(1));
-
+    console.log("Selected Participants:", selectedParticipants);
     // Validazione dei campi
     if (!description || !amountStr || isNaN(amount) || !createdBy || !category || selectedParticipants.length === 0) {
         alert("Per favore, compila tutti i campi correttamente.");
@@ -202,8 +201,6 @@ function updateTotal() {
 
 async function retriveCoinquys() {
     try {
-
-
         // Participants Checkbox (scelta multipla)
         const container = document.getElementById('participants-container');
         container.innerHTML = ""; // Pulisce eventuali contenuti precedenti
