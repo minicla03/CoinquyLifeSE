@@ -53,6 +53,17 @@ public class TimeSlot
 
     public boolean overlaps(TimeSlot other)
     {
+        if (other==null) return false;
         return !(this.end.isBefore(other.start) || this.start.isAfter(other.end));
+    }
+
+    @Override
+    public String toString()
+    {
+        return "TimeSlot{" +
+                "idTimeSlot='" + idTimeSlot + '\'' +
+                ", start=" + start +
+                ", end=" + end +
+                '}';
     }
 }

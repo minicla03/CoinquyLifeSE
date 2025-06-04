@@ -35,8 +35,8 @@
                         <select id="coinquys-select" required>
                             <option value="" disabled selected>Seleziona coinquilino</option>
                         </select>
-                        <input type="datetime-local" placeholder="Inizio indisponibilità" />
-                        <input type="datetime-local" placeholder="Fine indisponibilità" />
+                        <input type="datetime-local" placeholder="Inizio indisponibilità" id="start-time"/>
+                        <input type="datetime-local" placeholder="Fine indisponibilità" id="end-time"/>
                         <button onclick="unavailableForm()">Salva indisponibilità</button>
                     </form>
                 </div>
@@ -52,6 +52,7 @@
                             <th>Descrizione</th>
                             <th>Orario</th>
                         </tr>
+                        <tbody id="calendarBody"></tbody>
                         </thead>
                     </table>
 

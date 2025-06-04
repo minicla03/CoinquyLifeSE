@@ -1,6 +1,15 @@
 
-const coinquilini = localStorage.getItem("listCoiquy");
-//const shift = localStorage.getItem("shift");
+const token=localStorage.getItem("token");
+let coinquilini = [];
+function local()
+{
+    let user=JSON.parse(localStorage.getItem("listCoiquy"));
+    user.forEach((item) => {
+        //const userObj = JSON.parse(item);
+        coinquilini.push(item);
+        console.log(item);
+    })
+}
 const houseId = localStorage.getItem("houseId");
 
 document.querySelector('.nav_links li:nth-child(1) a').href = 'http://localhost:8080/dashPage.html?houseId=' + houseId;
@@ -24,27 +33,28 @@ function unavailableForm()
             alert("⚠️ Tutti i campi sono obbligatori!");
             return;
         }
-
-        fetch(`http://localhost:8080/Shift/rest/shift/unAvailability?houseId=${houseId}`, {
+        console.log(token);
+        fetch(`http://localhost:8080/Shift/rest/unAvailability/addAvailability`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem("token") || ""
+                'Authorization': "Bearer " + token
             },
             body: JSON.stringify({
                 start: startTime,
-                end: endTime
+                end: endTime,
+                houseId: houseId
             })
         })
             .then(response => {
-                if (!response.ok) {
+                if (response.ok) {
+                    alert("✅ Indisponibilità salvata con successo!");
+                    form.reset();
+                }
+                else
+                {
                     return response.text().then(text => { throw new Error(text); });
                 }
-                return response.json();
-            })
-            .then(data => {
-                alert("✅ Indisponibilità salvata con successo!");
-                form.reset();
             })
             .catch(error => {
                 console.error("Errore durante la richiesta:", error);
@@ -56,12 +66,15 @@ function unavailableForm()
 document.getElementById("viewPlanningLink").addEventListener("click", (e) => {
     e.preventDefault()
 
-    fetch(`http://localhost:8080/Shift/rest/shif/calendar/getPlanning?houseId=${houseId}`, {
-        method: "GET",
+    fetch(`http://localhost:8080/Shift/rest/calendar/getPlanning`, {
+        method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': localStorage.getItem("token") || ""
-        }
+            'Authorization': "Bearer " + token
+        },
+        body: JSON.stringify({
+            houseId: houseId
+        })
     })
         .then(response => {
             if (!response.ok) {
@@ -70,7 +83,8 @@ document.getElementById("viewPlanningLink").addEventListener("click", (e) => {
             return response.json();
         })
         .then(data => {
-            renderCalendar(data)
+            console.log(data.assignmentList)
+            renderCalendar(data.assignmentList);
         })
         .catch(error => {
             console.error("Errore durante la richiesta:", error);
@@ -81,7 +95,7 @@ document.getElementById("viewPlanningLink").addEventListener("click", (e) => {
 function retriveCoinquys()
 {
     const select = document.getElementById('coinquys-select');
-    const swapSelect = document.getElementById('swapWith');
+    //const swapSelect = document.getElementById('swapWith');
 
     coinquilini.forEach(coinquilino => {
         const option = document.createElement('option');
@@ -89,8 +103,8 @@ function retriveCoinquys()
         option.textContent = coinquilino.name;
         select.appendChild(option);
 
-        const swapOption = option.cloneNode(true);
-        swapSelect.appendChild(swapOption);
+        //const swapOption = option.cloneNode(true);
+        //swapSelect.appendChild(swapOption);
     });
 }
 
@@ -157,7 +171,7 @@ function populateAssignmentSelects(shifts) {
             method: "GET",
             headers: { //TODO: body mancante
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem("token") || ""
+                'Authorization': "Bearer " + token
             }
         })
             .then(response => {
@@ -229,35 +243,34 @@ function renderReceivedSwapRequests(assignments, currentTaskSelect, assignmentBS
 }
 
 function renderCalendar(data) {
-    const container = document.getElementById("calendar");
-    container.innerHTML = "";
+    const container = document.getElementById("shiftCalendar");
+    //container.innerHTML = "";
 
-    localStorage.setItem("shifts", data)
+    //localStorage.setItem("shifts", data)
 
     if (!data || data.length === 0) {
         const emptyMessage = document.getElementById("emptyMessage");
         emptyMessage.style.display = "block";
         return;
     }
+    const tbody = document.getElementById("calendarBody");
 
     data.forEach(cleaningAssignment => {
         const { assignedRoommate, task } = cleaningAssignment;
-        const { task: taskName, description, timeSlot ,point } = task;
+        const { task: taskCategory, description, timeSlot } = task;
         const { start, end } = timeSlot;
 
-        const shiftDiv = document.createElement("div");
-        shiftDiv.className = "shift";
-        shiftDiv.innerHTML = `
-            <strong>${assignedRoommate.usernameRoommate}</strong> - ${taskName} <br>
-            - ${description} 🕒 ${new Date(start).toLocaleString()} → ${new Date(end).toLocaleString()}
-            -${task.point}
-            <div style="margin-top: 5px;">
-                    <button class="done-btn" >✅</button>
-            </div>
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${new Date(start).toLocaleDateString()}</td>
+            <td>${assignedRoommate.usernameRoommate}</td>
+            <td>${taskCategory}</td>
+            <td>${description}</td>
+            <td>${new Date(start).toLocaleTimeString()} - ${new Date(end).toLocaleTimeString()}</td>
         `;
 
-        shiftDiv.querySelector(".done-btn").addEventListener("click", ()=>handleDoneButton(cleaningAssignment))
-        container.appendChild(shiftDiv);
+        tbody.appendChild(row);
     });
 }
 
@@ -267,7 +280,7 @@ async function handleDoneButton(cleaningAssignment) {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem("token") || ""
+                'Authorization': "Bearer " + token
             },
             body: JSON.stringify(cleaningAssignment)
         });
@@ -292,7 +305,7 @@ function assignedPoint(cleaningAssignments)
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': localStorage.getItem("token") || ""
+            'Authorization': "Bearer " + token
         },
         body: JSON.stringify({cleaningAssignments})
     })
@@ -339,11 +352,11 @@ document.getElementById("sendSwapBtn").addEventListener("click", async function(
 
     try
     {
-        const response = await fetch("http://localhost:8080/Shift/rest/shift/swapRequest", {
+        const response = await fetch("http://localhost:8080/Shift/rest/swapRequest", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": localStorage.getItem("token") || ""
+                "Authorization": "Bearer " + token
             },
             body: JSON.stringify({
                 fromAssignmentId: currentTask,
@@ -366,25 +379,6 @@ document.getElementById("sendSwapBtn").addEventListener("click", async function(
     }
 });
 
-document.getElementById("back-btn").addEventListener("click", async () => {
-    try {
-        const response = await fetch('http://localhost:8080/Shift/rest/client/backToHome', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        });
-        if (!response.ok) throw new Error("Errore nel ritorno alla home");
-
-        const data = await response.json();
-        if (data.path) {
-            window.location.href = data.path;
-        } else {
-            console.error("Risposta senza path.");
-        }
-    } catch (error) {
-        console.error("Errore:", error);
-    }
-});
-
 const form = document.getElementById("createTaskForm");
 form.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -399,17 +393,17 @@ form.addEventListener("submit", async function (e) {
     }
 
     try {
-        const response = await fetch("http://localhost:8080/Shift/rest/shift/createTask", {
+        const response = await fetch("http://localhost:8080/Shift/rest/tasks/createTask", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": localStorage.getItem("token") || ""
+                "Authorization": "Bearer " + token
             },
             body: JSON.stringify({
                 description: description,
-                type: type,
-                dateTime: dateTime,
-                houseId: localStorage.getItem("houseId")
+                task: {taskName: type, points: null, penalityPoints: null},
+                timeSlot: { start: dateTime, end: null },
+                houseId: houseId
             })
         });
 
@@ -426,9 +420,10 @@ form.addEventListener("submit", async function (e) {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    local();
     retriveCoinquys();
     //if(shift.length!==0){
     //    renderCalendar(shift);
     //}
-    populateAssignmentSelects(shift)
+    //populateAssignmentSelects(shift)
 });

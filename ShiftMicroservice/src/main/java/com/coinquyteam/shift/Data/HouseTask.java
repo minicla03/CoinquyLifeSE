@@ -15,11 +15,12 @@ public class HouseTask
 
     public HouseTask() { }
 
-    public HouseTask(TaskCategory task, String description, TimeSlot timeSlot)
+    public HouseTask(TaskCategory task, String description, TimeSlot timeSlot, String houseId)
     {
         this.task = task;
         this.description = description;
         this.timeSlot = timeSlot;
+        this.houseId = houseId;
     }
 
     public String getIdTask()

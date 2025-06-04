@@ -26,6 +26,7 @@ public class UnAvailabilityService
     public boolean associateUnavailabilityWithRoommate(String auth, TimeSlot unavailability, String houseId) throws IllegalArgumentException
     {
         String username = getUsernameFromTokenViaRest(auth.substring(7));
+        System.out.println(username);
         if (username == null)
         {
             throw new IllegalArgumentException("Invalid or expired token");

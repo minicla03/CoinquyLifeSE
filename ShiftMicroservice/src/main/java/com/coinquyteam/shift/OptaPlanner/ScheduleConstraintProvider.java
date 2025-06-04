@@ -28,8 +28,8 @@ public class ScheduleConstraintProvider implements ConstraintProvider
                 unassignedTask(factory),
                 unevenDistribution(factory),
                 noConsecutiveDays(factory),
-                swapRequestBeforeDeadline(factory),
-                swapRequestSatisfied(factory)
+                //swapRequestBeforeDeadline(factory),
+                //swapRequestSatisfied(factory)
         };
     }
 
@@ -78,7 +78,7 @@ public class ScheduleConstraintProvider implements ConstraintProvider
     }
 
     //Hard constraint
-    private Constraint swapRequestBeforeDeadline(ConstraintFactory factory)
+    /*private Constraint swapRequestBeforeDeadline(ConstraintFactory factory)
     {
         return factory.forEach(SwapRequest.class)
                 .filter(req -> req.isAcceptedByB() == StatusSwap.ACCEPTED)
@@ -90,10 +90,10 @@ public class ScheduleConstraintProvider implements ConstraintProvider
                 })
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("Swap request before deadline");
-    }
+    }*/
 
     // Hard constraint
-    private Constraint swapRequestSatisfied(ConstraintFactory factory)
+    /*private Constraint swapRequestSatisfied(ConstraintFactory factory)
     {
         return factory.forEach(SwapRequest.class)
                 .filter(req -> req.isAcceptedByB() == StatusSwap.ACCEPTED)
@@ -106,5 +106,5 @@ public class ScheduleConstraintProvider implements ConstraintProvider
                 })
                 .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("Swap request not satisfied");
-    }
+    }*/
 }

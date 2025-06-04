@@ -20,7 +20,7 @@ public class HouseTaskController
     private HouseTaskService houseTaskService;
 
     @POST
-    @Path("/create")
+    @Path("/createTask")
     public Response createTask(@HeaderParam("Authorization") String auth, HouseTask cleaningTask)
     {
         if (auth == null || auth.isEmpty()) {
@@ -39,7 +39,7 @@ public class HouseTaskController
 
         try
         {
-            houseTaskService.createTask(cleaningTask, houseId);
+            houseTaskService.createTask(cleaningTask);
             return Response.status(Response.Status.CREATED).entity("Task created successfully").build();
         }
         catch (Exception e)

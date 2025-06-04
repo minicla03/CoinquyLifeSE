@@ -9,6 +9,8 @@ import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.util.Map;
+
 @Path("/calendar")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -16,13 +18,11 @@ public class CalendarController
 {
     @Autowired private CalendarService calendarService;
 
-    @GET
+    @POST
     @Path("/getPlanning")
-    public Response getPlanning(@HeaderParam("Authorization") String token, String houseId)
+    public Response getPlanning(Map<String,String> body)
     {
-        if(token == null || token.isEmpty()) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Authorization token is required").build();
-        }
+        String houseId = body.get("houseId");
 
         if(houseId == null || houseId.isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("House ID is required").build();
