@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-@Controller
+
 @Path("/auth")
 public class AuthController {
 

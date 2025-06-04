@@ -10,6 +10,11 @@ public class AuthResult
         this.token = token;
     }
 
+    public AuthResult() {
+        this.statusAuth = statusAuth;
+        this.token = token;
+    }
+
     public StatusAuth getStatusAuth() {
         return statusAuth;
     }
