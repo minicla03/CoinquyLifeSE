@@ -18,18 +18,6 @@ userLink.innerHTML = '';
 // Inserisce immagine
 userLink.appendChild(img);
 
-
-// Estrae houseId dalla query string
-/*const urlParams = new URLSearchParams(window.location.search);
-const houseId = urlParams.get("houseId");
-
-// Se houseId è presente, lo salva in localStorage (o lo usa direttamente)
-if (houseId) {
-    localStorage.setItem("houseId", houseId);
-} else {
-    alert("❌ Nessuna casa selezionata. Torna alla home.");
-    window.location.href = "/dashPage.html"; // o dove preferisci
-}*/
 const houseId = localStorage.getItem("houseId");
 console.log("House ID:", houseId);
 
@@ -40,7 +28,16 @@ document.querySelector('.nav_links li:nth-child(4) a').href = 'http://localhost:
 document.querySelector('.nav_links li:nth-child(5) a').href = 'http://localhost:8080/notYet.html';
 
 const expenses = [];
-let coinquilini = localStorage.getItem("listCoiquy");
+let coinquilini = [];
+function local()
+{
+    let user=JSON.parse(localStorage.getItem("listCoiquy"));
+    user.forEach((item) => {
+        //const userObj = JSON.parse(item);
+        coinquilini.push(item);
+        console.log(item);
+    })
+}
 console.log(coinquilini);
 
 const descriptionInput = document.getElementById("description");
@@ -367,7 +364,7 @@ function calculateDebts() {
 //per inizializzazione dei contenuti della pagina nel caso ci sono
 //delle informazioni salvate nel DB
 document.addEventListener('DOMContentLoaded', async () => {
-
+    local()
     await retriveCoinquys();
     payerInput = document.getElementById("payer");
     await retriveExpenses();

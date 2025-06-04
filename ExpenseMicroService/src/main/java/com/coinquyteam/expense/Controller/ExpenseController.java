@@ -28,7 +28,7 @@ public class ExpenseController
     @Path("/createExpense")
     public Response createExpense(Expense expense)
     {
-
+        System.out.println("Creating expense: " + expense);
         String expenseDescription = expense.getDescription();
         Date expenseDate = new Date(); // Assuming the current date is used for the expense
         double expenseAmount = expense.getAmount();

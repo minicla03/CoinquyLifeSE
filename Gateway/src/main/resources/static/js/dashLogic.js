@@ -119,7 +119,7 @@ function retrieveCoinquy() {
         `;
                 coinquyList.appendChild(li);h
             });
-            localStorage.setItem("listCoiquy", JSON.stringify(Array.from(data)));
+            localStorage.setItem("listCoiquy", JSON.stringify(data));
         })
         .catch(error => console.error('Errore:', error));
 }

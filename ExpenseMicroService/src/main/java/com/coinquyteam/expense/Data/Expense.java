@@ -124,4 +124,19 @@ public class Expense {
     public void setStatus(StatusExpense status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Expense{" +
+                "id='" + id + '\'' +
+                ", description='" + description + '\'' +
+                ", amount=" + amount +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdDate=" + createdDate +
+                ", category=" + category +
+                ", houseId='" + houseId + '\'' +
+                ", participants=" + participants +
+                ", status=" + status +
+                '}';
+    }
 }
