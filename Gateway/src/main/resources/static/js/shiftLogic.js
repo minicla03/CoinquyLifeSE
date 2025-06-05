@@ -2,10 +2,7 @@
 const token=localStorage.getItem("token");
 let coinquilini = [];
 let shift =[];
-if(localStorage.getItem("shift")!== null)
-{
-    shift = JSON.parse(localStorage.getItem("shift"));
-}
+
 function local()
 {
     let user=JSON.parse(localStorage.getItem("listCoiquy"));
@@ -14,6 +11,15 @@ function local()
         coinquilini.push(item);
         console.log(item);
     })
+    if(localStorage.getItem("shift")!== null)
+    {
+        let s=JSON.parse(localStorage.getItem("shift"));
+        s.forEach((item) => {
+            //const userObj = JSON.parse(item);
+            shift.push(item);
+            console.log(item);
+        })
+    }
 }
 const houseId = localStorage.getItem("houseId");
 
@@ -293,14 +299,13 @@ function renderCalendar(data) {
 
 async function handleDoneButton(cleaningAssignmentId) {
     try {
-        //TODO
         const response = await fetch("http://localhost:8080/Shift/rest/calendar/taskDone", {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': "Bearer " + token
             },
-            body: JSON.stringify(cleaningAssignmentId)
+            body: JSON.stringify({ id: cleaningAssignmentId})
         });
 
         if (!response.ok) {
@@ -341,7 +346,12 @@ function assignedPoint(cleaningAssignments)
 //Poupop dello scambio
 const openModalBtn = document.getElementById('openSwapModal');
 const modal = document.getElementById('swapModal');
+//const closeBtn = modal.querySelector('.close');
+
 const closeBtn = modal.querySelector('.close');
+const closeComingSoonBtn = document.getElementById('closeComingSoon');
+closeBtn.onclick = () => modal.style.display = 'none';
+closeComingSoonBtn.onclick = () => modal.style.display = 'none';
 
 openModalBtn.addEventListener('click', () => {
     modal.style.display = 'block';

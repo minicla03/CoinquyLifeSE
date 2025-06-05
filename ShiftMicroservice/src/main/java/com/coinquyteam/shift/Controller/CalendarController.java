@@ -45,8 +45,9 @@ public class CalendarController
 
     @PUT
     @Path("/taskDone")
-    public Response taskDone(Integer id)
+    public Response taskDone(Map<String,Integer> body)
     {
+        Integer id = body.get("id");
         if (id == null || id <= 0) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid task ID").build();
         }

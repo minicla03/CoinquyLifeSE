@@ -1,16 +1,12 @@
 package com.coinquyteam.shift.Service;
 
-import com.coinquyteam.houseSelectionApplication.Data.House;
 import com.coinquyteam.shift.Data.HouseTask;
 import com.coinquyteam.shift.Data.Roommate;
-import com.coinquyteam.shift.Data.SwapRequest;
 import com.coinquyteam.shift.OptaPlanner.CleaningAssignment;
 import com.coinquyteam.shift.OptaPlanner.CleaningSchedule;
 import com.coinquyteam.shift.OptaPlanner.ScheduleSolution;
 import com.coinquyteam.shift.Repository.ICleaningAssignmentRepository;
-import com.coinquyteam.shift.Repository.IHouseTaskRepository;
 import com.coinquyteam.shift.Repository.IRoommateRepository;
-import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Map;
@@ -46,15 +41,21 @@ public class CalendarService
             throw new IllegalArgumentException("House must have at least one roommate and one task.");
         }
         CleaningSchedule cleaningSchedule=solution.solve(roommates, tasks);
-        cleaningAssignmentRepository.saveAll(cleaningSchedule.getAssignmentList());
+        cleaningAssignmentRepository.insert(cleaningSchedule.getAssignmentList());
         return cleaningSchedule;
     }
 
     public void markTaskAsDone(Integer id)
     {
-        CleaningAssignment assignment = cleaningAssignmentRepository.getReferenceById(id);
-        assignment.getTask().setDone(true);
-        cleaningAssignmentRepository.save(assignment);
+        cleaningAssignmentRepository.findById(id).ifPresentOrElse(
+                cleaningAssignment -> {
+                    cleaningAssignment.getTask().setDone(true);
+                    cleaningAssignmentRepository.save(cleaningAssignment);
+                },
+                () -> {
+                    throw new IllegalArgumentException("No cleaning assignment found with ID: " + id);
+                }
+        );
     }
 
     public String toRank(String token, CleaningAssignment cleaningAssignment) {
