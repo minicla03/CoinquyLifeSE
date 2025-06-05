@@ -1,11 +1,14 @@
 package com.coinquyteam.shift.Service;
 
+import com.coinquyteam.houseSelectionApplication.Data.House;
 import com.coinquyteam.shift.Data.HouseTask;
 import com.coinquyteam.shift.Data.Roommate;
 import com.coinquyteam.shift.Data.SwapRequest;
 import com.coinquyteam.shift.OptaPlanner.CleaningAssignment;
 import com.coinquyteam.shift.OptaPlanner.CleaningSchedule;
 import com.coinquyteam.shift.OptaPlanner.ScheduleSolution;
+import com.coinquyteam.shift.Repository.ICleaningAssignmentRepository;
+import com.coinquyteam.shift.Repository.IHouseTaskRepository;
 import com.coinquyteam.shift.Repository.IRoommateRepository;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,10 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Service
-public class CalendarService {
+public class CalendarService
+{
+    @Autowired
+    private ICleaningAssignmentRepository cleaningAssignmentRepository;
     @Autowired
     private IRoommateRepository roommateRepository;
     @Autowired
@@ -39,14 +45,16 @@ public class CalendarService {
         if (roommates.isEmpty() || tasks.isEmpty()) {
             throw new IllegalArgumentException("House must have at least one roommate and one task.");
         }
-        return solution.solve(roommates, tasks);
+        CleaningSchedule cleaningSchedule=solution.solve(roommates, tasks);
+        cleaningAssignmentRepository.saveAll(cleaningSchedule.getAssignmentList());
+        return cleaningSchedule;
     }
 
-    public void markTaskAsDone(CleaningAssignment cleaningAssignment) {
-        if (cleaningAssignment == null || cleaningAssignment.getId() == null) {
-            throw new IllegalArgumentException("Cleaning assignment ID is required.");
-        }
-        cleaningAssignment.setDone(true);
+    public void markTaskAsDone(Integer id)
+    {
+        CleaningAssignment assignment = cleaningAssignmentRepository.getReferenceById(id);
+        assignment.getTask().setDone(true);
+        cleaningAssignmentRepository.save(assignment);
     }
 
     public String toRank(String token, CleaningAssignment cleaningAssignment) {

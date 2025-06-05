@@ -51,17 +51,22 @@
                             <th>Task</th>
                             <th>Descrizione</th>
                             <th>Orario</th>
+                            <th></th>
                         </tr>
                         <tbody id="calendarBody"></tbody>
                         </thead>
                     </table>
 
-                    <div class="calendar">
-                        <p style="text-align: center;">Qui verranno mostrati i turni assegnati ai coinquilini.</p>
+                    <div class="calendar" id="calendarPlaceholder">
+                        <p  style="text-align: center;">Qui verranno mostrati i turni assegnati ai coinquilini.</p>
                     </div>
                     <p style="text-align: center; margin-top: 15px;">
                         <a href="#" id="viewPlanningLink" style="color: #4500fd; font-weight: bold;">📋 Visualizza pianificazione</a>
                     </p>
+                    <div id="loadingSpinner" style="display: none; text-align: center; margin-top: 20px;">
+                        <div class="custom-spinner"></div>
+                        <p style="color: white; font-weight: bold; margin-top: 10px;">Caricamento in corso... Attendere 20 secondi</p>
+                    </div>
                 </div>
 
                 <div class="side-column">

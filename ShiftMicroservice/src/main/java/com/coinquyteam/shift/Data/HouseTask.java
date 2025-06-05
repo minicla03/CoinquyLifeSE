@@ -12,6 +12,7 @@ public class HouseTask
     @Field("houseId") private String houseId;
     @Field("description") private String description;
     @Field("TimeSlot") private TimeSlot timeSlot;
+    @Field("isDone") private boolean isDone = false;
 
     public HouseTask() { }
 
@@ -21,6 +22,7 @@ public class HouseTask
         this.description = description;
         this.timeSlot = timeSlot;
         this.houseId = houseId;
+        this.isDone = false;
     }
 
     public String getIdTask()
@@ -72,4 +74,7 @@ public class HouseTask
     {
         this.timeSlot = timeSlot;
     }
+
+    public boolean isDone() { return isDone; }
+    public void setDone(boolean done) {isDone = done; }
 }

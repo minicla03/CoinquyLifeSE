@@ -4,11 +4,13 @@ import com.coinquyteam.shift.Controller.*;
 import jakarta.ws.rs.ApplicationPath;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication(scanBasePackages = "com.coinquyteam.shift")
 @ApplicationPath("/rest")
 @EnableMongoRepositories(basePackages = "com.coinquyteam.shift.Repository")
+@EnableJpaRepositories(basePackages = "com.coinquyteam.shift.Repository")
 public class ShiftApplication extends ResourceConfig
 {
     public ShiftApplication()

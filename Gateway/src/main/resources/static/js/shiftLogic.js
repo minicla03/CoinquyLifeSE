@@ -1,6 +1,11 @@
 
 const token=localStorage.getItem("token");
 let coinquilini = [];
+let shift =[];
+if(localStorage.getItem("shift")!== null)
+{
+    shift = JSON.parse(localStorage.getItem("shift"));
+}
 function local()
 {
     let user=JSON.parse(localStorage.getItem("listCoiquy"));
@@ -66,6 +71,9 @@ function unavailableForm()
 document.getElementById("viewPlanningLink").addEventListener("click", (e) => {
     e.preventDefault()
 
+    const spinnerDiv = document.getElementById("loadingSpinner");
+    spinnerDiv.style.display = "block";
+
     fetch(`http://localhost:8080/Shift/rest/calendar/getPlanning`, {
         method: "POST",
         headers: {
@@ -90,6 +98,9 @@ document.getElementById("viewPlanningLink").addEventListener("click", (e) => {
             console.error("Errore durante la richiesta:", error);
             alert("⚠️ Errore: " + error.message);
         })
+        .finally(() => {
+            spinnerDiv.style.display = "none"; // Nasconde lo spinner sempre
+        });
 })
 
 function retriveCoinquys()
@@ -243,10 +254,6 @@ function renderReceivedSwapRequests(assignments, currentTaskSelect, assignmentBS
 }
 
 function renderCalendar(data) {
-    const container = document.getElementById("shiftCalendar");
-    //container.innerHTML = "";
-
-    //localStorage.setItem("shifts", data)
 
     if (!data || data.length === 0) {
         const emptyMessage = document.getElementById("emptyMessage");
@@ -254,7 +261,10 @@ function renderCalendar(data) {
         return;
     }
     const tbody = document.getElementById("calendarBody");
+    document.getElementById("calendarPlaceholder").style.display = "none";
 
+    data = data.filter(assignment => assignment.task && assignment.task.done === false);
+    localStorage.setItem("shift", JSON.stringify(data));
     data.forEach(cleaningAssignment => {
         const { assignedRoommate, task } = cleaningAssignment;
         const { task: taskCategory, description, timeSlot } = task;
@@ -268,21 +278,29 @@ function renderCalendar(data) {
             <td>${taskCategory}</td>
             <td>${description}</td>
             <td>${new Date(start).toLocaleTimeString()} - ${new Date(end).toLocaleTimeString()}</td>
-        `;
+            <td>
+                <button class="confirm-btn" data-assignment='${JSON.stringify(cleaningAssignment.id)}'>✅</button>
+            </td>
+          `;
 
         tbody.appendChild(row);
-    });
+
+        // Aggiungi event listener al bottone di conferma
+        const confirmBtn = row.querySelector('.confirm-btn');
+        confirmBtn.addEventListener('click', function() {handleDoneButton(cleaningAssignment.id).then(r => {})})
+    })
 }
 
-async function handleDoneButton(cleaningAssignment) {
+async function handleDoneButton(cleaningAssignmentId) {
     try {
+        //TODO
         const response = await fetch("http://localhost:8080/Shift/rest/calendar/taskDone", {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': "Bearer " + token
             },
-            body: JSON.stringify(cleaningAssignment)
+            body: JSON.stringify(cleaningAssignmentId)
         });
 
         if (!response.ok) {
@@ -291,7 +309,7 @@ async function handleDoneButton(cleaningAssignment) {
         }
 
         alert("✅ Compito segnato come completato!");
-        assignedPoint(cleaningAssignment)
+        //assignedPoint(cleaningAssignment)
         window.location.reload();
     } catch (error) {
         console.error("Errore durante il completamento del compito:", error);
@@ -422,8 +440,8 @@ form.addEventListener("submit", async function (e) {
 document.addEventListener("DOMContentLoaded", () => {
     local();
     retriveCoinquys();
-    //if(shift.length!==0){
-    //    renderCalendar(shift);
-    //}
+    if(shift.length!==0){
+        renderCalendar(shift);
+    }
     //populateAssignmentSelects(shift)
 });

@@ -1,13 +1,11 @@
 package com.coinquyteam.shift.Controller;
 
-import com.coinquyteam.shift.OptaPlanner.CleaningAssignment;
 import com.coinquyteam.shift.OptaPlanner.CleaningSchedule;
 import com.coinquyteam.shift.Service.CalendarService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
 import java.util.Map;
 
@@ -47,20 +45,15 @@ public class CalendarController
 
     @PUT
     @Path("/taskDone")
-    public Response taskDone(@HeaderParam("Authorization") String token, CleaningAssignment cleaningAssignment)
+    public Response taskDone(Integer id)
     {
-
-        if(token == null || token.isEmpty()) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Authorization token is required").build();
-        }
-
-        if(cleaningAssignment == null || cleaningAssignment.getId() == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Cleaning assignment ID is required").build();
+        if (id == null || id <= 0) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid task ID").build();
         }
 
         try
         {
-            calendarService.markTaskAsDone(cleaningAssignment);
+            calendarService.markTaskAsDone(id);
         }
         catch (Exception e)
         {
