@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -32,20 +33,24 @@ public class CalendarService
     @Autowired
     private RestTemplate restTemplate;
 
+    private UUID problemId;
+
     public CleaningSchedule getSchedule(String houseId) throws ExecutionException, InterruptedException {
         ScheduleSolution solution = new ScheduleSolution();
         List<Roommate> roommates = roommateRepository.findAllByHouseId(houseId);
-        List<HouseTask> tasks = houseTaskService.getTasksByHouseId(houseId);
+        List<HouseTask> tasks = houseTaskService.getTasksByHouseId(houseId).stream().filter(t-> !t.isDone()).toList();
 
         if (roommates.isEmpty() || tasks.isEmpty()) {
             throw new IllegalArgumentException("House must have at least one roommate and one task.");
         }
-        CleaningSchedule cleaningSchedule=solution.solve(roommates, tasks);
+
+        problemId = UUID.randomUUID();
+        CleaningSchedule cleaningSchedule=solution.solve(problemId,roommates, tasks);
         cleaningAssignmentRepository.insert(cleaningSchedule.getAssignmentList());
         return cleaningSchedule;
     }
 
-    public void markTaskAsDone(Integer id)
+    public void markTaskAsDone(String id)
     {
         cleaningAssignmentRepository.findById(id).ifPresentOrElse(
                 cleaningAssignment -> {
@@ -84,4 +89,28 @@ public class CalendarService
             throw new RuntimeException("Error calling /rank/done: " + e.getMessage(), e);
         }
     }
+
+    public boolean planningExists(String pId, String houseId)
+    {
+        UUID uuid = UUID.fromString(pId);
+        if (problemId.equals(uuid))
+        {
+            return cleaningAssignmentRepository.findAll().stream()
+                    .filter(cleaningAssignment ->
+                            cleaningAssignment.getProblemId().equals(uuid) &&
+                                    cleaningAssignment.getTask().getHouseId().equals(houseId))
+                    .anyMatch(cleaningAssignment -> !cleaningAssignment.getTask().isDone());
+        }
+        return false;
+    }
+
+    public List<CleaningAssignment> retriveCleaningAssignments(UUID problemId, String houseId)
+    {
+        return cleaningAssignmentRepository.findAll().stream()
+                .filter(cleaningAssignment ->
+                        cleaningAssignment.getProblemId().equals(problemId) &&
+                                cleaningAssignment.getTask().getHouseId().equals(houseId))
+                .toList();
+    }
+
 }

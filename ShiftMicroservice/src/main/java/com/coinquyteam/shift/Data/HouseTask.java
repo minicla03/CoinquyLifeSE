@@ -12,7 +12,7 @@ public class HouseTask
     @Field("houseId") private String houseId;
     @Field("description") private String description;
     @Field("TimeSlot") private TimeSlot timeSlot;
-    @Field("isDone") private boolean isDone = false;
+    @Field("isDone") private boolean isDone;
 
     public HouseTask() { }
 

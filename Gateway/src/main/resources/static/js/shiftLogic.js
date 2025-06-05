@@ -74,11 +74,21 @@ function unavailableForm()
     });
 }
 
-document.getElementById("viewPlanningLink").addEventListener("click", (e) => {
-    e.preventDefault()
-
+function fetchPlanning()
+{
     const spinnerDiv = document.getElementById("loadingSpinner");
     spinnerDiv.style.display = "block";
+
+    // Controllo: shift deve contenere elementi validi
+    if (!shift || shift.length === 0 || !shift[0].problemId) {
+        alert("⚠️ Impossibile recuperare il planning: nessun turno disponibile o problemId mancante.");
+        spinnerDiv.style.display = "none";
+        return;
+    }
+
+    // Estrai il problemId
+    const problemId = shift[0].problemId;
+    console.log("📌 problemId usato per il planning:", problemId);
 
     fetch(`http://localhost:8080/Shift/rest/calendar/getPlanning`, {
         method: "POST",
@@ -87,18 +97,21 @@ document.getElementById("viewPlanningLink").addEventListener("click", (e) => {
             'Authorization': "Bearer " + token
         },
         body: JSON.stringify({
-            houseId: houseId
+            houseId: houseId,
+            problemId: problemId
         })
     })
         .then(response => {
-            if (!response.ok) {
+            console.log(response.statusText);
+            if (!response.ok && response.status !== 302)
+            {
                 return response.text().then(text => { throw new Error(text); });
             }
             return response.json();
         })
         .then(data => {
-            console.log(data.assignmentList)
-            renderCalendar(data.assignmentList);
+            console.log(data)
+            renderCalendar(data);
         })
         .catch(error => {
             console.error("Errore durante la richiesta:", error);
@@ -107,6 +120,11 @@ document.getElementById("viewPlanningLink").addEventListener("click", (e) => {
         .finally(() => {
             spinnerDiv.style.display = "none"; // Nasconde lo spinner sempre
         });
+}
+
+document.getElementById("viewPlanningLink").addEventListener("click", (e) => {
+    e.preventDefault()
+    fetchPlanning()
 })
 
 function retriveCoinquys()
@@ -125,8 +143,97 @@ function retriveCoinquys()
     });
 }
 
+function renderCalendar(data) {
+
+    if (!data || data.length === 0) {
+        const emptyMessage = document.getElementById("emptyMessage");
+        emptyMessage.style.display = "block";
+        return;
+    }
+    const tbody = document.getElementById("calendarBody");
+    tbody.innerHTML = "";
+    document.getElementById("calendarPlaceholder").style.display = "none";
+
+    if(shift.length===0)
+    {
+        localStorage.setItem("shift", JSON.stringify(data));
+    }
+    //data = data.filter(assignment => assignment.task && assignment.task.isDone === false);
+    data.forEach(cleaningAssignment => {
+        const { assignedRoommate, task } = cleaningAssignment;
+        const { task: taskCategory, description, timeSlot, isDone } = task;
+        const { start, end } = timeSlot;
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${new Date(start).toLocaleDateString()}</td>
+            <td>${assignedRoommate.usernameRoommate}</td>
+            <td>${taskCategory}</td>
+            <td>${description}</td>
+            <td>${new Date(start).toLocaleTimeString()} - ${new Date(end).toLocaleTimeString()}</td>
+            <td>
+                <button class="confirm-btn">${isDone === false ? "❌ To do" : " ✅ Done"}</button>
+            </td>
+          `;
+
+        tbody.appendChild(row);
+
+        // Aggiungi event listener al bottone di conferma
+        const confirmBtn = row.querySelector('.confirm-btn');
+        confirmBtn.addEventListener('click', function() {handleDoneButton(cleaningAssignment.id).then(r => {})})
+    })
+}
+
+async function handleDoneButton(cleaningAssignmentId) {
+    try {
+        const response = await fetch("http://localhost:8080/Shift/rest/calendar/taskDone", {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token
+            },
+            body: JSON.stringify({ id: cleaningAssignmentId})
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText);
+        }
+
+        alert("✅ Compito segnato come completato!");
+        //fetchPlanning()
+        //assignedPoint(cleaningAssignment)
+        //window.location.reload();
+    } catch (error) {
+        console.error("Errore durante il completamento del compito:", error);
+        alert("⚠️ Errore: " + error.message);
+    }
+}
+
+function assignedPoint(cleaningAssignments)
+{
+    fetch("http://localhost:8080/Rank/rest/client/toRank", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer " + token
+        },
+        body: JSON.stringify({cleaningAssignments})
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Punti assegnati correttamente:", data);
+        })
+}
+
 //funzione che gestisce l'accettazione o il rifiuto di una richiesta di scambio
-function handleRequestAction(idSwap, accept) {
+/*function handleRequestAction(idSwap, accept) {
     const action = accept ? "accept" : "decline";
 
     fetch(`http://localhost:8080/Shift/rest/swaps/${idSwap}/${action}`, {
@@ -170,12 +277,12 @@ function handleRequestAction(idSwap, accept) {
             .catch(error => {
                 console.error("Errore durante la richiesta:", error);
                 alert("⚠️ Errore: " + error.message);
-            })*/
+            })
     }
-}
+}*/
 
 // Funzione per popolare entrambi i select dei turni (A e B)
-function populateAssignmentSelects(shifts) {
+/*function populateAssignmentSelects(shifts) {
     const currentTaskSelect = document.getElementById("currentTask");
     const assignmentBSelect = document.getElementById("assignmentB");
 
@@ -209,10 +316,10 @@ function populateAssignmentSelects(shifts) {
     } else {
         renderReceivedSwapRequests(shifts, currentTaskSelect, assignmentBSelect);
     }
-}
+}*/
 
 // Funzione per riempire le select con i dati
-function renderReceivedSwapRequests(assignments, currentTaskSelect, assignmentBSelect) {
+/*function renderReceivedSwapRequests(assignments, currentTaskSelect, assignmentBSelect) {
     const list = document.getElementById("receivedRequests");
     list.innerHTML = "";
 
@@ -257,91 +364,8 @@ function renderReceivedSwapRequests(assignments, currentTaskSelect, assignmentBS
 
         list.appendChild(li);
     });
-}
+}*/
 
-function renderCalendar(data) {
-
-    if (!data || data.length === 0) {
-        const emptyMessage = document.getElementById("emptyMessage");
-        emptyMessage.style.display = "block";
-        return;
-    }
-    const tbody = document.getElementById("calendarBody");
-    document.getElementById("calendarPlaceholder").style.display = "none";
-
-    data = data.filter(assignment => assignment.task && assignment.task.done === false);
-    localStorage.setItem("shift", JSON.stringify(data));
-    data.forEach(cleaningAssignment => {
-        const { assignedRoommate, task } = cleaningAssignment;
-        const { task: taskCategory, description, timeSlot } = task;
-        const { start, end } = timeSlot;
-
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-            <td>${new Date(start).toLocaleDateString()}</td>
-            <td>${assignedRoommate.usernameRoommate}</td>
-            <td>${taskCategory}</td>
-            <td>${description}</td>
-            <td>${new Date(start).toLocaleTimeString()} - ${new Date(end).toLocaleTimeString()}</td>
-            <td>
-                <button class="confirm-btn" data-assignment='${JSON.stringify(cleaningAssignment.id)}'>✅</button>
-            </td>
-          `;
-
-        tbody.appendChild(row);
-
-        // Aggiungi event listener al bottone di conferma
-        const confirmBtn = row.querySelector('.confirm-btn');
-        confirmBtn.addEventListener('click', function() {handleDoneButton(cleaningAssignment.id).then(r => {})})
-    })
-}
-
-async function handleDoneButton(cleaningAssignmentId) {
-    try {
-        const response = await fetch("http://localhost:8080/Shift/rest/calendar/taskDone", {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + token
-            },
-            body: JSON.stringify({ id: cleaningAssignmentId})
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(errorText);
-        }
-
-        alert("✅ Compito segnato come completato!");
-        //assignedPoint(cleaningAssignment)
-        window.location.reload();
-    } catch (error) {
-        console.error("Errore durante il completamento del compito:", error);
-        alert("⚠️ Errore: " + error.message);
-    }
-}
-
-function assignedPoint(cleaningAssignments)
-{
-    fetch("http://localhost:8080/Rank/rest/client/toRank", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': "Bearer " + token
-        },
-        body: JSON.stringify({cleaningAssignments})
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.text().then(text => { throw new Error(text); });
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log("Punti assegnati correttamente:", data);
-    })
-}
 
 //Poupop dello scambio
 const openModalBtn = document.getElementById('openSwapModal');
@@ -368,7 +392,7 @@ window.addEventListener('click', (event) => {
 });
 
 //funzione per creare la richiesta di scambio
-document.getElementById("sendSwapBtn").addEventListener("click", async function(e) {
+/*document.getElementById("sendSwapBtn").addEventListener("click", async function(e) {
     e.preventDefault();
     const currentTask = document.getElementById("currentTask").value;
     const assignmentB = document.getElementById("assignmentB").value;
@@ -405,7 +429,7 @@ document.getElementById("sendSwapBtn").addEventListener("click", async function(
     {
         alert("⚠️ Errore nell'invio della richiesta: " + error.message);
     }
-});
+});*/
 
 const form = document.getElementById("createTaskForm");
 form.addEventListener("submit", async function (e) {

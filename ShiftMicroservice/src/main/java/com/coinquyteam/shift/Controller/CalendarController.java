@@ -1,5 +1,6 @@
 package com.coinquyteam.shift.Controller;
 
+import com.coinquyteam.shift.OptaPlanner.CleaningAssignment;
 import com.coinquyteam.shift.OptaPlanner.CleaningSchedule;
 import com.coinquyteam.shift.Service.CalendarService;
 import jakarta.ws.rs.*;
@@ -7,7 +8,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Path("/calendar")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -21,6 +24,17 @@ public class CalendarController
     public Response getPlanning(Map<String,String> body)
     {
         String houseId = body.get("houseId");
+        String problemId = body.get("problemId");
+
+        if(problemId!=null)
+        {
+            if(calendarService.planningExists(problemId, houseId))
+            {
+                List<CleaningAssignment> existingPlanning=calendarService.retriveCleaningAssignments(UUID.fromString(problemId), houseId);
+                return Response.status(Response.Status.FOUND).entity(existingPlanning).build();
+            }
+        }
+
 
         if(houseId == null || houseId.isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("House ID is required").build();
@@ -40,15 +54,15 @@ public class CalendarController
         {
             return Response.status(Response.Status.NOT_FOUND).entity("No cleaning schedule found for the provided house ID").build();
         }
-        return Response.ok(cleaningSchedule).build();
+        return Response.ok(cleaningSchedule.getAssignmentList()).build();
     }
 
     @PUT
     @Path("/taskDone")
-    public Response taskDone(Map<String,Integer> body)
+    public Response taskDone(Map<String,String> body)
     {
-        Integer id = body.get("id");
-        if (id == null || id <= 0) {
+        String id = body.get("id");
+        if (id == null || id.isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid task ID").build();
         }
 
