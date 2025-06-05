@@ -40,7 +40,7 @@ public class AuthController {
         }
 
         if (result.getStatusAuth() == StatusAuth.SUCCESS) {
-            System.out.println("Token: " + result.getToken());
+            //System.out.println("Token: " + result.getToken());
             // Generate a token and return it in the response
             return Response.ok("{\"token\":\"" + result.getToken() + "\"}").type("application/json").build();
         } else if (result.getStatusAuth() == StatusAuth.USER_NOT_FOUND) {
