@@ -23,6 +23,8 @@ public class HouseTaskController
     @Path("/createTask")
     public Response createTask(@HeaderParam("Authorization") String auth, HouseTask cleaningTask)
     {
+        System.out.println(cleaningTask.toString());
+
         if (auth == null || auth.isEmpty()) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }

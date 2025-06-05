@@ -166,7 +166,7 @@ function renderCalendar(data) {
             <td>${description}</td>
             <td>${new Date(start).toLocaleTimeString()} - ${new Date(end).toLocaleTimeString()}</td>
             <td>
-                <button class="confirm-btn">${isDone === false ? "❌ To do" : " ✅ Done"}</button>
+                <button class="confirm-btn">${cleaningAssignment.task.done === false ? "❌ Not done" : " ✅ Done"}</button>
             </td>
           `;
 
@@ -194,7 +194,6 @@ async function handleDoneButton(cleaningAssignmentId) {
             throw new Error(errorText);
         }
 
-        alert("✅ Compito segnato come completato!");
         window.location.reload();
     } catch (error) {
         console.error("Errore durante il completamento del compito:", error);
@@ -444,7 +443,7 @@ form.addEventListener("submit", async function (e) {
             },
             body: JSON.stringify({
                 description: description,
-                task: {taskName: type, points: null, penalityPoints: null},
+                task: type,
                 timeSlot: { start: dateTime, end: null },
                 houseId: houseId
             })

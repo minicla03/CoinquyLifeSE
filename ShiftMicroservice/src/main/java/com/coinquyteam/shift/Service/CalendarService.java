@@ -54,6 +54,9 @@ public class CalendarService
     {
         cleaningAssignmentRepository.findById(id).ifPresentOrElse(
                 cleaningAssignment -> {
+                    if(!houseTaskService.taskDone(cleaningAssignment.getTask().getIdTask())) {
+                        throw new IllegalArgumentException("Failed to mark task as done for ID: " + id);
+                    }
                     cleaningAssignment.getTask().setDone(true);
                     cleaningAssignmentRepository.save(cleaningAssignment);
                 },
@@ -61,6 +64,8 @@ public class CalendarService
                     throw new IllegalArgumentException("No cleaning assignment found with ID: " + id);
                 }
         );
+
+        houseTaskService.taskDone(id);
     }
 
     public String toRank(String token, CleaningAssignment cleaningAssignment) {

@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document("CleaningTasks")
 public class HouseTask
 {
-    @Id @Field("idTask") private String idTask;
+    @Id private String idTask;
     @Field("task") private TaskCategory task;
     @Field("houseId") private String houseId;
     @Field("description") private String description;
@@ -35,12 +35,12 @@ public class HouseTask
         this.idTask = idTask;
     }
 
-    public TaskCategory getTaskCategory()
+    public TaskCategory getTask()
     {
         return this.task;
     }
 
-    public void setTaskCategory(TaskCategory task)
+    public void setTask(TaskCategory task)
     {
         this.task = task;
     }
@@ -77,4 +77,17 @@ public class HouseTask
 
     public boolean isDone() { return isDone; }
     public void setDone(boolean done) {isDone = done; }
+
+    @Override
+    public String toString()
+    {
+        return "HouseTask{" +
+                "idTask='" + idTask + '\'' +
+                ", task=" + task +
+                ", houseId='" + houseId + '\'' +
+                ", description='" + description + '\'' +
+                ", timeSlot=" + timeSlot +
+                ", isDone=" + isDone +
+                '}';
+    }
 }

@@ -21,9 +21,8 @@ public class HouseTaskService
             throw new IllegalArgumentException("HouseTask cannot be null");
         }
 
-        System.out.println(houseTask.getTaskCategory()+" "+houseTask.getTimeSlot());
         TimeSlot ts= new TimeSlot(houseTask.getTimeSlot().getStart(),  houseTask.getTimeSlot().getStart().plusDays(1));
-        HouseTask nhs= new HouseTask(houseTask.getTaskCategory(), houseTask.getDescription(), ts, houseTask.getHouseId());
+        HouseTask nhs= new HouseTask(houseTask.getTask(), houseTask.getDescription(), ts, houseTask.getHouseId());
         try
         {
             timeSlotRepository.insert(ts);
@@ -38,5 +37,21 @@ public class HouseTaskService
     public List<HouseTask> getTasksByHouseId(String houseId)
     {
         return houseTaskRepository.findAllByHouseId(houseId);
+    }
+
+    public boolean taskDone(String taskId)
+    {
+        HouseTask task = houseTaskRepository.findAll().stream().filter(
+                t -> t.getIdTask().equals(taskId))
+                .findFirst().orElse(null);
+
+
+        if (task != null) {
+            task.setDone(true);
+            houseTaskRepository.save(task);
+            return true;
+        }
+
+        return false;
     }
 }

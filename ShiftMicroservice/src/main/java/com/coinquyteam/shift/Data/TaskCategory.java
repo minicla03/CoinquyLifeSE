@@ -1,5 +1,8 @@
 package com.coinquyteam.shift.Data;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum TaskCategory
 {
     CLEANING("Cleaning", 10, -5),
@@ -27,5 +30,15 @@ public enum TaskCategory
 
     public int getPenalityPoints() {
         return penalityPoints;
+    }
+
+    @JsonCreator
+    public static TaskCategory fromString(String value) {
+        return TaskCategory.valueOf(value.toUpperCase());
+    }
+
+    @JsonValue
+    public String toValue() {
+        return this.name();
     }
 }
