@@ -8,12 +8,16 @@ import com.coinquyteam.authApplication.Utility.UserResult;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class AuthControllerTest {
 
     @Mock
@@ -21,11 +25,6 @@ class AuthControllerTest {
 
     @InjectMocks
     private AuthController authController;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     void testLoginSuccessWithUsername() {
