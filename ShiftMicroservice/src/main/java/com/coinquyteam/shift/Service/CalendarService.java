@@ -113,4 +113,10 @@ public class CalendarService
                 .toList();
     }
 
+    public List<CleaningAssignment> getAllShifts(String houseId)
+    {
+        return cleaningAssignmentRepository.findAll().stream()
+                .filter(cleaningAssignment -> cleaningAssignment.getTask().getHouseId().equals(houseId))
+                .toList();
+    }
 }

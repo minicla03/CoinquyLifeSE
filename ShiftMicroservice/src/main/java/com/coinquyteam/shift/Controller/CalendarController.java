@@ -77,4 +77,25 @@ public class CalendarController
         }
         return Response.ok().entity("Task marked as done successfully").build();
     }
+
+    @POST
+    @Path("/getAllShifts")
+    public Response retrieveAllShifts(Map<String,String> body)
+    {
+        String houseId = body.get("houseId");
+        if (houseId == null || houseId.isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("House ID is required").build();
+        }
+
+        try
+        {
+            List<CleaningAssignment> shifts = calendarService.getAllShifts(houseId);
+            return Response.ok(shifts).build();
+        }
+        catch (Exception e)
+        {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error retrieving shifts: " + e.getMessage()).build();
+        }
+    }
 }

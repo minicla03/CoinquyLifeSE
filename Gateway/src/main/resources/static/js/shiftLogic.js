@@ -11,7 +11,7 @@ function local()
         coinquilini.push(item);
         console.log(item);
     })
-    if(localStorage.getItem("shift")!== null)
+    /*if(localStorage.getItem("shift")!== null)
     {
         let s=JSON.parse(localStorage.getItem("shift"));
         s.forEach((item) => {
@@ -19,7 +19,7 @@ function local()
             shift.push(item);
             console.log(item);
         })
-    }
+    }*/
 }
 const houseId = localStorage.getItem("houseId");
 
@@ -80,15 +80,12 @@ function fetchPlanning()
     spinnerDiv.style.display = "block";
 
     // Controllo: shift deve contenere elementi validi
-    if (!shift || shift.length === 0 || !shift[0].problemId) {
-        alert("⚠️ Impossibile recuperare il planning: nessun turno disponibile o problemId mancante.");
-        spinnerDiv.style.display = "none";
-        return;
+    let problemId=null;
+    if (shift.length !== 0) {
+        problemId = shift[0].problemId;
+        console.log("📌 problemId usato per il planning:", problemId);
     }
 
-    // Estrai il problemId
-    const problemId = shift[0].problemId;
-    console.log("📌 problemId usato per il planning:", problemId);
 
     fetch(`http://localhost:8080/Shift/rest/calendar/getPlanning`, {
         method: "POST",
@@ -154,10 +151,6 @@ function renderCalendar(data) {
     tbody.innerHTML = "";
     document.getElementById("calendarPlaceholder").style.display = "none";
 
-    if(shift.length===0)
-    {
-        localStorage.setItem("shift", JSON.stringify(data));
-    }
     //data = data.filter(assignment => assignment.task && assignment.task.isDone === false);
     data.forEach(cleaningAssignment => {
         const { assignedRoommate, task } = cleaningAssignment;
@@ -202,9 +195,7 @@ async function handleDoneButton(cleaningAssignmentId) {
         }
 
         alert("✅ Compito segnato come completato!");
-        //fetchPlanning()
-        //assignedPoint(cleaningAssignment)
-        //window.location.reload();
+        window.location.reload();
     } catch (error) {
         console.error("Errore durante il completamento del compito:", error);
         alert("⚠️ Errore: " + error.message);
@@ -471,11 +462,42 @@ form.addEventListener("submit", async function (e) {
     }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
+async function retriveShifts() {
+    try {
+        const response = await fetch("http://localhost:8080/Shift/rest/calendar/getAllShifts", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token
+            },
+            body: JSON.stringify({
+                houseId: houseId
+            })
+        });
+        if (!response.ok) {
+            const text = await response.text();
+            throw new Error(text);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Errore durante il recupero dei turni:", error);
+        alert("⚠️ Errore: " + error.message);
+        return [];
+    }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
     local();
     retriveCoinquys();
-    if(shift.length!==0){
-        renderCalendar(shift);
+    let shiftsDb = await retriveShifts();
+    console.log("shiftsDb", shiftsDb);
+    console.log("length", shiftsDb.length);
+    if (shiftsDb.length > 0) {
+        shiftsDb.forEach((item) => {
+            shift.push(item);
+            console.log(item);
+        });
+        renderCalendar(shift)
     }
     //populateAssignmentSelects(shift)
 });
