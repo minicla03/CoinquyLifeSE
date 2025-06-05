@@ -193,7 +193,7 @@ async function handleDoneButton(cleaningAssignmentId) {
             const errorText = await response.text();
             throw new Error(errorText);
         }
-
+        assignedPoint(cleaningAssignmentId)
         window.location.reload();
     } catch (error) {
         console.error("Errore durante il completamento del compito:", error);
@@ -201,15 +201,15 @@ async function handleDoneButton(cleaningAssignmentId) {
     }
 }
 
-function assignedPoint(cleaningAssignments)
+function assignedPoint(cleaningAssignmentId)
 {
-    fetch("http://localhost:8080/Rank/rest/client/toRank", {
+    fetch("http://localhost:8080/Shift/rest/client/toRank", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': "Bearer " + token
         },
-        body: JSON.stringify({cleaningAssignments})
+        body: JSON.stringify({cleaningAssignmentId})
     })
         .then(response => {
             if (!response.ok) {

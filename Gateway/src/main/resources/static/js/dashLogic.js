@@ -142,9 +142,13 @@ function retriveTurni() {
 }
 
 function retrieveClassifica() {
-    fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveClassifica?houseId=${houseId}`, {
-        method: "GET",
-        headers: { "Accept": "application/json" }
+    fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveClassifica`, {
+        method: "POST",
+        headers: { "Accept": "application/json" },
+        body: JSON.stringify({
+            houseId: localStorage.getItem("houseId"),
+            coiquyList: localStorage.getItem("listCoiquy")
+        })
     })
         .then(response => response.json())
         .then(classificaList => {
@@ -156,10 +160,12 @@ function retrieveClassifica() {
                 return;
             }
 
-            classificaList.sort((a, b) => b.punti - a.punti);
             classificaList.forEach(item => {
+                // Se vuoi mostrare idCoinquy o altro come nome
+                const nome = item.idCoinquy || "Sconosciuto";
+
                 const li = document.createElement("li");
-                li.textContent = `${item.nome} - ${item.punti} punti`;
+                li.textContent = `${nome} - ${item.totalPoint} punti`;
                 rankList.appendChild(li);
             });
         })

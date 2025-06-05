@@ -11,11 +11,11 @@ public class CoinquyPoint
     @Field("CoiquyPointId") private String _id;
     @Field("idCoinquy") private String iCoinquy;
     @Field("houseId") private String houseId;
-    @Field("point") private int point;
+    @Field("point") private Integer point;
 
     public CoinquyPoint() { }
 
-    public CoinquyPoint(String iCoinquy, String houseId, int point)
+    public CoinquyPoint(String iCoinquy, String houseId, Integer point)
     {
         this.iCoinquy = iCoinquy;
         this.point = point;
@@ -52,12 +52,12 @@ public class CoinquyPoint
         this.iCoinquy = iCoinquy;
     }
 
-    public int getPoint()
+    public Integer getPoint()
     {
         return this.point;
     }
 
-    public void setPoint(int point)
+    public void setPoint(Integer point)
     {
         this.point = point;
     }

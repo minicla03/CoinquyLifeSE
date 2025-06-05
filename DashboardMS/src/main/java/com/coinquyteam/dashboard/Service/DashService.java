@@ -1,15 +1,20 @@
 package com.coinquyteam.dashboard.Service;
 
+import com.coinquyteam.dashboard.Utility.ClassificaRequest;
+import com.coinquyteam.dashboard.Utility.Classifica;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Service
 public class DashService
 {
+
     @Autowired
     private final RestTemplate restTemplate;
 
@@ -24,23 +29,21 @@ public class DashService
         return makeGetRequest(url);
     }
 
-    public List<?> getTurni(String houseId)
-    {
+    public List<?> getTurni(String houseId) {
         String url = "http://localhost:8080/Shift/rest/client/retriveShift?houseId=" + houseId;
         return makeGetRequest(url);
     }
 
-    public List<?> getClassifica(String houseId)
-    {
-        String url = "http://localhost:8080/Rank/rest/client/retrieveClassifica?houseId=" + houseId;
-        return makeGetRequest(url);
+    public LinkedHashMap<String, Classifica> getClassifica(ClassificaRequest classificaRequest) {
+        String url = "http://localhost:8080/Rank/rest/client/retrieveClassifica";
+        return makePostRequest(url, classificaRequest);
     }
 
-    private List<?> makeGetRequest(String url)
-    {
+    private List<?> makeGetRequest(String url) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> entity = new HttpEntity<>(headers);
+
         ResponseEntity<List> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
@@ -48,12 +51,29 @@ public class DashService
                 List.class
         );
 
-        if (response.getStatusCode() == HttpStatus.OK)
-        {
+        if (response.getStatusCode() == HttpStatus.OK) {
             return response.getBody();
+        } else {
+            throw new RuntimeException("Errore nella chiamata a " + url + ": status code " + response.getStatusCode());
         }
-        else
-        {
+    }
+
+    private LinkedHashMap<String, Classifica> makePostRequest(String url, ClassificaRequest body) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<ClassificaRequest> entity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<LinkedHashMap<String, Classifica>> response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                entity,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return response.getBody();
+        } else {
             throw new RuntimeException("Errore nella chiamata a " + url + ": status code " + response.getStatusCode());
         }
     }

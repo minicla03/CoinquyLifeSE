@@ -7,8 +7,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
+import java.util.List;
 
 @Path("/client")
 public class ClientShiftController
@@ -30,14 +30,14 @@ public class ClientShiftController
 
         try
         {
-            CleaningSchedule cleaningSchedule = calendarService.getSchedule(houseId);
-            if (cleaningSchedule == null)
+            List<CleaningAssignment> shifts = calendarService.getAllShifts(houseId);
+            if (shifts == null)
             {
                 return Response.status(Response.Status.NOT_FOUND)
                         .entity("{\"error\":\"No cleaning schedule found for the provided house ID\"}")
                         .build();
             }
-            return Response.ok(cleaningSchedule).build();
+            return Response.ok(shifts).build();
         }
         catch (Exception e)
         {

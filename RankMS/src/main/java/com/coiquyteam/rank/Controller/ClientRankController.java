@@ -1,13 +1,15 @@
 package com.coiquyteam.rank.Controller;
 
-import com.coinquyteam.shift.OptaPlanner.CleaningAssignment;
+import com.coiquyteam.rank.Data.Classifica;
 import com.coiquyteam.rank.Data.CoinquyPoint;
 import com.coiquyteam.rank.Service.RankService;
+import com.coiquyteam.rank.Utility.ClassificaRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Path("/client")
@@ -18,17 +20,31 @@ public class ClientRankController
     @GET
     @Path("/retrieveClassifica")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getClassifica(@QueryParam("houseId") String houseId)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getClassifica(ClassificaRequest request)
+
     {
-        if (houseId == null)
+        String houseId = request.getHouseId();
+        List<String> coinquyList = request.getCoiquyList();
+
+        if (houseId == null || houseId.isEmpty())
         {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("houseId mancante").build();
+                    .entity("{\"error\":\"Missing or empty houseId parameter\"}")
+                    .build();
         }
+
+        if (coinquyList == null || coinquyList.isEmpty())
+        {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\":\"Missing or empty coinquyList parameter\"}")
+                    .build();
+        }
+
 
         try
         {
-            List<CoinquyPoint> classifica = rankService.getClassificaByHouseId(houseId);
+            LinkedHashMap<String, Classifica> classifica = rankService.getClassifica(coinquyList,houseId);
             return Response.ok(classifica).build();
         }
         catch (Exception e)

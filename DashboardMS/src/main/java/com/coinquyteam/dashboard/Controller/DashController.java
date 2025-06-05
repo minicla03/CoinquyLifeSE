@@ -1,11 +1,16 @@
 package com.coinquyteam.dashboard.Controller;
 
 import com.coinquyteam.dashboard.Service.DashService;
+import com.coinquyteam.dashboard.Utility.Classifica;
+import com.coinquyteam.dashboard.Utility.ClassificaRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
 
 @Component
 @Path("/dash")
@@ -29,11 +34,17 @@ public class DashController
         return Response.ok(dashService.getTurni(houseId)).build();
     }
 
-    @GET
+    @POST
     @Path("/retrieveClassifica")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getClassifica(@QueryParam("houseId") String houseId)
-    {
-        return Response.ok(dashService.getClassifica(houseId)).build();
+    public Response getClassifica(ClassificaRequest request) {
+        try{
+            Map<String, Classifica> classifica = dashService.getClassifica(request);
+            return Response.ok(classifica).build();
+        } catch (Exception e)
+        {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Errore: " + e.getMessage())
+                    .build();
+        }
     }
 }

@@ -76,7 +76,7 @@ public class CalendarService
             throw new IllegalArgumentException("Cleaning assignment and task must not be null.");
         }
 
-        String url = "http://localhost:8086/rest/rank/done";
+        String url = "http://localhost:8080/Rank/rest/rank/done";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
