@@ -1,7 +1,6 @@
 package com.coiquyteam.rank.Controller;
 
 import com.coiquyteam.rank.Data.Classifica;
-import com.coiquyteam.rank.Data.CoinquyPoint;
 import com.coiquyteam.rank.Service.RankService;
 import com.coiquyteam.rank.Utility.ClassificaRequest;
 import jakarta.ws.rs.*;
@@ -17,7 +16,7 @@ public class ClientRankController
 {
     @Autowired private RankService rankService;
 
-    @GET
+    @POST
     @Path("/retrieveClassifica")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -40,7 +39,6 @@ public class ClientRankController
                     .entity("{\"error\":\"Missing or empty coinquyList parameter\"}")
                     .build();
         }
-
 
         try
         {

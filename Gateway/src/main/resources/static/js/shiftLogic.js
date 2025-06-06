@@ -161,12 +161,12 @@ function renderCalendar(data) {
 
         row.innerHTML = `
             <td>${new Date(start).toLocaleDateString()}</td>
-            <td>${assignedRoommate.usernameRoommate}</td>
+            <td>${assignedRoommate ? assignedRoommate.usernameRoommate : "Unassigned"}</td>
             <td>${taskCategory}</td>
             <td>${description}</td>
             <td>${new Date(start).toLocaleTimeString()} - ${new Date(end).toLocaleTimeString()}</td>
             <td>
-                <button class="confirm-btn">${cleaningAssignment.task.done === false ? "❌ Not done" : " ✅ Done"}</button>
+                <button class="confirm-btn">${!isDone === false ? "❌ Not done" : " ✅ Done"}</button>
             </td>
           `;
 

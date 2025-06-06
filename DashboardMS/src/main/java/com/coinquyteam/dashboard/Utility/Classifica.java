@@ -1,8 +1,11 @@
 package com.coinquyteam.dashboard.Utility;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Classifica
 {
+    @JsonProperty("ClassificaId")
     private String id;
     private String idCoinquy;
     private String houseId;

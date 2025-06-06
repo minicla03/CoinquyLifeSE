@@ -38,7 +38,7 @@ public class RankService
         }
     }
 
-    public LinkedHashMap<String, Classifica> getClassifica(List<String> coinquyList, String houseId) throws Exception
+    public LinkedHashMap<String, Classifica> getClassifica(List<String> coiquyList, String houseId) throws Exception
     {
         List<CoinquyPoint> coinquyPoints = coiquyPointRepository.findByHouseId(houseId);
 
@@ -55,7 +55,7 @@ public class RankService
 
         Map<String, Classifica> classificaMap = new HashMap<>();
 
-        for (String utente : coinquyList)
+        for (String utente : coiquyList)
         {
             int punti = puntiPerUtente.getOrDefault(utente, 0);
             Classifica c = new Classifica(utente, houseId, punti);

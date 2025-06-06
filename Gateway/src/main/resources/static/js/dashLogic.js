@@ -95,14 +95,18 @@ document.getElementById("btnClassifica").addEventListener("click", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    retrieveCoinquy();
-    retriveTurni();
-    retrieveClassifica();
+    retrieveCoinquy()
+        .then(() => {
+            retriveTurni();
+            retrieveClassifica();
+        })
+        .catch(err => console.error("Errore inizializzazione:", err));
+
 });
 
 
 function retrieveCoinquy() {
-    fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveCoinquy?houseId=${houseId}`, {
+    return fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveCoinquy?houseId=${houseId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     })
@@ -142,28 +146,36 @@ function retriveTurni() {
 }
 
 function retrieveClassifica() {
+    // Recupero dati dal localStorage
+    const houseId = localStorage.getItem("houseId");
+    const listCoiquy = JSON.parse(localStorage.getItem("listCoiquy"));
+
     fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveClassifica`, {
         method: "POST",
-        headers: { "Accept": "application/json" },
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-            houseId: localStorage.getItem("houseId"),
-            coiquyList: localStorage.getItem("listCoiquy")
+            houseId: houseId,
+            coiquyList: listCoiquy
         })
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error("Errore HTTP " + response.status);
+            return response.json();
+        })
         .then(classificaList => {
             const rankList = document.getElementById("rank");
             rankList.innerHTML = "";
 
-            if (!classificaList || classificaList.length === 0) {
+            if (!classificaList || Object.keys(classificaList).length === 0) {
                 rankList.innerHTML = "<li>Nessun dato disponibile.</li>";
                 return;
             }
 
-            classificaList.forEach(item => {
-                // Se vuoi mostrare idCoinquy o altro come nome
+            Object.values(classificaList).forEach(item => {
                 const nome = item.idCoinquy || "Sconosciuto";
-
                 const li = document.createElement("li");
                 li.textContent = `${nome} - ${item.totalPoint} punti`;
                 rankList.appendChild(li);
@@ -174,3 +186,4 @@ function retrieveClassifica() {
             document.getElementById("rank").innerHTML = "<li>Errore nel caricamento.</li>";
         });
 }
+

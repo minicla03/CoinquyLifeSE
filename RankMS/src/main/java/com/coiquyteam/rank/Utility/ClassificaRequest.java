@@ -1,12 +1,24 @@
 package com.coiquyteam.rank.Utility;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-public class ClassificaRequest {
+public class ClassificaRequest
+{
+    @JsonProperty("houseId")
     private String houseId;
+
+    @JsonProperty("coiquyList") 
     private List<String> coiquyList;
 
-    // Getter e Setter
+    public ClassificaRequest() { }
+
+    public ClassificaRequest(String houseId, List<String> coiquyList) {
+        this.houseId = houseId;
+        this.coiquyList = coiquyList;
+    }
+
     public String getHouseId() {
         return houseId;
     }

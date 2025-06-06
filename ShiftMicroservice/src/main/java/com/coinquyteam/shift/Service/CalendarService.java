@@ -36,7 +36,6 @@ public class CalendarService
     private UUID problemId;
 
     public CleaningSchedule getSchedule(String houseId) throws ExecutionException, InterruptedException {
-        ScheduleSolution solution = new ScheduleSolution();
         List<Roommate> roommates = roommateRepository.findAllByHouseId(houseId);
         List<HouseTask> tasks = houseTaskService.getTasksByHouseId(houseId).stream().filter(t-> !t.isDone()).toList();
 
@@ -45,6 +44,7 @@ public class CalendarService
         }
 
         problemId = UUID.randomUUID();
+        ScheduleSolution solution = new ScheduleSolution();
         CleaningSchedule cleaningSchedule=solution.solve(problemId,roommates, tasks);
         cleaningAssignmentRepository.insert(cleaningSchedule.getAssignmentList());
         return cleaningSchedule;

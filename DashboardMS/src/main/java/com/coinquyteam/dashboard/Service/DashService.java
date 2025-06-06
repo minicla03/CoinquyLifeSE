@@ -67,9 +67,9 @@ public class DashService
                 url,
                 HttpMethod.POST,
                 entity,
-                new ParameterizedTypeReference<>() {
-                }
+                new ParameterizedTypeReference<>() { }
         );
+        System.out.println(response.getBody());
 
         if (response.getStatusCode() == HttpStatus.OK) {
             return response.getBody();

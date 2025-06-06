@@ -9,7 +9,6 @@ import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -36,11 +35,13 @@ public class DashController
 
     @POST
     @Path("/retrieveClassifica")
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response getClassifica(ClassificaRequest request) {
         try{
             Map<String, Classifica> classifica = dashService.getClassifica(request);
             return Response.ok(classifica).build();
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Errore: " + e.getMessage())
