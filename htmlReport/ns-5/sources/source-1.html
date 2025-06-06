@@ -1,0 +1,108 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > IUserRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.coinquyteam.authApplication.Repository</a>
+</div>
+
+<h1>Coverage Summary for Class: IUserRepository (com.coinquyteam.authApplication.Repository)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">IUserRepository$MockitoMock$wGpSiO1U</td>
+  </tr>
+  <tr>
+    <td class="name">IUserRepository$MockitoMock$wGpSiO1U$auxiliary$IdhuXSEz</td>
+  </tr>
+  <tr>
+    <td class="name">IUserRepository$MockitoMock$wGpSiO1U$auxiliary$Z3196Nc8</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.coinquyteam.authApplication.Repository;
+&nbsp;
+&nbsp;import com.coinquyteam.authApplication.Data.User;
+&nbsp;import org.springframework.data.mongodb.repository.MongoRepository;
+&nbsp;import org.springframework.data.mongodb.repository.Query;
+&nbsp;import org.springframework.data.mongodb.repository.Update;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public interface IUserRepository extends MongoRepository&lt;User, String&gt;
+&nbsp;{
+&nbsp;
+&nbsp;    @Query(value = &quot;{ &#39;email&#39; : ?0 }&quot;)
+&nbsp;    User findByEmail(String email);
+&nbsp;
+&nbsp;    @Query(value = &quot;{ &#39;username&#39; : ?0 }&quot;)
+&nbsp;    User findByUsername(String username);
+&nbsp;
+&nbsp;    @Query(value = &quot;{ &#39;id_user&#39; : ?0 }&quot;)
+&nbsp;    User findByIdUser(String id_user);
+&nbsp;
+&nbsp;    @Query(value = &quot;{ &#39;house_user&#39; : ?0 }&quot;)
+&nbsp;    User findByHouseUser(String house_user);
+&nbsp;
+&nbsp;    @Update(&quot;{ &#39;$set&#39; : { &#39;house_user&#39; : ?1 } }&quot;)
+&nbsp;    @Query(&quot;{ &#39;username&#39; : ?0 }&quot;)
+&nbsp;    void setHouseUser(String username, String houseCode);
+&nbsp;
+&nbsp;    @Query(value = &quot;{ &#39;house_id&#39; : ?0 }&quot;)
+&nbsp;    List&lt;User&gt; findByHouseId(String houseId);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-06-05 13:10</div>
+</div>
+</body>
+</html>

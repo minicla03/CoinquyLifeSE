@@ -1,1 +1,5 @@
-C:\Users\User\IdeaProjects\CoinquyLifeSE1\AuthMicroService\src\test\java\com\coinquyteam\authmicroservice\AuthMicroServiceApplicationTests.java
+C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\ProgettoPerTest\AuthMicroService\src\test\java\com\coinquyteam\authApplication\Controller\AuthControllerTest.java
+C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\ProgettoPerTest\AuthMicroService\src\test\java\com\coinquyteam\authApplication\Controller\ClientControllerTest.java
+C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\ProgettoPerTest\AuthMicroService\src\test\java\com\coinquyteam\authApplication\Repository\IUserRepositoryTest.java
+C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\ProgettoPerTest\AuthMicroService\src\test\java\com\coinquyteam\authApplication\Service\AuthServiceTest.java
+C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\ProgettoPerTest\AuthMicroService\src\test\java\com\coinquyteam\authApplication\Service\WebAuthClientServiceTest.java

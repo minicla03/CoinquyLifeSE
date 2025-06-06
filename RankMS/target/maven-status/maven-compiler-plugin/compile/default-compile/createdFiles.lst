@@ -1,0 +1,6 @@
+com\coiquyteam\rank\Repository\ICoiquyPointRepository.class
+com\coiquyteam\rank\Controller\RankController.class
+com\coiquyteam\rank\RankApplication.class
+com\coiquyteam\rank\Data\CoinquyPoint.class
+com\coiquyteam\rank\Controller\ClientRankController.class
+com\coiquyteam\rank\Service\RankService.class

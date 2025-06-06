@@ -1,0 +1,123 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > IExpenseRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.coinquyteam.expense.Repository</a>
+</div>
+
+<h1>Coverage Summary for Class: IExpenseRepository (com.coinquyteam.expense.Repository)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">IExpenseRepository$MockitoMock$4V39cl4Z</td>
+  </tr>
+  <tr>
+    <td class="name">IExpenseRepository$MockitoMock$4V39cl4Z$auxiliary$4uUNsBA2</td>
+  </tr>
+  <tr>
+    <td class="name">IExpenseRepository$MockitoMock$4V39cl4Z$auxiliary$XkdXgrGO</td>
+  </tr>
+  <tr>
+    <td class="name">IExpenseRepository$MockitoMock$dowJR70Q</td>
+  </tr>
+  <tr>
+    <td class="name">IExpenseRepository$MockitoMock$dowJR70Q$auxiliary$7bG9aXLp</td>
+  </tr>
+  <tr>
+    <td class="name">IExpenseRepository$MockitoMock$dowJR70Q$auxiliary$8GiYaUoP</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.coinquyteam.expense.Repository;
+&nbsp;
+&nbsp;import com.coinquyteam.expense.Data.Expense;
+&nbsp;import com.coinquyteam.expense.Data.StatusExpense;
+&nbsp;import org.springframework.data.mongodb.repository.MongoRepository;
+&nbsp;import org.springframework.data.mongodb.repository.Query;
+&nbsp;import org.springframework.data.mongodb.repository.Update;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Date;
+&nbsp;
+&nbsp;public interface IExpenseRepository extends MongoRepository&lt;Expense, String&gt; {
+&nbsp;
+&nbsp;    @Query(value = &quot;{ &#39;expense_id&#39; : ?0 }&quot;)
+&nbsp;    Expense findByExpenseId(String expenseId);
+&nbsp;
+&nbsp;    @Query(value = &quot;{ &#39;house_id&#39; : ?0 }&quot;)
+&nbsp;    List&lt;Expense&gt; findByHouseId(String houseId);
+&nbsp;
+&nbsp;    @Query(value = &quot;{ &#39;created_by&#39; : ?0 }&quot;)
+&nbsp;    List&lt;Expense&gt; findByCreatedBy(String userId);
+&nbsp;
+&nbsp;    @Query(value = &quot;{ &#39;participants&#39; : ?0 }&quot;)
+&nbsp;    List&lt;Expense&gt; findByParticipant(String userId);
+&nbsp;
+&nbsp;    @Query(value = &quot;{ &#39;house_id&#39; : ?0, &#39;status&#39; : ?1 }&quot;)
+&nbsp;    List&lt;Expense&gt; findByHouseIdAndStatus(String houseId, String status);
+&nbsp;
+&nbsp;    @Query(value = &quot;{ &#39;participants&#39; : ?0, &#39;status&#39; : ?1 }&quot;)
+&nbsp;    List&lt;Expense&gt; findByParticipantAndStatus(String userId, String status);
+&nbsp;
+&nbsp;    @Query(value = &quot;{ &#39;house_id&#39; : ?0, &#39;created_date&#39; : { $gte: ?1, $lte: ?2 } }&quot;)
+&nbsp;    List&lt;Expense&gt; findByHouseIdAndDateRange(String houseId, Date startDate, Date endDate);
+&nbsp;
+&nbsp;    @Query(value = &quot;{ &#39;house_id&#39; : ?0, &#39;category&#39; : ?1 }&quot;)
+&nbsp;    List&lt;Expense&gt; findByHouseIdAndCategory(String houseId, String category);
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-06-05 13:10</div>
+</div>
+</body>
+</html>
