@@ -9,7 +9,7 @@ import java.util.List;
 @Document("Roommates")
 public class Roommate
 {
-    @Id @Field("usernameRoommate") private String usernameRoommate;
+    @Id private String usernameRoommate;
     @Field("houseId") private String houseId;
     @Field("UnavaibleTimeSlots") private List<TimeSlot> unavailableTimeSlots;
 
@@ -29,4 +29,13 @@ public class Roommate
 
     public List<TimeSlot> getUnavailableTimeSlots() { return unavailableTimeSlots; }
     public void setUnavailableTimeSlots(List<TimeSlot> unavailableTimeSlots) { this.unavailableTimeSlots = unavailableTimeSlots; }
+
+    @Override
+    public String toString() {
+        return "Roommate{" +
+                ", usernameRoommate='" + usernameRoommate + '\'' +
+                ", houseId='" + houseId + '\'' +
+                ", unavailableTimeSlots=" + unavailableTimeSlots +
+                '}';
+    }
 }

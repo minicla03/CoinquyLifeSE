@@ -28,10 +28,25 @@ public class ScheduleConstraintProvider implements ConstraintProvider
                 unassignedTask(factory),
                 unevenDistribution(factory),
                 noConsecutiveDays(factory),
+                noMultipleAssignmentsSameDay(factory),
                 //swapRequestBeforeDeadline(factory),
                 //swapRequestSatisfied(factory)
         };
     }
+
+    //Hard Constraint
+    private Constraint noMultipleAssignmentsSameDay(ConstraintFactory factory) {
+        return factory.forEachUniquePair(CleaningAssignment.class,
+                        equal(CleaningAssignment::getAssignedRoommate))
+                .filter((a1, a2) -> {
+                    if (a1.getAssignedRoommate() == null || a2.getAssignedRoommate() == null) return false;
+                    return a1.getTask().getTimeSlot().getStart().toLocalDate()
+                            .isEqual(a2.getTask().getTimeSlot().getStart().toLocalDate());
+                })
+                .penalize(HardSoftScore.ONE_HARD)
+                .asConstraint("Multiple assignments on same day");
+    }
+
 
     //Hard constraints
     private Constraint roommateUnavailable(ConstraintFactory factory)
@@ -53,13 +68,13 @@ public class ScheduleConstraintProvider implements ConstraintProvider
                 .asConstraint("Unassigned task");
     }
 
-    //Soft constraint
+    //Hard constraint
     private Constraint unevenDistribution(ConstraintFactory factory)
     {
         return factory.forEach(CleaningAssignment.class)
                 .filter(a -> a.getAssignedRoommate() != null)
                 .groupBy(CleaningAssignment::getAssignedRoommate, count())
-                .penalize(HardSoftScore.ONE_SOFT)
+                .penalize(HardSoftScore.ONE_HARD)
                 .asConstraint("Uneven distribution of tasks");
     }
 

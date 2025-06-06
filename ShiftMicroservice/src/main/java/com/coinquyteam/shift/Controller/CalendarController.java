@@ -25,13 +25,17 @@ public class CalendarController
     {
         String houseId = body.get("houseId");
         String problemId = body.get("problemId");
-
+        System.out.println("problem ID: " + problemId);
         if(problemId!=null)
         {
             if(calendarService.planningExists(problemId, houseId))
             {
                 List<CleaningAssignment> existingPlanning=calendarService.retriveCleaningAssignments(UUID.fromString(problemId), houseId);
                 return Response.status(Response.Status.FOUND).entity(existingPlanning).build();
+            }
+            else
+            {
+                calendarService.removePlanning(problemId, houseId);
             }
         }
 

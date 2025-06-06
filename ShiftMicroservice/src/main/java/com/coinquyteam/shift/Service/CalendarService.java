@@ -35,7 +35,8 @@ public class CalendarService
 
     private UUID problemId;
 
-    public CleaningSchedule getSchedule(String houseId) throws ExecutionException, InterruptedException {
+    public CleaningSchedule getSchedule(String houseId) throws ExecutionException, InterruptedException
+    {
         List<Roommate> roommates = roommateRepository.findAllByHouseId(houseId);
         List<HouseTask> tasks = houseTaskService.getTasksByHouseId(houseId).stream().filter(t-> !t.isDone()).toList();
 
@@ -44,6 +45,7 @@ public class CalendarService
         }
 
         problemId = UUID.randomUUID();
+        System.out.println("getSchedule:" + problemId);
         ScheduleSolution solution = new ScheduleSolution();
         CleaningSchedule cleaningSchedule=solution.solve(problemId,roommates, tasks);
         cleaningAssignmentRepository.insert(cleaningSchedule.getAssignmentList());
@@ -68,21 +70,15 @@ public class CalendarService
         houseTaskService.taskDone(id);
     }
 
-    public String toRank(String token, CleaningAssignment cleaningAssignment) {
-        if (token == null || token.isEmpty()) {
-            throw new IllegalArgumentException("Missing or invalid authorization token.");
-        }
-        if (cleaningAssignment == null || cleaningAssignment.getTask() == null) {
-            throw new IllegalArgumentException("Cleaning assignment and task must not be null.");
-        }
-
+    public String toRank(String token, String cleaningAssignmentId)
+    {
         String url = "http://localhost:8080/Rank/rest/rank/done";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
-        Map<String, CleaningAssignment> body = Map.of(
-                "cleaningAssignment", cleaningAssignment);
-        HttpEntity<Map<String, CleaningAssignment>> request = new HttpEntity<>(body, headers);
+        Map<String, String> body = Map.of(
+                "cleaningAssignmentId", cleaningAssignmentId);
+        HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
 
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
@@ -98,15 +94,15 @@ public class CalendarService
     public boolean planningExists(String pId, String houseId)
     {
         UUID uuid = UUID.fromString(pId);
-        if (problemId.equals(uuid))
-        {
-            return cleaningAssignmentRepository.findAll().stream()
-                    .filter(cleaningAssignment ->
-                            cleaningAssignment.getProblemId().equals(uuid) &&
-                                    cleaningAssignment.getTask().getHouseId().equals(houseId))
-                    .anyMatch(cleaningAssignment -> !cleaningAssignment.getTask().isDone());
-        }
-        return false;
+
+        System.out.println("Checking planning existence for problem ID: " + uuid + " and house ID: " + houseId);
+        System.out.println("plannigExists:" + problemId);
+
+        return cleaningAssignmentRepository.findAll().stream()
+                .filter(cleaningAssignment ->
+                        cleaningAssignment.getProblemId().equals(uuid) &&
+                                cleaningAssignment.getTask().getHouseId().equals(houseId))
+                .anyMatch(cleaningAssignment -> !cleaningAssignment.getTask().isDone());
     }
 
     public List<CleaningAssignment> retriveCleaningAssignments(UUID problemId, String houseId)
@@ -123,5 +119,20 @@ public class CalendarService
         return cleaningAssignmentRepository.findAll().stream()
                 .filter(cleaningAssignment -> cleaningAssignment.getTask().getHouseId().equals(houseId))
                 .toList();
+    }
+
+    public void removePlanning(String problemId, String houseId)
+    {
+        UUID uuid = UUID.fromString(problemId);
+        List<CleaningAssignment> assignmentsToRemove = cleaningAssignmentRepository.findAll().stream()
+                .filter(cleaningAssignment ->
+                        cleaningAssignment.getProblemId().equals(uuid) &&
+                                cleaningAssignment.getTask().getHouseId().equals(houseId))
+                .toList();
+        cleaningAssignmentRepository.deleteAll(assignmentsToRemove);
+    }
+
+    public UUID getProblemId() {
+        return problemId;
     }
 }

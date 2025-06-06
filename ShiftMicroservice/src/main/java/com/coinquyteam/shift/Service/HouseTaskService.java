@@ -21,7 +21,7 @@ public class HouseTaskService
             throw new IllegalArgumentException("HouseTask cannot be null");
         }
 
-        TimeSlot ts= new TimeSlot(houseTask.getTimeSlot().getStart(),  houseTask.getTimeSlot().getStart().plusDays(1));
+        TimeSlot ts= new TimeSlot(houseTask.getTimeSlot().getStart(),  houseTask.getTimeSlot().getStart().plusHours(2));
         HouseTask nhs= new HouseTask(houseTask.getTask(), houseTask.getDescription(), ts, houseTask.getHouseId());
         try
         {

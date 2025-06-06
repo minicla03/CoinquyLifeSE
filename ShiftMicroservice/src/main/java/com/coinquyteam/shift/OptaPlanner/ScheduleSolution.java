@@ -2,14 +2,16 @@ package com.coinquyteam.shift.OptaPlanner;
 
 import com.coinquyteam.shift.Data.HouseTask;
 import com.coinquyteam.shift.Data.Roommate;
-import com.coinquyteam.shift.Data.SwapRequest;
+import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.optaplanner.core.api.solver.SolverManager;
+import org.optaplanner.core.api.solver.event.BestSolutionChangedEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 public class ScheduleSolution

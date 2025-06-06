@@ -154,7 +154,7 @@ function renderCalendar(data) {
     //data = data.filter(assignment => assignment.task && assignment.task.isDone === false);
     data.forEach(cleaningAssignment => {
         const { assignedRoommate, task } = cleaningAssignment;
-        const { task: taskCategory, description, timeSlot, isDone } = task;
+        const { task: taskCategory, description, timeSlot} = task;
         const { start, end } = timeSlot;
 
         const row = document.createElement("tr");
@@ -166,7 +166,7 @@ function renderCalendar(data) {
             <td>${description}</td>
             <td>${new Date(start).toLocaleTimeString()} - ${new Date(end).toLocaleTimeString()}</td>
             <td>
-                <button class="confirm-btn">${!isDone === false ? "❌ Not done" : " ✅ Done"}</button>
+                <button class="confirm-btn">${cleaningAssignment.task.done === false ? "❌ Not done" : " ✅ Done"}</button>
             </td>
           `;
 
@@ -209,13 +209,13 @@ function assignedPoint(cleaningAssignmentId)
             'Content-Type': 'application/json',
             'Authorization': "Bearer " + token
         },
-        body: JSON.stringify({cleaningAssignmentId})
+        body: JSON.stringify({cleaningAssignmentId: cleaningAssignmentId})
     })
         .then(response => {
             if (!response.ok) {
-                return response.text().then(text => { throw new Error(text); });
+                console.log(response.text().then(text => { throw new Error(text); }));
             }
-            return response.json();
+            console.log(response.json());
         })
         .then(data => {
             console.log("Punti assegnati correttamente:", data);
@@ -485,6 +485,30 @@ async function retriveShifts() {
     }
 }
 
+function initAvaibility()
+{
+    fetch("http://localhost:8080/Shift/rest/unAvailability/initializeUnavailability", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer " + token
+        },
+        body: JSON.stringify({
+            coiquyList: coinquilini.map(coinquy => ({ usernameRoommate: coinquy.username, houseId: houseId }))
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text); });
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error("Errore durante l'inizializzazione:", error);
+            alert("⚠️ Errore: " + error.message);
+        });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
     local();
     retriveCoinquys();
@@ -498,5 +522,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
         renderCalendar(shift)
     }
-    //populateAssignmentSelects(shift)
+    //populateAssignmentSelects(shift
+    initAvaibility();
 });

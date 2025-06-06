@@ -34,20 +34,11 @@ public class UnAvailabilityService
 
         try
         {
-            if(roommateRepository.existsById(username))
-            {
-                Roommate roommate = roommateRepository.findById(username).get();
-                List<TimeSlot> currentUnavailableSlots = (roommateRepository.findById(username)) .get()
-                        .getUnavailableTimeSlots();
-                currentUnavailableSlots.add(unavailability);
-                roommateRepository.save(roommate);
-                timeSlotRepository.save(unavailability);
-            }
-            else
-            {
-                Roommate newRoommate = new Roommate(username, houseId, List.of(unavailability));
-                roommateRepository.save(newRoommate);
-            }
+            Roommate roommate = roommateRepository.findById(username).get();
+            List<TimeSlot> currentUnavailableSlots = roommate.getUnavailableTimeSlots();
+            currentUnavailableSlots.add(unavailability);
+            roommateRepository.save(roommate);
+            timeSlotRepository.save(unavailability);
         }
         catch (Exception e)
         {
@@ -68,6 +59,20 @@ public class UnAvailabilityService
             return response != null ? response.get("username") : null;
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public void initializeUnavailability(List<Roommate> roommates) throws IllegalArgumentException
+    {
+        roommates.forEach(System.out::println);
+
+        for (Roommate roommate : roommates)
+        {
+            if(!roommateRepository.existsById(roommate.getUsernameRoommate()))
+            {
+                Roommate newRoommate = new Roommate(roommate.getUsernameRoommate(), roommate.getHouseId(), List.of());
+                roommateRepository.insert(newRoommate);
+            }
         }
     }
 }
