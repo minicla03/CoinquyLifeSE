@@ -174,13 +174,19 @@ function retrieveClassifica() {
                 return;
             }
 
-            let posizione = 1;
-            Object.values(classificaList).forEach(item => {
+            Object.values(classificaList).forEach((item, index) => {
                 const nome = item.idCoinquy || "Sconosciuto";
+                const punti = item.totalPoint;
+                const posizione = index + 1;
+
+                let medaglia = "";
+                if (posizione === 1) medaglia = "🥇";
+                else if (posizione === 2) medaglia = "🥈";
+                else if (posizione === 3) medaglia = "🥉";
+
                 const p = document.createElement("p");
-                p.textContent = `${posizione}. ${nome} - ${item.totalPoint} punti`;
+                p.textContent = `${medaglia || posizione + "."} ${nome} - ${punti} punti`;
                 rankContainer.appendChild(p);
-                posizione++;
             });
         })
         .catch(error => {
@@ -188,6 +194,3 @@ function retrieveClassifica() {
             document.getElementById("rank").textContent = "Errore nel caricamento.";
         });
 }
-
-
-
