@@ -201,26 +201,29 @@ async function handleDoneButton(cleaningAssignmentId) {
     }
 }
 
-function assignedPoint(cleaningAssignmentId)
-{
+function assignedPoint(cleaningAssignmentId) {
     fetch("http://localhost:8080/Shift/rest/client/toRank", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': "Bearer " + token
         },
-        body: JSON.stringify({cleaningAssignmentId: cleaningAssignmentId})
+        body: JSON.stringify({ cleaningAssignmentId: cleaningAssignmentId })
     })
-        .then(response => {
+        .then(async response => {
             if (!response.ok) {
-                console.log(response.text().then(text => { throw new Error(text); }));
+                const errorText = await response.text();
+                throw new Error(errorText);
             }
-            console.log(response.json());
-        })
-        .then(data => {
+            const data = await response.json();
             console.log("Punti assegnati correttamente:", data);
         })
+        .catch(error => {
+            console.error("Errore assegnazione punti:", error);
+            alert("⚠️ Errore assegnazione punti: " + error.message);
+        });
 }
+
 
 //funzione che gestisce l'accettazione o il rifiuto di una richiesta di scambio
 /*function handleRequestAction(idSwap, accept) {

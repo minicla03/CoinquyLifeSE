@@ -19,8 +19,7 @@ public class ShiftApplication extends ResourceConfig
         register(SwapController.class);
         register(CalendarController.class);
         register(ClientShiftController.class);
-        packages("Controller");
-        packages("Service");
+        packages("com.coinquyteam.shift.Service");
         packages("Data");
         packages("OptaPlanner");
         packages("Repository");
