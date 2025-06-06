@@ -33,6 +33,8 @@ public class RankController
 
         try {
             rankService.updateRank(cleaningAssignmentId);
+            System.out.println("[RankController] Rank updated successfully");
+
             return Response.ok("{\"message\": \"Punti assegnati\"}").build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

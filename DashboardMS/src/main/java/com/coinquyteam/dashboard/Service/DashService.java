@@ -2,6 +2,7 @@ package com.coinquyteam.dashboard.Service;
 
 import com.coinquyteam.dashboard.Utility.ClassificaRequest;
 import com.coinquyteam.dashboard.Utility.Classifica;
+import com.coinquyteam.dashboard.Utility.CoiquyListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -34,9 +35,9 @@ public class DashService
         return makeGetRequest(url);
     }
 
-    public LinkedHashMap<String, Classifica> getClassifica(ClassificaRequest classificaRequest) {
+    public LinkedHashMap<String, Classifica> getClassifica(CoiquyListDTO coiquyListDTO) {
         String url = "http://localhost:8080/Rank/rest/client/retrieveClassifica";
-        return makePostRequest(url, classificaRequest);
+        return makePostRequest(url, coiquyListDTO);
     }
 
     private List<?> makeGetRequest(String url) {
@@ -58,10 +59,10 @@ public class DashService
         }
     }
 
-    private LinkedHashMap<String, Classifica> makePostRequest(String url, ClassificaRequest body) {
+    private LinkedHashMap<String, Classifica> makePostRequest(String url, CoiquyListDTO body) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<ClassificaRequest> entity = new HttpEntity<>(body, headers);
+        HttpEntity<CoiquyListDTO> entity = new HttpEntity<>(body, headers);
 
         ResponseEntity<LinkedHashMap<String, Classifica>> response = restTemplate.exchange(
                 url,
@@ -70,7 +71,7 @@ public class DashService
                 new ParameterizedTypeReference<>() { }
         );
         System.out.println(response.getBody());
-
+        System.out.println(response.getStatusCode());
         if (response.getStatusCode() == HttpStatus.OK) {
             return response.getBody();
         } else {

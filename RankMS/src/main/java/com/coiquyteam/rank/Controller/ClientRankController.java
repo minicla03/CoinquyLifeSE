@@ -3,6 +3,8 @@ package com.coiquyteam.rank.Controller;
 import com.coiquyteam.rank.Data.Classifica;
 import com.coiquyteam.rank.Service.RankService;
 import com.coiquyteam.rank.Utility.ClassificaRequest;
+import com.coiquyteam.rank.Utility.CoiquyDTO;
+import com.coiquyteam.rank.Utility.CoiquyListDTO;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -20,11 +22,13 @@ public class ClientRankController
     @Path("/retrieveClassifica")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getClassifica(ClassificaRequest request)
-
+    public Response getClassifica(CoiquyListDTO request)
     {
-        String houseId = request.getHouseId();
-        List<String> coinquyList = request.getCoiquyList();
+        String houseId = request.getCoiquyList().getFirst().getHouseId();
+        List<String> coiquyList = request.getCoiquyList().stream().map(CoiquyDTO::getUsername).toList();
+
+        System.out.println(coiquyList);
+        System.out.println(houseId);
 
         if (houseId == null || houseId.isEmpty())
         {
@@ -33,16 +37,16 @@ public class ClientRankController
                     .build();
         }
 
-        if (coinquyList == null || coinquyList.isEmpty())
+        if (coiquyList.isEmpty())
         {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"Missing or empty coinquyList parameter\"}")
+                    .entity("{\"error\":\"Missing or empty coiquyList parameter\"}")
                     .build();
         }
 
         try
         {
-            LinkedHashMap<String, Classifica> classifica = rankService.getClassifica(coinquyList,houseId);
+            LinkedHashMap<String, Classifica> classifica = rankService.getClassifica(coiquyList,houseId);
             return Response.ok(classifica).build();
         }
         catch (Exception e)

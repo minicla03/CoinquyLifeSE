@@ -82,7 +82,10 @@ public class CalendarService
 
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+            System.out.println("[toRank SERVICE] Response status: " + response.getStatusCode());
+            System.out.println("[toRank SERVICE] Response body: " + response.getBody());
             if (!response.getStatusCode().is2xxSuccessful()) {
+                System.out.println("[toRank SERVICE] Non success status, throwing exception");
                 throw new RuntimeException("Failed with status: " + response.getStatusCode());
             }
             return response.getBody();

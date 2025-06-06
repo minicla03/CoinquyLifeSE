@@ -1,5 +1,6 @@
 package com.coiquyteam.rank;
 
+import com.coiquyteam.rank.Controller.ClientRankController;
 import com.coiquyteam.rank.Controller.RankController;
 import jakarta.ws.rs.ApplicationPath;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -21,6 +22,7 @@ public class RankApplication extends ResourceConfig
         packages("Controller");
         //packages("com.coiquyteam.rank.Controller");
         register(RankController.class);
+        register(ClientRankController.class);
         packages("Service");
         packages("Repository");
     }

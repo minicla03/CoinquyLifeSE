@@ -5,6 +5,7 @@ import com.coinquyteam.shift.Repository.ICleaningAssignmentRepository;
 import com.coiquyteam.rank.Data.Classifica;
 import com.coiquyteam.rank.Data.CoinquyPoint;
 import com.coiquyteam.rank.Repository.ICoiquyPointRepository;
+import com.coiquyteam.rank.Utility.CoiquyListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

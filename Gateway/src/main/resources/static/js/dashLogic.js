@@ -97,7 +97,7 @@ document.getElementById("btnClassifica").addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", () => {
     retrieveCoinquy()
         .then(() => {
-            retriveTurni();
+            //retriveTurni();
             retrieveClassifica();
         })
         .catch(err => console.error("Errore inizializzazione:", err));
@@ -146,19 +146,19 @@ function retriveTurni() {
 }
 
 function retrieveClassifica() {
-    // Recupero dati dal localStorage
     const houseId = localStorage.getItem("houseId");
     const listCoiquy = JSON.parse(localStorage.getItem("listCoiquy"));
+    console.log(listCoiquy);
 
     fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveClassifica`, {
         method: "POST",
         headers: {
             "Accept": "application/json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
         },
         body: JSON.stringify({
-            houseId: houseId,
-            coiquyList: listCoiquy
+            coiquyList: listCoiquy.map(user => ({ username: user.username, houseId: houseId }))
         })
     })
         .then(response => {
@@ -166,24 +166,28 @@ function retrieveClassifica() {
             return response.json();
         })
         .then(classificaList => {
-            const rankList = document.getElementById("rank");
-            rankList.innerHTML = "";
+            const rankContainer = document.getElementById("rank");
+            rankContainer.innerHTML = "";
 
             if (!classificaList || Object.keys(classificaList).length === 0) {
-                rankList.innerHTML = "<li>Nessun dato disponibile.</li>";
+                rankContainer.textContent = "Nessun dato disponibile.";
                 return;
             }
 
+            let posizione = 1;
             Object.values(classificaList).forEach(item => {
                 const nome = item.idCoinquy || "Sconosciuto";
-                const li = document.createElement("li");
-                li.textContent = `${nome} - ${item.totalPoint} punti`;
-                rankList.appendChild(li);
+                const p = document.createElement("p");
+                p.textContent = `${posizione}. ${nome} - ${item.totalPoint} punti`;
+                rankContainer.appendChild(p);
+                posizione++;
             });
         })
         .catch(error => {
             console.error("Errore nel recupero classifica:", error);
-            document.getElementById("rank").innerHTML = "<li>Errore nel caricamento.</li>";
+            document.getElementById("rank").textContent = "Errore nel caricamento.";
         });
 }
+
+
 

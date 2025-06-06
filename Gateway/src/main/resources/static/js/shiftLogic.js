@@ -140,7 +140,7 @@ function retriveCoinquys()
     });
 }
 
-function renderCalendar(data) {
+async function renderCalendar(data) {
 
     if (!data || data.length === 0) {
         const emptyMessage = document.getElementById("emptyMessage");
@@ -193,7 +193,7 @@ async function handleDoneButton(cleaningAssignmentId) {
             const errorText = await response.text();
             throw new Error(errorText);
         }
-        assignedPoint(cleaningAssignmentId)
+        await assignedPoint(cleaningAssignmentId)
         window.location.reload();
     } catch (error) {
         console.error("Errore durante il completamento del compito:", error);
@@ -201,27 +201,23 @@ async function handleDoneButton(cleaningAssignmentId) {
     }
 }
 
-function assignedPoint(cleaningAssignmentId) {
-    fetch("http://localhost:8080/Shift/rest/client/toRank", {
+async function assignedPoint(cleaningAssignmentId) {
+    const response = await fetch("http://localhost:8080/Shift/rest/client/toRank", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': "Bearer " + token
         },
         body: JSON.stringify({ cleaningAssignmentId: cleaningAssignmentId })
-    })
-        .then(async response => {
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(errorText);
-            }
-            const data = await response.json();
-            console.log("Punti assegnati correttamente:", data);
-        })
-        .catch(error => {
-            console.error("Errore assegnazione punti:", error);
-            alert("⚠️ Errore assegnazione punti: " + error.message);
-        });
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText);
+    }
+
+    const data = await response.json();
+    console.log("Punti assegnati correttamente:", data);
 }
 
 

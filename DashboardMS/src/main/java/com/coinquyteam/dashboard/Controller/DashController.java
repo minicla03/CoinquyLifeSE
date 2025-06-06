@@ -3,6 +3,7 @@ package com.coinquyteam.dashboard.Controller;
 import com.coinquyteam.dashboard.Service.DashService;
 import com.coinquyteam.dashboard.Utility.Classifica;
 import com.coinquyteam.dashboard.Utility.ClassificaRequest;
+import com.coinquyteam.dashboard.Utility.CoiquyListDTO;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -36,9 +37,12 @@ public class DashController
     @POST
     @Path("/retrieveClassifica")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getClassifica(ClassificaRequest request) {
+    public Response getClassifica(CoiquyListDTO coiquyListDTO)
+    {
+        System.out.println(coiquyListDTO);
+
         try{
-            Map<String, Classifica> classifica = dashService.getClassifica(request);
+            Map<String, Classifica> classifica = dashService.getClassifica(coiquyListDTO);
             return Response.ok(classifica).build();
         }
         catch (Exception e)
