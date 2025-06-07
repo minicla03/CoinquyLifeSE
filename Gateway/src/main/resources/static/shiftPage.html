@@ -9,96 +9,91 @@
 
     <body>
 
-    <div class="grid-container">
+        <div class="grid-container">
 
-        <div class="nav_bar">
-            <header>
-                <img class="logo" src="logo-blu.png" alt="Logo" style="height: 7em; margin-right: 2px; margin-top: 10px;">
-                <a class="cta" href="#" id="user"></a>
-                <nav class="nav">
-                    <ul class="nav_links">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Spese</a></li>
-                        <li><a href="#"><button>Turni</button></a></li>
-                        <li><a href="#">Regole</a></li>
+            <div style="grid-area: header" class="nav_bar">
+                <header>
+                    <img class="logo" src="logo-blu.png" alt="Logo" style="height: 7em; margin-right: 2px; margin-top: 10px;">
+                    <a class="cta" href="#" id="user"></a>
+                    <nav class="nav">
+                        <ul class="nav_links">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Spese</a></li>
+                            <li><a href="#"><button>Turni</button></a></li>
+                            <li><a href="#">Regole</a></li>
+                        </ul>
+                    </nav>
+                </header>
+            </div>
+
+            <div style="grid-area: unavailability" class="container">
+                <form class="form-container">
+                    <h2>Turni di Pulizia</h2>
+                    <select id="coinquys-select" required>
+                        <option value="" disabled selected>Seleziona coinquilino</option>
+                    </select>
+                    <input type="datetime-local" placeholder="Inizio indisponibilità" id="start-time"/>
+                    <input type="datetime-local" placeholder="Fine indisponibilità" id="end-time"/>
+                    <button onclick="unavailableForm()">Salva indisponibilità</button>
+                </form>
+            </div>
+
+            <div style="grid-area: calendar" class="calendar-container" id="shiftCalendar">
+                <h3>Calendario Turni</h3>
+                <table class="shift-calendar">
+                    <thead>
+                    <tr>
+                        <th>Giorno</th>
+                        <th>Coinquilino</th>
+                        <th>Task</th>
+                        <th>Descrizione</th>
+                        <th>Orario</th>
+                        <th>Status</th>
+                    </tr>
+                    <tbody id="calendarBody"></tbody>
+                    </thead>
+                </table>
+
+                <div class="calendar" id="calendarPlaceholder">
+                    <p  style="text-align: center;">Qui verranno mostrati i turni assegnati ai coinquilini.</p>
+                </div>
+                <p style="text-align: center; margin-top: 15px;">
+                    <a href="#" id="viewPlanningLink" style="color: #4500fd; font-weight: bold;">📋 Visualizza pianificazione</a>
+                </p>
+                <div id="loadingSpinner" style="display: none; text-align: center; margin-top: 20px;">
+                    <div class="custom-spinner"></div>
+                    <p style="color: white; font-weight: bold; margin-top: 10px;">Caricamento in corso... Attendere 20 secondi</p>
+                </div>
+            </div>
+
+            <div style="grid-area: swap" class="swap-requests-container">
+                <h3>🔄 Richieste di Scambio</h3>
+                <div class="requests">
+                    <h4>Ricevute</h4>
+                    <ul id="receivedRequests">
+                        <li>Nessuna richiesta ricevuta</li>
                     </ul>
-                </nav>
-            </header>
-        </div>
-
-
-        <div class="wrapper">
-                <div class="container">
-                    <form class="form-container">
-                        <h2>Turni di Pulizia</h2>
-                        <select id="coinquys-select" required>
-                            <option value="" disabled selected>Seleziona coinquilino</option>
-                        </select>
-                        <input type="datetime-local" placeholder="Inizio indisponibilità" id="start-time"/>
-                        <input type="datetime-local" placeholder="Fine indisponibilità" id="end-time"/>
-                        <button onclick="unavailableForm()">Salva indisponibilità</button>
-                    </form>
+                    <h4>Inviate</h4>
+                    <ul id="sentRequests">
+                        <li>Nessuna richiesta inviata</li>
+                    </ul>
+                    <button id="openSwapModal" class="swap-btn">Effettua Scambio</button>
                 </div>
+            </div>
 
-                <div class="calendar-container" id="shiftCalendar">
-                    <h3>Calendario Turni</h3>
-                    <table class="shift-calendar">
-                        <thead>
-                        <tr>
-                            <th>Giorno</th>
-                            <th>Coinquilino</th>
-                            <th>Task</th>
-                            <th>Descrizione</th>
-                            <th>Orario</th>
-                            <th></th>
-                        </tr>
-                        <tbody id="calendarBody"></tbody>
-                        </thead>
-                    </table>
-
-                    <div class="calendar" id="calendarPlaceholder">
-                        <p  style="text-align: center;">Qui verranno mostrati i turni assegnati ai coinquilini.</p>
-                    </div>
-                    <p style="text-align: center; margin-top: 15px;">
-                        <a href="#" id="viewPlanningLink" style="color: #4500fd; font-weight: bold;">📋 Visualizza pianificazione</a>
-                    </p>
-                    <div id="loadingSpinner" style="display: none; text-align: center; margin-top: 20px;">
-                        <div class="custom-spinner"></div>
-                        <p style="color: white; font-weight: bold; margin-top: 10px;">Caricamento in corso... Attendere 20 secondi</p>
-                    </div>
-                </div>
-
-                <div class="side-column">
-                    <div class="swap-requests-container">
-                        <h3>🔄 Richieste di Scambio</h3>
-                        <div class="requests">
-                            <h4>Ricevute</h4>
-                            <ul id="receivedRequests">
-                                <li>Nessuna richiesta ricevuta</li>
-                            </ul>
-                            <h4>Inviate</h4>
-                            <ul id="sentRequests">
-                                <li>Nessuna richiesta inviata</li>
-                            </ul>
-                            <button id="openSwapModal" class="swap-btn">Effettua Scambio</button>
-                        </div>
-                    </div>
-
-                    <div class="create-task-container">
-                        <h3>🧼 Crea Compito</h3>
-                        <form id="createTaskForm">
-                            <textarea placeholder="Descrizione" required></textarea>
-                            <select id="taskType" required>
-                                <option value="" disabled selected>🧾 Seleziona tipo di compito</option>
-                                <option value="CLEANING">🧹 Cleaning</option>
-                                <option value="MAINTENANCE">🔧 Maintenance</option>
-                                <option value="REPAIR">🛠️ Repair</option>
-                            </select>
-                            <input type="datetime-local" required />
-                            <button type="submit">Aggiungi Compito</button>
-                        </form>
-                    </div>
-                </div>
+            <div style="grid-area: task" class="create-task-container">
+                <h3>🧼 Crea Compito</h3>
+                <form id="createTaskForm">
+                    <textarea placeholder="Descrizione" required></textarea>
+                    <select id="taskType" required>
+                        <option value="" disabled selected>🧾 Seleziona tipo di compito</option>
+                        <option value="CLEANING">🧹 Cleaning</option>
+                        <option value="MAINTENANCE">🔧 Maintenance</option>
+                        <option value="REPAIR">🛠️ Repair</option>
+                    </select>
+                    <input type="datetime-local" required />
+                    <button type="submit">Aggiungi Compito</button>
+                </form>
             </div>
 
             <div id="swapModal" class="modal">
@@ -134,6 +129,7 @@
             </div>
 
             <script src="js/shiftLogic.js"></script>
+
         </div>
     </body>
 </html>

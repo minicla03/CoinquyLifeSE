@@ -50,9 +50,9 @@ public class ClientShiftController
 
     @POST
     @Path("/toRank")
-    public Response toRank(@HeaderParam("Authorization") String token, Map<String,String> body)
+    public Response toRank(@HeaderParam("Authorization") String auth, Map<String,String> body)
     {
-        if (token == null || token.isEmpty())
+        if (auth == null || auth.isEmpty())
         {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("{\"error\":\"Missing or invalid authorization token\"}")
@@ -62,7 +62,7 @@ public class ClientShiftController
         String cleaningAssignmentId = body.get("cleaningAssignmentId");
 
         try {
-            String response=calendarService.toRank(token,cleaningAssignmentId);
+            String response=calendarService.toRank(auth,cleaningAssignmentId);
             if(response == null || response.isEmpty()) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                         .entity("{\"error\":\"Failed to process the cleaning assignment\"}")

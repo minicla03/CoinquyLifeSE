@@ -70,8 +70,10 @@ public class CalendarService
         houseTaskService.taskDone(id);
     }
 
-    public String toRank(String token, String cleaningAssignmentId)
+    public String toRank(String auth, String cleaningAssignmentId)
     {
+
+        String token = auth.substring(7); // Remove "Bearer " prefix
         String url = "http://localhost:8080/Rank/rest/rank/done";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

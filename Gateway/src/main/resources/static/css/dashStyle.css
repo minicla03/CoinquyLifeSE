@@ -331,12 +331,6 @@ button:hover{
         margin-left: 0;
     }
 
-    .calendar,
-    .score,
-    .casa,
-    .footer {
-        height: auto;
-    }
 
     .calendar-days div,
     .calendar-weekdays div {
@@ -344,7 +338,4 @@ button:hover{
     }
 }
 
-#classificaBox, #lista-persone {
-    max-height: 300px;
-    overflow-y: auto;
-}
+

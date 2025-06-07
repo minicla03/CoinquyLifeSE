@@ -5,6 +5,8 @@ body{
     margin: 0; /* rimuove il margine */
     background: linear-gradient(135deg, rgba(139, 0, 253, 0.94), #4500fd);
     /*background-color: #c2c2f6; /* colore di sfondo */
+    box-sizing: border-box; /* include il padding e il bordo nella larghezza e altezza */
+
 
 }
 /* stile per la griglia  */
@@ -13,15 +15,15 @@ body{
     box-sizing: border-box; /* include il padding e il bordo nella larghezza e altezza */
     min-height: 100vh;
     padding: 10px 10px 10px 10px;
-
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* due colonne */
-    grid-auto-rows: auto auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr ; /* due colonne */
+    grid-auto-rows: auto 1fr 1fr ; /* tre righe */
     grid-template-areas:
-    "header header header"
-    "calendar score casa"
-    "calendar footer footer"; /* tre righe */
+    "header header header header"
+    "unavailability calendar calendar calendar"
+    "swap swap task task";
     gap: 1rem;
+    overflow: auto;
 }
 
 /* stile per la navbar */
@@ -122,20 +124,12 @@ button:hover{
     margin-right: 20px;
 }
 
-.wrapper {
-    display: flex;
-    gap: 30px;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 100%;
-    box-sizing: border-box;
-    flex-wrap: nowrap;
-}
 
 .container {
     background: white;
     padding: 20px 25px;
     border-radius: 20px;
+    height: auto;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     display: flex;
     flex-direction: column;
@@ -175,10 +169,10 @@ button:hover{
     top: 80px;
 
     /* Rimozione/minimizzazione per adattarsi al contenuto */
-    min-width: unset; /* oppure rimuovi del tutto */
-    width: fit-content;
+    width: auto;
     max-width: 100%; /* opzionale per evitare che esca dallo schermo */
-    flex-grow: 0; /* impedisce che cresca oltre il contenuto */
+    flex-grow: 1;
+    height: auto;
 }
 
 .swap-requests-container {
@@ -187,11 +181,12 @@ button:hover{
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     color: #333;
-    min-width: 300px;
-    max-width: 350px;
     box-sizing: border-box;
     flex-shrink: 0;
+    position: relative;
 }
+
+
 
 .container h2::before {
     content: "🧹 ";
@@ -352,7 +347,6 @@ button:hover{
     list-style-type: none;
     padding-left: 10px;
     max-height: 200px;
-    overflow-y: auto;
     border: 2px solid #8b00fd;
     border-radius: 10px;
     background: #f6f0ff;
@@ -370,31 +364,13 @@ button:hover{
 }
 
 
-@media (max-width: 800px) {
-    .wrapper {
-        flex-direction: column;
-        flex-wrap: wrap;
-        margin: 80px 20px 40px;
-        width: auto;
-        max-width: 100%;
-    }
-    .container, .calendar-container, .swap-requests-container {
-        max-width: 100%;
-        min-width: auto;
-        flex: none;
-        margin-bottom: 20px;
-        width: 100%;
-    }
-}
-
-
 .create-task-container {
     background: white;
     padding: 20px 25px;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     color: #333;
-    margin-top: 30px;
+    position: relative;
 }
 
 .create-task-container h3 {
@@ -444,14 +420,6 @@ button:hover{
 
 #createTaskForm button:hover {
     background: #4500fd;
-}
-
-.side-column {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    flex-shrink: 0;
-    max-width: 350px;
 }
 
 .calendar-container a {
@@ -541,21 +509,25 @@ button:hover{
     font-weight: bold;
 }
 
+
 .shift-calendar {
     width: 100%;
+    min-width: auto;
     border-collapse: collapse;
+    justify-content: center;
+    align-content: center;
     font-size: 0.95rem;
     margin-top: 10px;
     background: #fff;
     border-radius: 12px;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .shift-calendar th,
 .shift-calendar td {
     border: 1px solid #ddd;
     padding: 10px 12px;
-    text-align: left;
+    text-align: center;
 }
 
 .shift-calendar thead {
@@ -585,3 +557,4 @@ button:hover{
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
