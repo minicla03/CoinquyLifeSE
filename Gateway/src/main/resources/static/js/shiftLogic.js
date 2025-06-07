@@ -167,11 +167,15 @@ async function renderCalendar(data) {
             <td>${description}</td>
             <td>${new Date(start).toLocaleTimeString()} - ${new Date(end).toLocaleTimeString()}</td>
             <td>
-                <button class="confirm-btn">${cleaningAssignment.task.done === false ? "❌ Not done" : " ✅ Done"}</button>
+            <button class="confirm-btn" ${cleaningAssignment.task.done === true ? "disabled" : ""}>
+             ${cleaningAssignment.task.done === false ? "❌ Not done" : " ✅ Done"}
+            </button>
             </td>
           `;
 
         tbody.appendChild(row);
+
+
 
         // Aggiungi event listener al bottone di conferma
         const confirmBtn = row.querySelector('.confirm-btn');

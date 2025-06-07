@@ -17,7 +17,7 @@ body{
     padding: 10px 10px 10px 10px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr ; /* due colonne */
-    grid-auto-rows: auto 1fr 1fr ; /* tre righe */
+    grid-auto-rows: auto 1fr auto; /* tre righe */
     grid-template-areas:
     "header header header header"
     "unavailability calendar calendar calendar"
@@ -184,6 +184,7 @@ button:hover{
     box-sizing: border-box;
     flex-shrink: 0;
     position: relative;
+    height: auto;
 }
 
 
@@ -370,6 +371,7 @@ button:hover{
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     color: #333;
+    height: auto;
     position: relative;
 }
 

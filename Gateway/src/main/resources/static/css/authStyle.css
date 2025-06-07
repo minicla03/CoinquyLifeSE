@@ -30,6 +30,25 @@ body {
     font-size: 16px;
 }
 
+.profile-image-wrapper {
+    width: 120px;            /* larghezza del cerchio */
+    height: 120px;           /* altezza del cerchio */
+    border-radius: 50%;      /* rende il contenitore circolare */
+    overflow: hidden;        /* nasconde tutto ciò che esce dal cerchio */
+    margin: 0 auto 15px;     /* centra orizzontalmente e aggiunge spazio sotto */
+    background-color: #eee;  /* colore di sfondo leggero */
+    display: flex;           /* usa flexbox per centrare contenuto */
+    align-items: center;     /* centra verticalmente */
+    justify-content: center; /* centra orizzontalmente */
+}
+
+.profile-image-wrapper img {
+    width: 100%; /* immagine riempie il contenitore */
+    height: 100%;
+    object-fit: cover; /* mantiene proporzioni riempiendo il cerchio */
+    border-radius: 50%; /* immagine stessa circolare */
+
+}
 .form-container button {
     background: rgba(139, 0, 253, 0.94);
     color: white;

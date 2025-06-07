@@ -13,7 +13,6 @@ body{
     box-sizing: border-box; /* include il padding e il bordo nella larghezza e altezza */
     min-height: 100vh;
     padding: 10px 10px 10px 10px;
-
     display: grid;
     grid-template-columns: 1fr 1fr 1fr; /* due colonne */
     grid-auto-rows: auto auto auto auto;
@@ -217,6 +216,7 @@ button:hover{
     box-sizing: border-box;
 }
 
+
 /* stile per la classifica */
 
 .score-title{
@@ -227,11 +227,19 @@ button:hover{
     border-bottom: 1px solid #ddd;
 
 }
+.rank{
+    list-style: none;
+    padding: 1rem 2rem;
+    margin: 20px 0;
+    height: auto;
+    overflow-y: auto;
+}
 
 .classifica-list {
     list-style: none;
     padding: 1rem 2rem;
     margin: 0;
+    overflow-y: auto;
 }
 
 .classifica-list li {
@@ -273,6 +281,8 @@ button:hover{
     list-style: none;
     padding: 1rem 2rem;
     margin: 20px 0;
+    height: auto;
+    overflow-y: auto;
 }
 
 .persona-item {

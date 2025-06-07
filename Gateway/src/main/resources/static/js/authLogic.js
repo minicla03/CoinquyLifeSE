@@ -124,3 +124,4 @@ document.querySelector("#loginForm button").addEventListener("click", async (eve
     event.preventDefault(); // Previene il doppio invio del form
     document.querySelector("#loginForm").dispatchEvent(new Event("submit"));
 });
+

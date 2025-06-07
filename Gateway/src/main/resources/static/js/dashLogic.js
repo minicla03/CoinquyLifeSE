@@ -172,12 +172,18 @@ function retrieveClassifica() {
             const rankContainer = document.getElementById("rank");
             rankContainer.innerHTML = "";
 
-            if (!classificaList || Object.keys(classificaList).length === 0) {
+            const entries = Object.values(classificaList || {});
+
+            if (entries.length === 0) {
                 rankContainer.textContent = "Nessun dato disponibile.";
                 return;
             }
 
-            Object.values(classificaList).forEach((item, index) => {
+            // **1) Ordino per totalPoint decrescente**
+            entries.sort((a, b) => b.totalPoint - a.totalPoint);
+
+            // **2) Itero sull’array già ordinato**
+            entries.forEach((item, index) => {
                 const nome = item.idCoinquy || "Sconosciuto";
                 const punti = item.totalPoint;
                 const posizione = index + 1;
