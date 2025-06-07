@@ -108,7 +108,10 @@ document.addEventListener("DOMContentLoaded", () => {
 function retrieveCoinquy() {
     return fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveCoinquy?houseId=${houseId}`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        }
     })
         .then(response => response.json())
         .then(data => {
@@ -118,7 +121,7 @@ function retrieveCoinquy() {
                 const li = document.createElement("li");
                 li.className = "persona-item";
                 li.innerHTML = `
-                <img src="${user.profileImage}" alt="${user.name} ${user.surname}" class="persona-img">
+                <img src="static/user-solid.svg" alt="${user.name} ${user.surname}" class="persona-img">
                 <span>${user.name} ${user.surname}</span>
                  `;
 
@@ -132,7 +135,10 @@ function retrieveCoinquy() {
 function retriveTurni() {
     fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveTurni?houseId=${houseId}`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        }
     })
         .then(response => {
             if (!response.ok) throw new Error("Errore nel recupero dei turni");

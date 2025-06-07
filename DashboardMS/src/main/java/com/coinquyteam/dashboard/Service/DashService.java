@@ -24,25 +24,29 @@ public class DashService
         this.restTemplate = restTemplate;
     }
 
-    public List<?> getCoinquy(String houseId)
+    public List<?> getCoinquy(String auth, String houseId)
     {
         String url = "http://localhost:8080/Auth/rest/client/retrieveCoinquy?houseId=" + houseId;
-        return makeGetRequest(url);
+        String token = auth.substring(7);
+        return makeGetRequest(url,token);
     }
 
-    public List<?> getTurni(String houseId) {
+    public List<?> getTurni(String houseId, String auth){
         String url = "http://localhost:8080/Shift/rest/client/retriveShift?houseId=" + houseId;
-        return makeGetRequest(url);
+        String token = auth.substring(7);
+        return makeGetRequest(url, token);
     }
 
-    public LinkedHashMap<String, Classifica> getClassifica(CoiquyListDTO coiquyListDTO) {
+    public LinkedHashMap<String, Classifica> getClassifica(CoiquyListDTO coiquyListDTO, String auth) {
         String url = "http://localhost:8080/Rank/rest/client/retrieveClassifica";
-        return makePostRequest(url, coiquyListDTO);
+        String token = auth.substring(7);
+        return makePostRequest(url, coiquyListDTO, token);
     }
 
-    private List<?> makeGetRequest(String url) {
+    private List<?> makeGetRequest(String url, String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + token);
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         ResponseEntity<List> response = restTemplate.exchange(
@@ -59,9 +63,10 @@ public class DashService
         }
     }
 
-    private LinkedHashMap<String, Classifica> makePostRequest(String url, CoiquyListDTO body) {
+    private LinkedHashMap<String, Classifica> makePostRequest(String url, CoiquyListDTO body, String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + token);
         HttpEntity<CoiquyListDTO> entity = new HttpEntity<>(body, headers);
 
         ResponseEntity<LinkedHashMap<String, Classifica>> response = restTemplate.exchange(

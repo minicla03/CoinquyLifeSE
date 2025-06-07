@@ -27,18 +27,19 @@ public class UnAvailabilityController {
 
     @POST
     @Path("/addAvailability")
-    public Response addAvailability(@HeaderParam("Authorization") String auth, Map<String, String> body) {
+    public Response addAvailability( Map<String, String> body) {
         String houseId = body.get("houseId");
+        String username = body.get("username");
         LocalDateTime start = LocalDateTime.parse(body.get("start"));
         LocalDateTime end = LocalDateTime.parse(body.get("end"));
         TimeSlot ts = new TimeSlot(start, end);
 
-        if (houseId == null) {
+        if (houseId == null ) {
             return Response.status(Response.Status.BAD_REQUEST).entity("House ID, start time, and end time are required").build();
         }
 
         try {
-            if (unAvailabilityService.associateUnavailabilityWithRoommate(auth, ts, houseId)) {
+            if (unAvailabilityService.associateUnavailabilityWithRoommate(username, ts, houseId)) {
                 return Response.status(Response.Status.CREATED).entity("Unavailability added successfully").build();
             } else {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to add unavailability").build();

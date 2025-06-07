@@ -23,26 +23,26 @@ public class DashController
     @GET
     @Path("/retrieveCoinquy")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCoinquy(@QueryParam("houseId") String houseId) {
-        return Response.ok(dashService.getCoinquy(houseId)).build();
+    public Response getCoinquy(@HeaderParam("Authorization") String auth, @QueryParam("houseId") String houseId) {
+        return Response.ok(dashService.getCoinquy(auth, houseId)).build();
     }
 
     @GET
-    @Path("/retrieveTurni")
-    public Response getTurni(@QueryParam("houseId") String houseId)
+    @Path("/retrieveTurni") //Aggiungi token per sicurezza
+    public Response getTurni(@HeaderParam("Authorization") String auth, @QueryParam("houseId") String houseId)
     {
-        return Response.ok(dashService.getTurni(houseId)).build();
+        return Response.ok(dashService.getTurni(houseId, auth)).build();
     }
 
     @POST
     @Path("/retrieveClassifica")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getClassifica(CoiquyListDTO coiquyListDTO)
+    public Response getClassifica(@HeaderParam("Authorization") String auth, CoiquyListDTO coiquyListDTO)
     {
         System.out.println(coiquyListDTO);
 
         try{
-            Map<String, Classifica> classifica = dashService.getClassifica(coiquyListDTO);
+            Map<String, Classifica> classifica = dashService.getClassifica(coiquyListDTO, auth);
             return Response.ok(classifica).build();
         }
         catch (Exception e)

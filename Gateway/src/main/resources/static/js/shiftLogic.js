@@ -36,7 +36,7 @@ function unavailableForm()
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const selectedTenantId = document.getElementById("coinquys-select").value;
+        var selectedTenantId = document.getElementById("coinquys-select").value;
         const startTime = document.getElementById("start-time").value;
         const endTime = document.getElementById("end-time").value;
 
@@ -45,6 +45,7 @@ function unavailableForm()
             return;
         }
         console.log(token);
+        console.log("Selected Tenant ID:", selectedTenantId);
         fetch(`http://localhost:8080/Shift/rest/unAvailability/addAvailability`, {
             method: 'POST',
             headers: {
@@ -52,6 +53,7 @@ function unavailableForm()
                 'Authorization': "Bearer " + token
             },
             body: JSON.stringify({
+                username: selectedTenantId,
                 start: startTime,
                 end: endTime,
                 houseId: houseId
@@ -131,8 +133,8 @@ function retriveCoinquys()
 
     coinquilini.forEach(coinquilino => {
         const option = document.createElement('option');
-        option.value = coinquilino.id;
-        option.textContent = coinquilino.name;
+        option.value = coinquilino.username;
+        option.textContent = coinquilino.username;
         select.appendChild(option);
 
         //const swapOption = option.cloneNode(true);

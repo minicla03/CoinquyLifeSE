@@ -23,9 +23,8 @@ public class UnAvailabilityService
         this.webClient = webClient;
     }
 
-    public boolean associateUnavailabilityWithRoommate(String auth, TimeSlot unavailability, String houseId) throws IllegalArgumentException
+    public boolean associateUnavailabilityWithRoommate(String username, TimeSlot unavailability, String houseId) throws IllegalArgumentException
     {
-        String username = getUsernameFromTokenViaRest(auth.substring(7));
         System.out.println(username);
         if (username == null)
         {

@@ -55,7 +55,7 @@ public class HouseService {
 
     public HouseResult linkHouseToUser(String token, String houseCode)
     {
-        String url = "http://localhost:8081/rest/auth/external/link-house";
+        String url = "http://localhost:8080/Auth/rest/auth/external/link-house"; // DA VERIFICARE !!!
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
