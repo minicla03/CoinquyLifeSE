@@ -1,0 +1,5 @@
+com\coinquyteam\authApplication\Service\WebAuthClientServiceTest.class
+com\coinquyteam\authApplication\Controller\AuthControllerTest.class
+com\coinquyteam\authApplication\Repository\IUserRepositoryTest.class
+com\coinquyteam\authApplication\Service\AuthServiceTest.class
+com\coinquyteam\authApplication\Controller\ClientControllerTest.class

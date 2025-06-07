@@ -44,3 +44,15 @@ public class ScheduleSolution
         return solverManager;
     }
 }
+
+/*
+La classe `ScheduleSolution` gestisce la risoluzione di un problema di pianificazione delle pulizie usando OptaPlanner.
+Ecco cosa fa:
+
+- Inizializza un `SolverManager` con una configurazione presa dal file `solverConfig.xml`.
+- Nel metodo `solve`, crea una lista di assegnazioni (`CleaningAssignment`) per ogni compito (`HouseTask`), costruisce un oggetto `CleaningSchedule` con coinquilini, compiti e assegnazioni, e poi avvia la risoluzione del problema tramite OptaPlanner.
+- Restituisce la soluzione migliore trovata.
+- Espone un getter per il `SolverManager`.
+
+Serve per automatizzare la distribuzione dei compiti di pulizia tra i coinquilini in modo ottimale.
+ */

@@ -5,4 +5,5 @@ com\coinquyteam\houseSelectionApplication\Service\HouseService.class
 com\coinquyteam\houseSelectionApplication\Data\House.class
 com\coinquyteam\houseSelectionApplication\Controller\HouseController.class
 com\coinquyteam\houseSelectionApplication\Utility\HouseResult.class
+com\coinquyteam\houseSelectionApplication\Controller\ClientController.class
 com\coinquyteam\houseSelectionApplication\HouseSelectionApplication.class
