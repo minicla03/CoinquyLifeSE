@@ -90,9 +90,6 @@ document.getElementById("btnRegole").addEventListener("click", () => {
     window.location.href = "notYet.html";
 });
 
-document.getElementById("btnClassifica").addEventListener("click", () => {
-    window.location.href = "notYet.html";
-});
 
 document.addEventListener("DOMContentLoaded", () => {
     retrieveCoinquy()
@@ -121,7 +118,7 @@ function retrieveCoinquy() {
                 const li = document.createElement("li");
                 li.className = "persona-item";
                 li.innerHTML = `
-                <img src="static/user-solid.svg" alt="${user.name} ${user.surname}" class="persona-img">
+                <img src="user-solid.svg" alt="${user.name} ${user.surname}" class="persona-img">
                 <span>${user.name} ${user.surname}</span>
                  `;
 

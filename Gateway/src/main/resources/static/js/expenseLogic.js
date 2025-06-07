@@ -21,11 +21,10 @@ userLink.appendChild(img);
 const houseId = localStorage.getItem("houseId");
 console.log("House ID:", houseId);
 
-document.querySelector('.nav_links li:nth-child(1) a').href = 'http://localhost:8080/dashPage.html?houseId=' + houseId;
-document.querySelector('.nav_links li:nth-child(2) a').href = 'http://localhost:8080/expensePage.html?houseId=' + houseId;
-document.querySelector('.nav_links li:nth-child(3) a').href = 'http://localhost:8080/shiftPage.html?houseId=' + houseId;
+document.querySelector('.nav_links li:nth-child(1) a').href = 'http://localhost:8080/dashPage.html';
+document.querySelector('.nav_links li:nth-child(2) a').href = 'http://localhost:8080/expensePage.html';
+document.querySelector('.nav_links li:nth-child(3) a').href = 'http://localhost:8080/shiftPage.html';
 document.querySelector('.nav_links li:nth-child(4) a').href = 'http://localhost:8080/notYet.html';
-document.querySelector('.nav_links li:nth-child(5) a').href = 'http://localhost:8080/notYet.html';
 
 const expenses = [];
 let coinquilini = [];
@@ -187,7 +186,6 @@ async function retriveExpenses() {
         })
         .catch(error => {
             console.error('Errore:', error);
-            alert('Si è verificato un errore durante il recupero delle spese.');
         });
 }
 
