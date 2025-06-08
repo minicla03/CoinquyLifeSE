@@ -40,7 +40,7 @@ CoinquyLife-Web/
 ├── Gateway/
 │   └── ...
 │
-├── AuthMicroservice/                                 (servizio per login e registrazione utente)
+├── AuthMicroservice/                                 
 │   └── src/main/java/com/coinquylife/auth/...
 │
 ├── HouseSelectionMicroservice/
