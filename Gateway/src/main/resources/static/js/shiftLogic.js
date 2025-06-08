@@ -221,7 +221,7 @@ async function assignedPoint(task, username, endTime)
             typeTask: task,
             username: username,
             houseId: houseId,
-            dateComplete: new Date().toISOString(),
+            dateComplete: new Date().toISOString().slice(0, 19),
             endTime: endTime
         })
     });

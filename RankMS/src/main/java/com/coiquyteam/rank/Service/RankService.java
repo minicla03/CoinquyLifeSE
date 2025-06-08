@@ -21,16 +21,28 @@ public class RankService
         try
         {
             System.out.println("INSIDE UPDATE RANK");
-            LocalDateTime dateTimeComplete = LocalDateTime.parse(dateComplete);
-            LocalDateTime endTimeParsed = LocalDateTime.parse(endTime);
-            int points=TaskCategory.fromString(typeTask).getPoints();
-            System.out.println("POINTS"+points);
-            if (dateTimeComplete.isAfter(endTimeParsed))
-            {
-                points= TaskCategory.fromString(typeTask).getPenalityPoints();
+            System.out.println("USERNAME: " + username);
+            System.out.println("TYPE TASK: " + typeTask);
+            System.out.println("HOUSE ID: " + houseId);
+            System.out.println("DATE COMPLETE: " + dateComplete);
+            System.out.println("END TIME: " + endTime);
+            LocalDateTime dateTimeComplete;
+            LocalDateTime endTimeParsed;
+            try {
+                dateTimeComplete = LocalDateTime.parse(dateComplete);
+                endTimeParsed = LocalDateTime.parse(endTime);
+            } catch (Exception e) {
+                System.err.println("Errore nel parsing delle date: " + e.getMessage());
+                return false;
             }
-            System.out.println("POINTS"+points);
-            coiquyPointRepository.insert(new CoinquyPoint(username, houseId, points));
+
+            TaskCategory taskCategory = TaskCategory.fromString(typeTask);
+            int points = dateTimeComplete.isAfter(endTimeParsed)
+                    ? taskCategory.getPenalityPoints()
+                    : taskCategory.getPoints();
+            System.out.println("Punti assegnati: " + points);
+            CoinquyPoint cp= new CoinquyPoint(username, houseId, points);
+            coiquyPointRepository.insert(cp);
             System.out.println("DOPO INSERT");
             return true;
         }
