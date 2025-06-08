@@ -37,7 +37,8 @@
 ``` 
 CoinquyLife-Web/
 │
-├── docker-compose.yml
+├── Gateway/
+│   └── ...
 │
 ├── AuthMicroservice/
 │   └── src/main/java/com/coinquylife/auth/...
