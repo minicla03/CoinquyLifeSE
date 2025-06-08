@@ -20,6 +20,7 @@ public class RankService
     {
         try
         {
+            System.out.println("INSIDE UPDATE RANK");
             LocalDateTime dateTimeComplete = LocalDateTime.parse(dateComplete);
             LocalDateTime endTimeParsed = LocalDateTime.parse(endTime);
             int points=TaskCategory.fromString(typeTask).getPoints();

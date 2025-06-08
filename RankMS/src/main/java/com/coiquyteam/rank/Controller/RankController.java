@@ -42,6 +42,7 @@ public class RankController
         }
 
         try {
+            System.out.println("[RankController] Updating rank for user: " + username);
             rankService.updateRank(username, typeTask, houseId, dateComplete, endTime);
             System.out.println("[RankController] Rank updated successfully");
 

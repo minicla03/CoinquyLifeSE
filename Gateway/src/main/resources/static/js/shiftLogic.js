@@ -198,6 +198,7 @@ async function handleDoneButton(cleaningAssignment) {
             const errorText = await response.text();
             throw new Error(errorText);
         }
+        console.log("STO PER ASSEGANRE I PUNTI")
         await assignedPoint(cleaningAssignment.task.task, cleaningAssignment.assignedRoommate.usernameRoommate, cleaningAssignment.task.timeSlot.end)
         window.location.reload();
     } catch (error) {
