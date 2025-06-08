@@ -12,10 +12,9 @@
 
 - 🧹 **Gestione dei turni** – Crea e assegna turni di pulizia o attività.
 - 💸 **Gestione delle spese** – Registra spese condivise e calcola bilanci.
-- 📬 **Bacheca dei messaggi** – Invia e ricevi comunicazioni tra coinquilini.
-- 📊 **Sondaggi** – Partecipa a decisioni comuni tramite votazioni.
 - 🏆 **Classifica gamificata** – Guadagna punti per attività completate.
 - 🏠 **Selezione della casa** – Crea o entra in una casa condivisa.
+- 📬 **Bacheca riepilogativa** – Visualizza una panoramica della casa.
 
 ---
 
@@ -41,19 +40,18 @@ CoinquyLife-Web/
 ├── docker-compose.yml
 │
 ├── AuthMicroservice/
-│   ├── Dockerfile
 │   └── src/main/java/com/coinquylife/auth/...
 │
 ├── HouseSelectionMicroservice/
-│   ├── Dockerfile
 │   └── src/main/java/com/coinquylife/house/...
 │
-├── TurnManagementMicroservice/
+├── ShiftMicroservice/
 │   └── ...
 │
 ├── ExpenseMicroservice/
 │   └── ...
-│
+├── RankMicroservice/
+│   └── ...
 └── ...
 ``` 
 ---
@@ -62,7 +60,7 @@ CoinquyLife-Web/
 ``` 
 /src/main/java/com/coinquylife/<servizio>/
 ├── controller/     --> RestController con endpoint REST
-├── model/          --> Entity 
+├── data/          --> Entity 
 ├── repository/     --> Interfacce Mongo
 ├── service/        --> Logica di business
 └── config/         --> Configurazioni (Bean, Security, ecc.)
@@ -83,7 +81,6 @@ resource/static
 - **Java 21**
 - **Spring Boot 3.4.5**
 - **Maven**
-- **Docker + Docker Compose**
 
 ---
 
