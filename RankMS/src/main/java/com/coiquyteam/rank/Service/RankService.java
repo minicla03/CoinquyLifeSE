@@ -1,14 +1,13 @@
 package com.coiquyteam.rank.Service;
 
-import com.coinquyteam.shift.OptaPlanner.CleaningAssignment;
-import com.coinquyteam.shift.Repository.ICleaningAssignmentRepository;
 import com.coiquyteam.rank.Data.Classifica;
 import com.coiquyteam.rank.Data.CoinquyPoint;
+import com.coiquyteam.rank.Data.TaskCategory;
 import com.coiquyteam.rank.Repository.ICoiquyPointRepository;
-import com.coiquyteam.rank.Utility.CoiquyListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -16,21 +15,22 @@ import java.util.stream.Collectors;
 public class RankService
 {
     @Autowired private ICoiquyPointRepository coiquyPointRepository;
-    @Autowired private ICleaningAssignmentRepository cleaningAssignmentRepository;
 
-    public boolean updateRank(String cleaningAssignmentId)
+    public boolean updateRank(String username, String typeTask, String houseId, String dateComplete, String endTime)
     {
-        if (cleaningAssignmentId == null || cleaningAssignmentId.isEmpty()) {
-            return false;
-        }
-
         try
         {
-            CleaningAssignment cleaningAssignment= cleaningAssignmentRepository.findById(cleaningAssignmentId).orElse(null);
-            assert cleaningAssignment != null;
-            int points= cleaningAssignment.getTask().getTask().getPoints();
-            coiquyPointRepository.insert(new CoinquyPoint(cleaningAssignment.getAssignedRoommate().getUsernameRoommate(),
-                    cleaningAssignment.getAssignedRoommate().getHouseId(), points));
+            LocalDateTime dateTimeComplete = LocalDateTime.parse(dateComplete);
+            LocalDateTime endTimeParsed = LocalDateTime.parse(endTime);
+            int points=TaskCategory.fromString(typeTask).getPoints();
+            System.out.println("POINTS"+points);
+            if (dateTimeComplete.isAfter(endTimeParsed))
+            {
+                points= TaskCategory.fromString(typeTask).getPenalityPoints();
+            }
+            System.out.println("POINTS"+points);
+            coiquyPointRepository.insert(new CoinquyPoint(username, houseId, points));
+            System.out.println("DOPO INSERT");
             return true;
         }
         catch (Exception e)

@@ -1,7 +1,6 @@
 package com.coinquyteam.shift.Controller;
 
 import com.coinquyteam.shift.OptaPlanner.CleaningAssignment;
-import com.coinquyteam.shift.OptaPlanner.CleaningSchedule;
 import com.coinquyteam.shift.Service.CalendarService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -59,10 +58,16 @@ public class ClientShiftController
                     .build();
         }
 
-        String cleaningAssignmentId = body.get("cleaningAssignmentId");
+        String username = body.get("username");
+        System.out.println("Username: " + username);
+        System.out.println("typeTask: " + body.get("typeTask"));
+        String typeTask =body.get("typeTask");
+        String houseId = body.get("houseId");
+        String dateComplete= body.get("dateComplete");
+        String endTime = body.get("endTime");
 
         try {
-            String response=calendarService.toRank(auth,cleaningAssignmentId);
+            String response=calendarService.toRank(auth,username, typeTask, houseId, dateComplete, endTime);
             if(response == null || response.isEmpty()) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                         .entity("{\"error\":\"Failed to process the cleaning assignment\"}")

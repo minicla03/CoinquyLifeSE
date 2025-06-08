@@ -23,16 +23,26 @@ public class RankController
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateRank(Map<String,String> body)
     {
-        String cleaningAssignmentId = body.get("cleaningAssignmentId");
+        String username = body.get("username");
+        String typeTask = body.get("typeTask");
+        String houseId = body.get("houseId");
+        String dateComplete= body.get("dateComplete");
+        String endTime = body.get("endTime");
 
-        if (cleaningAssignmentId == null || cleaningAssignmentId.isEmpty()) {
+        if(username == null || username.isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\": \"Invalid cleaning assignment ID\"}")
+                    .entity("{\"error\": \"Username is required\"}")
+                    .build();
+        }
+
+        if(houseId == null || houseId.isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"House ID is required\"}")
                     .build();
         }
 
         try {
-            rankService.updateRank(cleaningAssignmentId);
+            rankService.updateRank(username, typeTask, houseId, dateComplete, endTime);
             System.out.println("[RankController] Rank updated successfully");
 
             return Response.ok("{\"message\": \"Punti assegnati\"}").build();
