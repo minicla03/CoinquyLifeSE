@@ -1,14 +1,14 @@
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\AuthMicroServiceApplication.java
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Config\CorsGlobalConfig.java
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Config\RestTemplateConfig.java
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Config\WebClientConfig.java
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Controller\AuthController.java
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Controller\ClientController.java
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Controller\WebAuthController.java
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Data\User.java
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Repository\IUserRepository.java
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Service\AuthService.java
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Service\WebAuthClientService.java
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Utility\AuthResult.java
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Utility\StatusAuth.java
-C:\Users\lucia\Desktop\INGEGNERIA DEL SOFTWARE\CloneGiuseppe\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Utility\UserResult.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\AuthMicroServiceApplication.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Config\CorsGlobalConfig.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Config\RestTemplateConfig.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Config\WebClientConfig.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Controller\AuthController.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Controller\ClientController.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Controller\WebAuthController.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Data\User.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Repository\IUserRepository.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Service\AuthService.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Service\WebAuthClientService.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Utility\AuthResult.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Utility\StatusAuth.java
+C:\Users\lucia\Desktop\PROGETTO\AuthMicroService\src\main\java\com\coinquyteam\authApplication\Utility\UserResult.java

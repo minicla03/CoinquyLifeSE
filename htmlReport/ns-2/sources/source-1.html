@@ -141,7 +141,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;    private String generateTokenViaRest(String username) {
 <b class="fc">&nbsp;        Map responseMap = webClient.post()</b>
-<b class="fc">&nbsp;                .uri(&quot;http://localhost:8080/gateway/generate-token&quot;)</b>
+<b class="fc">&nbsp;                .uri(&quot;http://172.31.6.2:8080/gateway/generate-token&quot;)</b>
 <b class="fc">&nbsp;                .bodyValue(Map.of(&quot;username&quot;, username))</b>
 <b class="fc">&nbsp;                .retrieve()</b>
 <b class="fc">&nbsp;                .bodyToMono(Map.class)</b>

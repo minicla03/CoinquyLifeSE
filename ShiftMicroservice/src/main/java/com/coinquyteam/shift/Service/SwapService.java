@@ -40,7 +40,7 @@ public class SwapService
         try
         {
             Map<String, String> response = webClient.post()
-                    .uri("http://localhost:8080/gateway/verify-token")
+                    .uri("http://172.31.6.2:8080/gateway/verify-token")
                     .bodyValue(Map.of("token", token))
                     .retrieve()
                     .bodyToMono(Map.class)

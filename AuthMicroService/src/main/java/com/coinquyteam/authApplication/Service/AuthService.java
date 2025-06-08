@@ -52,7 +52,7 @@ public class AuthService {
 
     private String generateTokenViaRest(String username) {
         Map responseMap = webClient.post()
-                .uri("http://localhost:8080/gateway/generate-token")
+                .uri("http://172.31.6.2:8080/gateway/generate-token")
                 .bodyValue(Map.of("username", username))
                 .retrieve()
                 .bodyToMono(Map.class)

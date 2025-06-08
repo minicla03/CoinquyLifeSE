@@ -21,10 +21,10 @@ userLink.appendChild(img);
 const houseId = localStorage.getItem("houseId");
 console.log("House ID:", houseId);
 
-document.querySelector('.nav_links li:nth-child(1) a').href = 'http://localhost:8080/dashPage.html';
-document.querySelector('.nav_links li:nth-child(2) a').href = 'http://localhost:8080/expensePage.html';
-document.querySelector('.nav_links li:nth-child(3) a').href = 'http://localhost:8080/shiftPage.html';
-document.querySelector('.nav_links li:nth-child(4) a').href = 'http://localhost:8080/notYet.html';
+document.querySelector('.nav_links li:nth-child(1) a').href = 'http://172.31.6.2:8080/dashPage.html';
+document.querySelector('.nav_links li:nth-child(2) a').href = 'http://172.31.6.2:8080/expensePage.html';
+document.querySelector('.nav_links li:nth-child(3) a').href = 'http://172.31.6.2:8080/shiftPage.html';
+document.querySelector('.nav_links li:nth-child(4) a').href = 'http://172.31.6.2:8080/notYet.html';
 
 const expenses = [];
 let coinquilini = [];
@@ -62,7 +62,7 @@ function addExpense() {
         return;
     }
 
-    fetch('http://localhost:8080/Expense/rest/expense/createExpense', {
+    fetch('http://172.31.6.2:8080/Expense/rest/expense/createExpense', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ function renderSingleExpense(expense, index) {
 
     paidBtn.addEventListener("click", () => {
         // Chiama l'API per aggiornare lo stato dell'expense
-        fetch(`http://localhost:8080/Expense/rest/expense/updateExpenseStatus`, {
+        fetch(`http://172.31.6.2:8080/Expense/rest/expense/updateExpenseStatus`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ function renderSingleExpense(expense, index) {
 async function retriveExpenses() {
     expenseList.innerHTML = ""; // pulisci DOM
 
-    await fetch(`http://localhost:8080/Expense/rest/expense/getAllExpenses?houseId=${localStorage.getItem("houseId")}`,{
+    await fetch(`http://172.31.6.2:8080/Expense/rest/expense/getAllExpenses?houseId=${localStorage.getItem("houseId")}`,{
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -288,7 +288,7 @@ async function retriveCoinquys() {
 
 // Funzione riutilizzabile per calcolare e mostrare i debiti
 function calculateDebts() {
-    fetch("http://localhost:8080/Expense/rest/expense/calculateDebt", {
+    fetch("http://172.31.6.2:8080/Expense/rest/expense/calculateDebt", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

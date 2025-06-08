@@ -53,7 +53,7 @@ document.getElementById("btnHome").addEventListener("click", function () {
 });
 
 document.getElementById("btnSpese").addEventListener("click", function () {
-    fetch("http://localhost:8080/Dashboard/rest/clientDash/spese", {
+    fetch("http://172.31.6.2:8080/Dashboard/rest/clientDash/spese", {
         method: "GET",
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token"),
@@ -70,7 +70,7 @@ document.getElementById("btnSpese").addEventListener("click", function () {
 });
 
 document.getElementById("btnTurni").addEventListener("click", function () {
-    fetch("http://localhost:8080/Dashboard/rest/clientDash/turni", {
+    fetch("http://172.31.6.2:8080/Dashboard/rest/clientDash/turni", {
         method: "GET",
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token"),
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 function retrieveCoinquy() {
-    return fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveCoinquy?houseId=${houseId}`, {
+    return fetch(`http://172.31.6.2:8080/Dashboard/rest/dash/retrieveCoinquy?houseId=${houseId}`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
@@ -130,7 +130,7 @@ function retrieveCoinquy() {
 }
 
 function retriveTurni() {
-    fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveTurni?houseId=${houseId}`, {
+    fetch(`http://172.31.6.2:8080/Dashboard/rest/dash/retrieveTurni?houseId=${houseId}`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
@@ -153,7 +153,7 @@ function retrieveClassifica() {
     const listCoiquy = JSON.parse(localStorage.getItem("listCoiquy"));
     console.log(listCoiquy);
 
-    fetch(`http://localhost:8080/Dashboard/rest/dash/retrieveClassifica`, {
+    fetch(`http://172.31.6.2:8080/Dashboard/rest/dash/retrieveClassifica`, {
         method: "POST",
         headers: {
             "Accept": "application/json",

@@ -23,10 +23,10 @@ function local()
 }
 const houseId = localStorage.getItem("houseId");
 
-document.querySelector('.nav_links li:nth-child(1) a').href = 'http://localhost:8080/dashPage.html';
-document.querySelector('.nav_links li:nth-child(2) a').href = 'http://localhost:8080/expensePage.html';
-document.querySelector('.nav_links li:nth-child(3) a').href = 'http://localhost:8080/shiftPage.html';
-document.querySelector('.nav_links li:nth-child(4) a').href = 'http://localhost:8080/notYet.html';
+document.querySelector('.nav_links li:nth-child(1) a').href = 'http://172.31.6.2:8080/dashPage.html';
+document.querySelector('.nav_links li:nth-child(2) a').href = 'http://172.31.6.2:8080/expensePage.html';
+document.querySelector('.nav_links li:nth-child(3) a').href = 'http://172.31.6.2:8080/shiftPage.html';
+document.querySelector('.nav_links li:nth-child(4) a').href = 'http://172.31.6.2:8080/notYet.html';
 
 function unavailableForm()
 {
@@ -45,7 +45,7 @@ function unavailableForm()
         }
         console.log(token);
         console.log("Selected Tenant ID:", selectedTenantId);
-        fetch(`http://localhost:8080/Shift/rest/unAvailability/addAvailability`, {
+        fetch(`http://172.31.6.2:8080/Shift/rest/unAvailability/addAvailability`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ function fetchPlanning()
     }
 
 
-    fetch(`http://localhost:8080/Shift/rest/calendar/getPlanning`, {
+    fetch(`http://172.31.6.2:8080/Shift/rest/calendar/getPlanning`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -185,7 +185,7 @@ async function renderCalendar(data) {
 
 async function handleDoneButton(cleaningAssignment) {
     try {
-        const response = await fetch("http://localhost:8080/Shift/rest/calendar/taskDone", {
+        const response = await fetch("http://172.31.6.2:8080/Shift/rest/calendar/taskDone", {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -211,7 +211,7 @@ async function assignedPoint(task, username, endTime)
 {
     console.log(task);
     console.log(endTime);
-    const response = await fetch("http://localhost:8080/Shift/rest/client/toRank", {
+    const response = await fetch("http://172.31.6.2:8080/Shift/rest/client/toRank", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -240,7 +240,7 @@ async function assignedPoint(task, username, endTime)
 /*function handleRequestAction(idSwap, accept) {
     const action = accept ? "accept" : "decline";
 
-    fetch(`http://localhost:8080/Shift/rest/swaps/${idSwap}/${action}`, {
+    fetch(`http://172.31.6.2:8080/Shift/rest/swaps/${idSwap}/${action}`, {
         method: "PUT",
         headers: {
             'Content-Type': 'application/json',
@@ -262,7 +262,7 @@ async function assignedPoint(task, username, endTime)
     {
         window.location.reload();
 
-        /*fetch(`https://localhost:8085/Shift/rest/shif/calendar/getPlanning?houseId=${localStorage.getItem("houseId")}`, {
+        /*fetch(`https://172.31.6.2:8085/Shift/rest/shif/calendar/getPlanning?houseId=${localStorage.getItem("houseId")}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -295,7 +295,7 @@ async function assignedPoint(task, username, endTime)
     assignmentBSelect.innerHTML = '<option value="" disabled selected>Seleziona turno</option>';
 
     if (!shifts || shifts.length === 0) {
-        fetch(`http://localhost:8080/Shift/rest/swaps/getSwapRequests?houseId=${localStorage.getItem("houseId")}`, {
+        fetch(`http://172.31.6.2:8080/Shift/rest/swaps/getSwapRequests?houseId=${localStorage.getItem("houseId")}`, {
             method: "GET",
             headers: { //TODO: body mancante
                 'Content-Type': 'application/json',
@@ -408,7 +408,7 @@ window.addEventListener('click', (event) => {
 
     try
     {
-        const response = await fetch("http://localhost:8080/Shift/rest/swapRequest", {
+        const response = await fetch("http://172.31.6.2:8080/Shift/rest/swapRequest", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -449,7 +449,7 @@ form.addEventListener("submit", async function (e) {
     }
 
     try {
-        const response = await fetch("http://localhost:8080/Shift/rest/tasks/createTask", {
+        const response = await fetch("http://172.31.6.2:8080/Shift/rest/tasks/createTask", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -477,7 +477,7 @@ form.addEventListener("submit", async function (e) {
 
 async function retriveShifts() {
     try {
-        const response = await fetch("http://localhost:8080/Shift/rest/calendar/getAllShifts", {
+        const response = await fetch("http://172.31.6.2:8080/Shift/rest/calendar/getAllShifts", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -501,7 +501,7 @@ async function retriveShifts() {
 
 function initAvaibility()
 {
-    fetch("http://localhost:8080/Shift/rest/unAvailability/initializeUnavailability", {
+    fetch("http://172.31.6.2:8080/Shift/rest/unAvailability/initializeUnavailability", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

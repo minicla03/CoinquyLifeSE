@@ -25,7 +25,7 @@ document.querySelector("#registerForm button").addEventListener("click", async (
 
 
     try {
-        const res = await fetch("http://localhost:8080/House/rest/house/create", {
+        const res = await fetch("http://172.31.6.2:8080/House/rest/house/create", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -66,7 +66,7 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
     };
 
     try {
-        const res = await fetch(`http://localhost:8080/House/rest/house/loginHouse`, {
+        const res = await fetch(`http://172.31.6.2:8080/House/rest/house/loginHouse`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -82,7 +82,7 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
             out = document.getElementById("outputlog");
             out.innerHTML = "✅ Login effettuato!";
             localStorage.setItem("houseId", houseId);
-            window.location.href = `http://localhost:8080/dashPage.html`;
+            window.location.href = `http://172.31.6.2:8080/dashPage.html`;
         } else if (res.status === 401 || res.status === 403) {
             //alert("Codice di accesso errato");
             out = document.getElementById("outputlog");
