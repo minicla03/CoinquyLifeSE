@@ -87,7 +87,7 @@ public class HouseController {
             HouseResult houseResult1 = houseService.linkHouseToUser(token, houseCode);
             if (houseResult1.getHouseStatus() == HouseStatus.LINKED_SUCCES)
             {
-                return Response.ok("message\":\"House linked successfully\"}", "application/json").build();
+                return Response.ok("{\"message\":\"House linked successfully\"}", "application/json").build();
             }
             else if(houseResult1.getHouseStatus() == HouseStatus.USER_NOT_FOUND)
             {
