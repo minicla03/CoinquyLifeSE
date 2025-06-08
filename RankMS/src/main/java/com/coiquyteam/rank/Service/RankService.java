@@ -1,14 +1,13 @@
 package com.coiquyteam.rank.Service;
 
-import com.coinquyteam.shift.OptaPlanner.CleaningAssignment;
-import com.coinquyteam.shift.Repository.ICleaningAssignmentRepository;
 import com.coiquyteam.rank.Data.Classifica;
 import com.coiquyteam.rank.Data.CoinquyPoint;
+import com.coiquyteam.rank.Data.TaskCategory;
 import com.coiquyteam.rank.Repository.ICoiquyPointRepository;
-import com.coiquyteam.rank.Utility.CoiquyListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -16,21 +15,35 @@ import java.util.stream.Collectors;
 public class RankService
 {
     @Autowired private ICoiquyPointRepository coiquyPointRepository;
-    @Autowired private ICleaningAssignmentRepository cleaningAssignmentRepository;
 
-    public boolean updateRank(String cleaningAssignmentId)
+    public boolean updateRank(String username, String typeTask, String houseId, String dateComplete, String endTime)
     {
-        if (cleaningAssignmentId == null || cleaningAssignmentId.isEmpty()) {
-            return false;
-        }
-
         try
         {
-            CleaningAssignment cleaningAssignment= cleaningAssignmentRepository.findById(cleaningAssignmentId).orElse(null);
-            assert cleaningAssignment != null;
-            int points= cleaningAssignment.getTask().getTask().getPoints();
-            coiquyPointRepository.insert(new CoinquyPoint(cleaningAssignment.getAssignedRoommate().getUsernameRoommate(),
-                    cleaningAssignment.getAssignedRoommate().getHouseId(), points));
+            System.out.println("INSIDE UPDATE RANK");
+            System.out.println("USERNAME: " + username);
+            System.out.println("TYPE TASK: " + typeTask);
+            System.out.println("HOUSE ID: " + houseId);
+            System.out.println("DATE COMPLETE: " + dateComplete);
+            System.out.println("END TIME: " + endTime);
+            LocalDateTime dateTimeComplete;
+            LocalDateTime endTimeParsed;
+            try {
+                dateTimeComplete = LocalDateTime.parse(dateComplete);
+                endTimeParsed = LocalDateTime.parse(endTime);
+            } catch (Exception e) {
+                System.err.println("Errore nel parsing delle date: " + e.getMessage());
+                return false;
+            }
+
+            TaskCategory taskCategory = TaskCategory.fromString(typeTask);
+            int points = dateTimeComplete.isAfter(endTimeParsed)
+                    ? taskCategory.getPenalityPoints()
+                    : taskCategory.getPoints();
+            System.out.println("Punti assegnati: " + points);
+            CoinquyPoint cp= new CoinquyPoint(username, houseId, points);
+            coiquyPointRepository.insert(cp);
+            System.out.println("DOPO INSERT");
             return true;
         }
         catch (Exception e)

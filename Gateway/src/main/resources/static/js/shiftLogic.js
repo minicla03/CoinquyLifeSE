@@ -179,11 +179,11 @@ async function renderCalendar(data) {
 
         // Aggiungi event listener al bottone di conferma
         const confirmBtn = row.querySelector('.confirm-btn');
-        confirmBtn.addEventListener('click', function() {handleDoneButton(cleaningAssignment.id).then(r => {})})
+        confirmBtn.addEventListener('click', function() {handleDoneButton(cleaningAssignment).then(r => {})})
     })
 }
 
-async function handleDoneButton(cleaningAssignmentId) {
+async function handleDoneButton(cleaningAssignment) {
     try {
         const response = await fetch("http://localhost:8080/Shift/rest/calendar/taskDone", {
             method: 'PUT',
@@ -191,14 +191,15 @@ async function handleDoneButton(cleaningAssignmentId) {
                 'Content-Type': 'application/json',
                 'Authorization': "Bearer " + token
             },
-            body: JSON.stringify({ id: cleaningAssignmentId})
+            body: JSON.stringify({ id: cleaningAssignment.id})
         });
 
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(errorText);
         }
-        await assignedPoint(cleaningAssignmentId)
+        console.log("STO PER ASSEGANRE I PUNTI")
+        await assignedPoint(cleaningAssignment.task.task, cleaningAssignment.assignedRoommate.usernameRoommate, cleaningAssignment.task.timeSlot.end)
         window.location.reload();
     } catch (error) {
         console.error("Errore durante il completamento del compito:", error);
@@ -206,14 +207,23 @@ async function handleDoneButton(cleaningAssignmentId) {
     }
 }
 
-async function assignedPoint(cleaningAssignmentId) {
+async function assignedPoint(task, username, endTime)
+{
+    console.log(task);
+    console.log(endTime);
     const response = await fetch("http://localhost:8080/Shift/rest/client/toRank", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': "Bearer " + token
         },
-        body: JSON.stringify({ cleaningAssignmentId: cleaningAssignmentId })
+        body: JSON.stringify({
+            typeTask: task,
+            username: username,
+            houseId: houseId,
+            dateComplete: new Date().toISOString().slice(0, 19),
+            endTime: endTime
+        })
     });
 
     if (!response.ok) {

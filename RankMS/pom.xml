@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.coinquyteam.rank</groupId>
+    <groupId>com.coinquyteamrank</groupId>
     <artifactId>RankMS</artifactId>
 
     <properties>
@@ -70,15 +70,8 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.coinquyteam</groupId>
-            <artifactId>ShiftMicroservice</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
     </dependencies>
+
 
     <build>
         <plugins>

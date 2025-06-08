@@ -13,7 +13,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @ApplicationPath("/rest")
 @EnableMongoRepositories(basePackages = {
         "com.coiquyteam.rank.Repository",
-        "com.coinquyteam.shift.Repository"
 })
 public class RankApplication extends ResourceConfig
 {

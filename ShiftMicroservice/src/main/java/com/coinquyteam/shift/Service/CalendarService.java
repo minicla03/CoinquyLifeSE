@@ -70,16 +70,20 @@ public class CalendarService
         houseTaskService.taskDone(id);
     }
 
-    public String toRank(String auth, String cleaningAssignmentId)
+    public String toRank(String auth, String username, String typeTask, String houseId, String dateComplete, String endTime)
     {
-
         String token = auth.substring(7); // Remove "Bearer " prefix
         String url = "http://localhost:8080/Rank/rest/rank/done";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
         Map<String, String> body = Map.of(
-                "cleaningAssignmentId", cleaningAssignmentId);
+                "username", username,
+                "typeTask", typeTask,
+                "houseId", houseId,
+                "dateComplete", dateComplete,
+                "endTime", endTime
+        );
         HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
 
         try {
