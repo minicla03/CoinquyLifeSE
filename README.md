@@ -12,10 +12,10 @@
 
 - 🧹 **Gestione dei turni** – Crea e assegna turni di pulizia o attività.
 - 💸 **Gestione delle spese** – Registra spese condivise e calcola bilanci.
-- 📬 **Bacheca dei messaggi** – Invia e ricevi comunicazioni tra coinquilini.
-- 📊 **Sondaggi** – Partecipa a decisioni comuni tramite votazioni.
 - 🏆 **Classifica gamificata** – Guadagna punti per attività completate.
 - 🏠 **Selezione della casa** – Crea o entra in una casa condivisa.
+- 📬 **Bacheca riepilogativa** – Visualizza una panoramica della casa.
+- 📊 **Sondaggi** – Partecipa a decisioni comuni tramite votazioni (Stay tuned 😎).
 
 ---
 
@@ -26,8 +26,9 @@
 - **Pattern per ogni microservizio**: MVC (`Model`, `Service`, `Controller`)
 - **Persistenza**: MongoDB
 - **Comunicazione**: REST (`RestTemplate`)
-- **Sicurezza**: JWT con Spring Security (nel microservizio Auth)
-- **Containerizzazione**: Docker e Docker Compose
+- **Sicurezza**: JWT con Spring Security
+- **Scheduling**: [OptaPlanner](https://www.optaplanner.org/)
+- **Testing**: [org.mockito.*](https://site.mockito.org/)
 
 ![image](https://github.com/user-attachments/assets/29f255e6-fe59-4b7a-a041-dbc80a478edc)
 
@@ -38,22 +39,23 @@
 ``` 
 CoinquyLife-Web/
 │
-├── docker-compose.yml
+├── Gateway/
+│   └── ...
 │
-├── AuthMicroservice/
-│   ├── Dockerfile
+├── AuthMicroservice/                                 
 │   └── src/main/java/com/coinquylife/auth/...
 │
 ├── HouseSelectionMicroservice/
-│   ├── Dockerfile
 │   └── src/main/java/com/coinquylife/house/...
 │
-├── TurnManagementMicroservice/
+├── ShiftMicroservice/
 │   └── ...
 │
 ├── ExpenseMicroservice/
 │   └── ...
 │
+├── RankMicroservice/
+│   └── ...
 └── ...
 ``` 
 ---
@@ -62,7 +64,7 @@ CoinquyLife-Web/
 ``` 
 /src/main/java/com/coinquylife/<servizio>/
 ├── controller/     --> RestController con endpoint REST
-├── model/          --> Entity 
+├── data/           --> Entity 
 ├── repository/     --> Interfacce Mongo
 ├── service/        --> Logica di business
 └── config/         --> Configurazioni (Bean, Security, ecc.)
@@ -83,7 +85,6 @@ resource/static
 - **Java 21**
 - **Spring Boot 3.4.5**
 - **Maven**
-- **Docker + Docker Compose**
 
 ---
 
