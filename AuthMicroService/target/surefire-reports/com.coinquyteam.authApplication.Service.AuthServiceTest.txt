@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.coinquyteam.authApplication.Service.AuthServiceTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.083 s -- in com.coinquyteam.authApplication.Service.AuthServiceTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.980 s -- in com.coinquyteam.authApplication.Service.AuthServiceTest

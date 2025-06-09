@@ -23,7 +23,7 @@ public class AuthService {
     }
 
     public AuthResult register(String username, String name, String password, String surname, String email) {
-        if (userRepository.findByUsername(username) != null) {
+        if (userRepository.findByUsername(username) != null || userRepository.findByEmail(email) != null) {
             return new AuthResult(StatusAuth.USER_ALREADY_EXISTS, null);
         }
 
