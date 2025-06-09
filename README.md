@@ -27,7 +27,8 @@
 - **Persistenza**: MongoDB
 - **Comunicazione**: REST (`RestTemplate`)
 - **Sicurezza**: JWT con Spring Security
-- **Scheduling**: [OptaPlanner](https://www.optaplanner.org/) 
+- **Scheduling**: [OptaPlanner](https://www.optaplanner.org/)
+- **Testing**: [org.mockito.*](https://site.mockito.org/)
 
 ![image](https://github.com/user-attachments/assets/29f255e6-fe59-4b7a-a041-dbc80a478edc)
 
