@@ -1,0 +1,5 @@
+chmod +x start-services.sh -> rende eseguibile il file
+./start-services.sh
+
+chmod +x stop-services.sh ->rende eseguibile il file
+./stop-services.sh
