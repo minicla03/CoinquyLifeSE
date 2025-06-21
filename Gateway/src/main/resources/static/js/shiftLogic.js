@@ -176,7 +176,6 @@ async function renderCalendar(data) {
         tbody.appendChild(row);
 
 
-
         // Aggiungi event listener al bottone di conferma
         const confirmBtn = row.querySelector('.confirm-btn');
         confirmBtn.addEventListener('click', function() {handleDoneButton(cleaningAssignment).then(r => {})})
