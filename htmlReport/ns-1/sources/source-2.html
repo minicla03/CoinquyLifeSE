@@ -104,27 +104,36 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;@Path(&quot;/client&quot;)
 <b class="fc">&nbsp;public class ClientController</b>
 &nbsp;{
+&nbsp;    // Inietta il servizio AuthService per gestire le operazioni e il recupero dei dati
 &nbsp;    @Autowired private AuthService authService;
 &nbsp;
+&nbsp;    // Endpoint GET per la pagina di registrazione della casa
 &nbsp;    @GET
 &nbsp;    @Path(&quot;/house&quot;)
 &nbsp;    @Produces(MediaType.TEXT_HTML)
 &nbsp;    public Response houseRegistrationPage() {
+&nbsp;        // Restituisce il path della pagina HousePage.html come JSON
 <b class="nc">&nbsp;        return Response.ok(&quot;{\&quot;path\&quot;: \&quot;http://localhost:8080/HousePage.html\&quot;}&quot;, MediaType.APPLICATION_JSON).build();</b>
 &nbsp;    }
+&nbsp;
+&nbsp;    // Endpoint GET per recuperare i coinquilini associati a una casa
 &nbsp;    @GET
 &nbsp;    @Path(&quot;/retrieveCoinquy&quot;)
 &nbsp;    @Produces(MediaType.APPLICATION_JSON)
 &nbsp;    public Response retrieveCoinquy(@QueryParam(&quot;houseId&quot;) String houseId)
 &nbsp;    {
+&nbsp;        // Controlla se il parametro houseId è presente
 <b class="fc">&nbsp;        if (houseId == null)</b>
 &nbsp;        {
+&nbsp;            // Restituisce errore 400 se manca il parametro
 <b class="fc">&nbsp;            return Response.status(Response.Status.BAD_REQUEST)</b>
 <b class="fc">&nbsp;                    .entity(&quot;{\&quot;error\&quot;:\&quot;Missing houseId parameter\&quot;}&quot;)</b>
 <b class="fc">&nbsp;                    .build();</b>
 &nbsp;        }
 &nbsp;
+&nbsp;        // Recupera la lista degli utenti associati alla casa tramite il servizio
 <b class="fc">&nbsp;        List&lt;User&gt; coinquilini = authService.getCoinquilinibyHouseId(houseId);</b>
+&nbsp;        // Restituisce la lista come risposta JSON
 <b class="fc">&nbsp;        return Response.status(Response.Status.OK).entity(coinquilini).build();</b>
 &nbsp;    }
 &nbsp;}
@@ -151,7 +160,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-06-05 13:10</div>
+    <div style="float:right;">generated on 2025-06-21 20:02</div>
 </div>
 </body>
 </html>

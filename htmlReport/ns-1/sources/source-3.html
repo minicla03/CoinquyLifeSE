@@ -102,6 +102,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;import java.util.Map;
 &nbsp;
+&nbsp;/**
+&nbsp; * Controller per la gestione dell&#39;autenticazione esterna e del collegamento di una casa a un utente.
+&nbsp; */
 &nbsp;@Controller
 &nbsp;@Path(&quot;/auth/external&quot;)
 &nbsp;@Consumes(&quot;application/json&quot;)
@@ -110,19 +113,29 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Autowired
 &nbsp;    private WebAuthClientService webAuthClientService;
 &nbsp;
+&nbsp;    /**
+&nbsp;     * Endpoint per collegare una casa a un utente autenticato.
+&nbsp;     *
+&nbsp;     * @param auth Header di autorizzazione contenente il token Bearer.
+&nbsp;     * @param body Corpo della richiesta contenente il codice della casa.
+&nbsp;     * @return Response HTTP con esito dell&#39;operazione.
+&nbsp;     */
 &nbsp;    @POST
 &nbsp;    @Path(&quot;/link-house&quot;)
 &nbsp;    public Response linkHouseToUser(@HeaderParam(&quot;Authorization&quot;) String auth, Map&lt;String, String&gt; body)
 &nbsp;    {
+&nbsp;        // Estrae il token rimuovendo &quot;Bearer &quot;
 <b class="nc">&nbsp;        String token = auth.substring(7);</b>
 <b class="nc">&nbsp;        String houseCode = body.get(&quot;houseCode&quot;);</b>
 <b class="nc">&nbsp;        System.out.println(houseCode);</b>
 &nbsp;
+&nbsp;        // Verifica che il codice casa sia presente
 <b class="nc">&nbsp;        if (houseCode == null)</b>
 &nbsp;        {
 <b class="nc">&nbsp;            return Response.status(Response.Status.BAD_REQUEST).entity(&quot;Token and house code are required&quot;).build();</b>
 &nbsp;        }
 &nbsp;
+&nbsp;        // Tenta di collegare la casa all&#39;utente tramite il servizio
 <b class="nc">&nbsp;        AuthResult authResult = webAuthClientService.linkHouseToUser(token, houseCode);</b>
 <b class="nc">&nbsp;        if (authResult.getStatusAuth() == StatusAuth.SUCCESS)</b>
 &nbsp;        {
@@ -166,7 +179,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-06-05 13:10</div>
+    <div style="float:right;">generated on 2025-06-21 20:02</div>
 </div>
 </body>
 </html>

@@ -64,10 +64,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    90%
+    83,3%
   </span>
   <span class="absValue">
-    (9/10)
+    (10/12)
   </span>
 </td>
 <td class="coverageStat">
@@ -106,13 +106,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private final IUserRepository userRepository;
 &nbsp;    private final WebClient webClient;
 &nbsp;
+&nbsp;    // Costruttore del servizio di autenticazione
 <b class="fc">&nbsp;    public AuthService(IUserRepository userRepository, WebClient webClient) {</b>
 <b class="fc">&nbsp;        this.userRepository = userRepository;</b>
 <b class="fc">&nbsp;        this.webClient = webClient;</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    /**
+&nbsp;     * Registra un nuovo utente se username o email non sono già presenti.
+&nbsp;     * Restituisce un AuthResult con lo stato e il token generato.
+&nbsp;     */
 &nbsp;    public AuthResult register(String username, String name, String password, String surname, String email) {
-<b class="fc">&nbsp;        if (userRepository.findByUsername(username) != null) {</b>
+<b class="pc">&nbsp;        if (userRepository.findByUsername(username) != null || userRepository.findByEmail(email) != null) {</b>
 <b class="fc">&nbsp;            return new AuthResult(StatusAuth.USER_ALREADY_EXISTS, null);</b>
 &nbsp;        }
 &nbsp;
@@ -124,6 +129,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        return new AuthResult(StatusAuth.SUCCESS, token);</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    /**
+&nbsp;     * Effettua il login tramite username o email e password.
+&nbsp;     * Restituisce un AuthResult con lo stato e il token se le credenziali sono corrette.
+&nbsp;     */
 &nbsp;    public AuthResult login(String identifier, String password) {
 <b class="fc">&nbsp;        User user = userRepository.findByUsername(identifier);</b>
 <b class="fc">&nbsp;        if (user == null) {</b>
@@ -139,6 +148,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        return new AuthResult(StatusAuth.INVALID_CREDENTIALS, null);</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    /**
+&nbsp;     * Richiama un servizio REST per generare un token JWT per l&#39;utente.
+&nbsp;     */
 &nbsp;    private String generateTokenViaRest(String username) {
 <b class="fc">&nbsp;        Map responseMap = webClient.post()</b>
 <b class="fc">&nbsp;                .uri(&quot;http://localhost:8080/gateway/generate-token&quot;)</b>
@@ -150,6 +162,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        return (String) responseMap.get(&quot;token&quot;);</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    //NON USATO
 &nbsp;    public UserResult getUserByHouseId(String houseId) {
 &nbsp;
 <b class="fc">&nbsp;        List&lt;User&gt; users = userRepository.findAll()</b>
@@ -163,6 +176,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;        return new UserResult(StatusAuth.USERS_NOT_FOUND, null);</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    /**
+&nbsp;     * Restituisce la lista degli utenti (coinquilini) associati a uno specifico houseId.
+&nbsp;     */
 &nbsp;    public List&lt;User&gt; getCoinquilinibyHouseId(String houseId)
 &nbsp;    {
 <b class="fc">&nbsp;        List&lt;User&gt; list = userRepository.findAll().stream()</b>
@@ -195,7 +211,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-06-05 13:10</div>
+    <div style="float:right;">generated on 2025-06-21 20:02</div>
 </div>
 </body>
 </html>

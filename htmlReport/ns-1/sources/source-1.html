@@ -104,15 +104,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import java.util.regex.Matcher;
 &nbsp;
 &nbsp;
+&nbsp;// Controller per la gestione delle operazioni di autenticazione
 &nbsp;@Path(&quot;/auth&quot;)
 <b class="fc">&nbsp;public class AuthController {</b>
 &nbsp;
 &nbsp;    @Autowired
 &nbsp;    private AuthService authService;
 &nbsp;
+&nbsp;    // Espressione regolare per la validazione dell&#39;email
 &nbsp;    private static final String EMAIL_REGEX = &quot;^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$&quot;;
 <b class="fc">&nbsp;    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);</b>
 &nbsp;
+&nbsp;    // Endpoint per il login dell&#39;utente
 &nbsp;    @POST
 &nbsp;    @Path(&quot;/login&quot;)
 &nbsp;    @Consumes(&quot;application/json&quot;)
@@ -129,17 +132,20 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        }
 &nbsp;
 <b class="fc">&nbsp;        if (result.getStatusAuth() == StatusAuth.SUCCESS) {</b>
-&nbsp;            //System.out.println(&quot;Token: &quot; + result.getToken());
-&nbsp;            // Generate a token and return it in the response
+&nbsp;            // Restituisce il token in caso di successo
 <b class="fc">&nbsp;            return Response.ok(&quot;{\&quot;token\&quot;:\&quot;&quot; + result.getToken() + &quot;\&quot;}&quot;).type(&quot;application/json&quot;).build();</b>
 <b class="fc">&nbsp;        } else if (result.getStatusAuth() == StatusAuth.USER_NOT_FOUND) {</b>
+&nbsp;            // Utente non trovato
 <b class="fc">&nbsp;            return Response.status(Response.Status.NOT_FOUND).entity(&quot;Utente non trovato&quot;).build();</b>
 <b class="fc">&nbsp;        } else if (result.getStatusAuth() == StatusAuth.INVALID_CREDENTIALS) {</b>
+&nbsp;            // Credenziali errate
 <b class="fc">&nbsp;            return Response.status(Response.Status.UNAUTHORIZED).entity(&quot;Credenziali errate o non valide&quot;).build();</b>
 &nbsp;        }
+&nbsp;        // Errore generico del server
 <b class="fc">&nbsp;        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(&quot;Server error&quot;).build();</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    // Endpoint per la registrazione di un nuovo utente
 &nbsp;    @POST
 &nbsp;    @Path(&quot;/register&quot;)
 &nbsp;    public Response register(User user) {
@@ -150,25 +156,31 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        String surname = user.getSurname();</b>
 <b class="fc">&nbsp;        String email = user.getEmail();</b>
 &nbsp;
+&nbsp;        // Validazione dell&#39;email
 <b class="fc">&nbsp;        if (!validateEmail(email)) {</b>
 <b class="fc">&nbsp;            return Response.status(Response.Status.UNAUTHORIZED).entity(&quot;Email invalido&quot;).build();</b>
 &nbsp;        }
 &nbsp;
 <b class="fc">&nbsp;        AuthResult result = authService.register(username, name, password, surname, email);</b>
 <b class="fc">&nbsp;        if (result.getStatusAuth() == StatusAuth.SUCCESS) {</b>
+&nbsp;            // Registrazione avvenuta con successo
 <b class="fc">&nbsp;            return Response.ok(&quot;Registration successful&quot;).build();</b>
 <b class="fc">&nbsp;        } else if (result.getStatusAuth() == StatusAuth.USER_ALREADY_EXISTS) {</b>
+&nbsp;            // Utente già esistente
 <b class="fc">&nbsp;            return Response.status(Response.Status.CONFLICT).entity(&quot;User already exists&quot;).build();</b>
 &nbsp;        }
+&nbsp;        // Errore generico
 <b class="fc">&nbsp;        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(&quot;An error occurred&quot;).build();</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    // Metodo di utilità per validare l&#39;email
 &nbsp;    private static boolean validateEmail(String email) {
 <b class="pc">&nbsp;        if (email == null) return false;</b>
 <b class="fc">&nbsp;        Matcher matcher = EMAIL_PATTERN.matcher(email);</b>
 <b class="fc">&nbsp;        return matcher.matches();</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    // Endpoint per ottenere gli utenti associati a un determinato houseId
 &nbsp;    @POST
 &nbsp;    @Path(&quot;/getUserByHouseId&quot;)
 &nbsp;    @Consumes(&quot;application/json&quot;)
@@ -177,10 +189,13 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        String houseId = requestBody.get(&quot;houseId&quot;);</b>
 <b class="fc">&nbsp;        UserResult result = authService.getUserByHouseId(houseId);</b>
 <b class="fc">&nbsp;        if (result.getStatusAuth() == StatusAuth.USERS_FOUNDED) {</b>
+&nbsp;            // Utenti trovati
 <b class="fc">&nbsp;            return Response.ok(result.getUsers()).build();</b>
 <b class="pc">&nbsp;        } else if (result.getStatusAuth() == StatusAuth.USERS_NOT_FOUND) {</b>
+&nbsp;            // Nessun utente trovato per l&#39;houseId fornito
 <b class="fc">&nbsp;            return Response.status(Response.Status.NOT_FOUND).entity(&quot;No users found for the given house ID&quot;).build();</b>
 &nbsp;        }
+&nbsp;        // Nessuna risposta (potrebbe essere migliorato)
 <b class="nc">&nbsp;        return null;</b>
 &nbsp;    }
 &nbsp;}
@@ -207,7 +222,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-06-05 13:10</div>
+    <div style="float:right;">generated on 2025-06-21 20:02</div>
 </div>
 </body>
 </html>
