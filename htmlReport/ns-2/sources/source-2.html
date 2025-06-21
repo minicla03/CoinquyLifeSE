@@ -143,7 +143,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private String getUsernameFromTokenViaRest(String token) {
 &nbsp;        try {
 <b class="fc">&nbsp;            Map&lt;String, String&gt; response = webClient.post()</b>
-<b class="fc">&nbsp;                    .uri(&quot;http://172.31.6.2:8080/gateway/verify-token&quot;)</b>
+<b class="fc">&nbsp;                    .uri(&quot;http://localhost:8080/gateway/verify-token&quot;)</b>
 <b class="fc">&nbsp;                    .bodyValue(Map.of(&quot;token&quot;, token))</b>
 <b class="fc">&nbsp;                    .retrieve()</b>
 <b class="fc">&nbsp;                    .bodyToMono(Map.class)</b>

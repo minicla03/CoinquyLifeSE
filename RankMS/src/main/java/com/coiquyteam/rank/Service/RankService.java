@@ -58,6 +58,7 @@ public class RankService
 
         Map<String, Integer> puntiPerUtente = new HashMap<>();
 
+        //Se i punti esistono, li aggrega in una mappa (puntiPerUtente) che associa ogni utente al totale dei suoi punti
         if (coinquyPoints != null)
         {
             for (CoinquyPoint cp : coinquyPoints)

@@ -6,12 +6,22 @@ import com.coinquyteam.gateway.Utility.StatusGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service responsabile per la generazione e la verifica dei token JWT per i client gateway.
+ */
 @Service
 public class GatwayClientService {
 
     @Autowired
     private TokenManager tokenManager;
 
+    /**
+     * Genera un token JWT per l'utente specificato.
+     *
+     * @param username il nome utente per cui generare il token
+     * @return GatewayResult contenente lo stato e il token generato
+     * @throws IllegalArgumentException se lo username è nullo o vuoto
+     */
     public GatewayResult generateToken(String username) {
         if (username == null || username.isEmpty()) {
             throw new IllegalArgumentException("Username cannot be null or empty");
@@ -27,6 +37,13 @@ public class GatwayClientService {
 
     }
 
+    /**
+     * Verifica la validità di un token JWT.
+     *
+     * @param token il token da verificare
+     * @return GatewayResult contenente lo stato e il nome utente associato se valido
+     * @throws IllegalArgumentException se il token è nullo o vuoto
+     */
     public GatewayResult verifyToken(String token) {
         if (token == null || token.isEmpty()) {
             throw new IllegalArgumentException("Token cannot be null or empty");

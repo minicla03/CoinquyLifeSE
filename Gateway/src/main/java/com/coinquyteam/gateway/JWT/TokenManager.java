@@ -12,12 +12,19 @@ import java.util.Date;
 @Component
 public class TokenManager {
 
+    // Chiave segreta per la firma dei token, configurata in application.properties
     @Value("${jwt.secret}")
-    private String secretKey; // sposta la chiave in application.properties
+    private String secretKey;
 
+    // Tempo di scadenza del token in millisecondi, configurato in application.properties
     @Value("${jwt.expiration}")
-    private long EXPIRATION_TIME; // in millisecondi
+    private long EXPIRATION_TIME;
 
+    /**
+     * Genera un JWT per l'utente specificato.
+     * @param username nome utente per cui generare il token
+     * @return token JWT come stringa
+     */
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
@@ -26,6 +33,11 @@ public class TokenManager {
                 .compact();
     }
 
+    /**
+     * Verifica la validità di un token JWT e restituisce il nome utente se valido.
+     * @param token il token JWT da verificare
+     * @return il nome utente se il token è valido, altrimenti null
+     */
     public String verifyToken(String token) {
         try {
             Claims claims = Jwts.parser()
@@ -34,7 +46,8 @@ public class TokenManager {
                     .getBody();
             return claims.getSubject();
         } catch (Exception e) {
-            return null; // token non valido o scaduto
+            // Token non valido o scaduto
+            return null;
         }
     }
 }

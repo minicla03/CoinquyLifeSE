@@ -97,7 +97,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.createExpense(testExpense);
 
-        // Allora verifica che la risposta sia OK e contenga il risultato atteso
+        // Allora verifica che la risposta sia 200 OK e contenga il risultato atteso
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(successExpenseResult, response.getEntity());
 
@@ -132,7 +132,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.createExpense(testExpense);
 
-        // Allora verifica che la risposta sia INTERNAL_SERVER_ERROR
+        // Allora verifica che la risposta sia 500  INTERNAL_SERVER_ERROR
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
         assertEquals(errorExpenseResult, response.getEntity());
     }
@@ -156,7 +156,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.createExpense(testExpense);
 
-        // Allora verifica che la risposta sia BAD_REQUEST
+        // Allora verifica che la risposta sia 400 BAD_REQUEST
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
         assertEquals(invalidInputExpenseResult, response.getEntity());
     }
@@ -180,7 +180,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.createExpense(testExpense);
 
-        // Allora verifica che la risposta sia OK
+        // Allora verifica che la risposta sia 200 OK
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(successExpenseResult, response.getEntity());
 
@@ -210,7 +210,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.getAllExpenses(houseId);
 
-        // Allora verifica che la risposta sia OK e contenga il risultato atteso
+        // Allora verifica che la risposta sia  200OK e contenga il risultato atteso
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(result, response.getEntity());
         verify(expenseService, times(1)).getAllExpenses(houseId);
@@ -230,7 +230,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.getAllExpenses(houseId);
 
-        // Allora verifica che la risposta sia NO_CONTENT
+        // Allora verifica che la risposta sia 204 NO_CONTENT
         assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
         assertEquals(result, response.getEntity());
     }
@@ -249,7 +249,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.getAllExpenses(houseId);
 
-        // Allora verifica che la risposta sia INTERNAL_SERVER_ERROR
+        // Allora verifica che la risposta sia 500 INTERNAL_SERVER_ERROR
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
         assertEquals("Server error", response.getEntity());
     }
@@ -268,7 +268,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.calculateDebt(requestBody);
 
-        // Allora verifica che la risposta sia OK
+        // Allora verifica che la risposta sia 200 OK
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(successDebtResult, response.getEntity());
         verify(expenseService, times(1)).calculateDebt("house1");
@@ -288,7 +288,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.calculateDebt(requestBody);
 
-        // Allora verifica che la risposta sia NOT_FOUND
+        // Allora verifica che la risposta sia 404 NOT_FOUND
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
         assertEquals(noContentDebtResult, response.getEntity());
     }
@@ -309,7 +309,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.calculateDebt(requestBody);
 
-        // Allora verifica che la risposta sia INTERNAL_SERVER_ERROR
+        // Allora verifica che la risposta sia 500 INTERNAL_SERVER_ERROR
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
         assertEquals("Server error", response.getEntity());
     }
@@ -328,7 +328,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.updateExpenseStatus(requestBody);
 
-        // Allora verifica che la risposta sia OK
+        // Allora verifica che la risposta sia 200 OK
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(successExpenseResult, response.getEntity());
         verify(expenseService, times(1)).updateExpenseStatus("expense1");
@@ -349,7 +349,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.updateExpenseStatus(requestBody);
 
-        // Allora verifica che la risposta sia BAD_REQUEST
+        // Allora verifica che la risposta sia 400 BAD_REQUEST
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
         assertEquals(badRequestResult, response.getEntity());
     }
@@ -369,7 +369,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.updateExpenseStatus(requestBody);
 
-        // Allora verifica che la risposta sia INTERNAL_SERVER_ERROR
+        // Allora verifica che la risposta sia 500 INTERNAL_SERVER_ERROR
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
         assertTrue(response.getEntity().toString().contains("Error updating expense status"));
         assertTrue(response.getEntity().toString().contains("Database connection failed"));
@@ -389,7 +389,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.calculateDebt(requestBody);
 
-        // Allora verifica che la risposta sia NOT_FOUND
+        // Allora verifica che la risposta sia 404 NOT_FOUND
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
 
@@ -408,7 +408,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.updateExpenseStatus(requestBody);
 
-        // Allora verifica che la risposta sia BAD_REQUEST
+        // Allora verifica che la risposta sia 400 BAD_REQUEST
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
         verify(expenseService, times(1)).updateExpenseStatus(null);
     }
@@ -440,7 +440,7 @@ class ExpenseControllerTest {
         // Quando viene chiamato il controller
         Response response = expenseController.calculateDebt(requestBody);
 
-        // Allora verifica che la risposta sia OK
+        // Allora verifica che la risposta sia 200 OK
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals(debtResult, response.getEntity());
         verify(expenseService, times(1)).calculateDebt("house1");

@@ -13,6 +13,9 @@ import org.springframework.stereotype.Controller;
 
 import java.util.Map;
 
+/**
+ * Controller per la gestione dell'autenticazione esterna e del collegamento di una casa a un utente.
+ */
 @Controller
 @Path("/auth/external")
 @Consumes("application/json")
@@ -21,19 +24,29 @@ public class WebAuthController
     @Autowired
     private WebAuthClientService webAuthClientService;
 
+    /**
+     * Endpoint per collegare una casa a un utente autenticato.
+     *
+     * @param auth Header di autorizzazione contenente il token Bearer.
+     * @param body Corpo della richiesta contenente il codice della casa.
+     * @return Response HTTP con esito dell'operazione.
+     */
     @POST
     @Path("/link-house")
     public Response linkHouseToUser(@HeaderParam("Authorization") String auth, Map<String, String> body)
     {
+        // Estrae il token rimuovendo "Bearer "
         String token = auth.substring(7);
         String houseCode = body.get("houseCode");
         System.out.println(houseCode);
 
+        // Verifica che il codice casa sia presente
         if (houseCode == null)
         {
             return Response.status(Response.Status.BAD_REQUEST).entity("Token and house code are required").build();
         }
 
+        // Tenta di collegare la casa all'utente tramite il servizio
         AuthResult authResult = webAuthClientService.linkHouseToUser(token, houseCode);
         if (authResult.getStatusAuth() == StatusAuth.SUCCESS)
         {

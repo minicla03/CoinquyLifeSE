@@ -212,7 +212,7 @@ class ExpenseServiceTest {
     @Test
     void testUpdateExpenseStatus_Success() {
         // Configuro il mock per trovare la spesa
-        when(expenseRepository.findById("expense1")).thenReturn(Optional.of(testExpense1));
+        when(expenseRepository.findById("expense1")).thenReturn(Optional.of(testExpense1)); //Optional viene usato per gestire in modo sicuro il risultato del metodo findById del repository. Questo metodo può restituire un oggetto Expense se trovato, oppure nessun risultato (null). Usando Optional, si evita il rischio di NullPointerException e si rende esplicita la possibilità che il valore non sia presente, costringendo il chiamante a gestire entrambi i casi (presenza o assenza del valore).
         when(expenseRepository.save(any(Expense.class))).thenReturn(testExpense1);
 
         // Quando aggiorno lo stato

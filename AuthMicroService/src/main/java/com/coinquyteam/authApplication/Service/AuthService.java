@@ -17,11 +17,16 @@ public class AuthService {
     private final IUserRepository userRepository;
     private final WebClient webClient;
 
+    // Costruttore del servizio di autenticazione
     public AuthService(IUserRepository userRepository, WebClient webClient) {
         this.userRepository = userRepository;
         this.webClient = webClient;
     }
 
+    /**
+     * Registra un nuovo utente se username o email non sono già presenti.
+     * Restituisce un AuthResult con lo stato e il token generato.
+     */
     public AuthResult register(String username, String name, String password, String surname, String email) {
         if (userRepository.findByUsername(username) != null || userRepository.findByEmail(email) != null) {
             return new AuthResult(StatusAuth.USER_ALREADY_EXISTS, null);
@@ -35,6 +40,10 @@ public class AuthService {
         return new AuthResult(StatusAuth.SUCCESS, token);
     }
 
+    /**
+     * Effettua il login tramite username o email e password.
+     * Restituisce un AuthResult con lo stato e il token se le credenziali sono corrette.
+     */
     public AuthResult login(String identifier, String password) {
         User user = userRepository.findByUsername(identifier);
         if (user == null) {
@@ -50,9 +59,12 @@ public class AuthService {
         return new AuthResult(StatusAuth.INVALID_CREDENTIALS, null);
     }
 
+    /**
+     * Richiama un servizio REST per generare un token JWT per l'utente.
+     */
     private String generateTokenViaRest(String username) {
         Map responseMap = webClient.post()
-                .uri("http://172.31.6.2:8080/gateway/generate-token")
+                .uri("http://localhost:8080/gateway/generate-token")
                 .bodyValue(Map.of("username", username))
                 .retrieve()
                 .bodyToMono(Map.class)
@@ -61,6 +73,7 @@ public class AuthService {
         return (String) responseMap.get("token");
     }
 
+    //NON USATO
     public UserResult getUserByHouseId(String houseId) {
 
         List<User> users = userRepository.findAll()
@@ -74,6 +87,9 @@ public class AuthService {
         return new UserResult(StatusAuth.USERS_NOT_FOUND, null);
     }
 
+    /**
+     * Restituisce la lista degli utenti (coinquilini) associati a uno specifico houseId.
+     */
     public List<User> getCoinquilinibyHouseId(String houseId)
     {
         List<User> list = userRepository.findAll().stream()

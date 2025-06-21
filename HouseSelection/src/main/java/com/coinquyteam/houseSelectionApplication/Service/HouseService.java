@@ -17,11 +17,19 @@ import java.util.Map;
 
 @Service("HouseService")
 public class HouseService {
+
     @Autowired
     private IHouseRepository houseRepository;
+
     @Autowired
     private RestTemplate restTemplate;
 
+    /**
+     * Crea una nuova casa se il nome non esiste già.
+     * @param houseName nome della casa
+     * @param houseAddress indirizzo della casa
+     * @return HouseResult con lo stato della creazione e il codice della casa
+     */
     public HouseResult createHouse(String houseName, String houseAddress) {
         assert houseName != null;
         if (houseRepository.findByHouseName(houseName) != null) {
@@ -39,6 +47,11 @@ public class HouseService {
         }
     }
 
+    /**
+     * Effettua il login di una casa tramite il codice.
+     * @param houseCode codice della casa
+     * @return HouseResult con lo stato del login e l'id della casa se trovata
+     */
     public HouseResult loginHouse(String houseCode) {
         House house = houseRepository.findAll()
                 .stream()
@@ -53,9 +66,15 @@ public class HouseService {
         }
     }
 
+    /**
+     * Collega una casa a un utente tramite chiamata REST a un servizio esterno.
+     * @param token token di autenticazione dell'utente
+     * @param houseCode codice della casa
+     * @return HouseResult con lo stato del collegamento
+     */
     public HouseResult linkHouseToUser(String token, String houseCode)
     {
-        String url = "http://172.31.6.2:8080/Auth/rest/auth/external/link-house"; // DA VERIFICARE !!!
+        String url = "http://localhost:8080/Auth/rest/auth/external/link-house"; // DA VERIFICARE !!!
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token);
@@ -86,6 +105,11 @@ public class HouseService {
         }
     }
 
+    /**
+     * Elimina una casa tramite il codice.
+     * @param houseCode codice della casa
+     * @return HouseResult con lo stato dell'eliminazione
+     */
     public HouseResult deleteHouse(String houseCode) {
 
         House house = houseRepository.findAll()

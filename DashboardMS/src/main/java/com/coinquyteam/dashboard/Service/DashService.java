@@ -26,19 +26,19 @@ public class DashService
 
     public List<?> getCoinquy(String auth, String houseId)
     {
-        String url = "http://172.31.6.2:8080/Auth/rest/client/retrieveCoinquy?houseId=" + houseId;
+        String url = "http://localhost:8080/Auth/rest/client/retrieveCoinquy?houseId=" + houseId;
         String token = auth.substring(7);
         return makeGetRequest(url,token);
     }
 
     public List<?> getTurni(String houseId, String auth){
-        String url = "http://172.31.6.2:8080/Shift/rest/client/retriveShift?houseId=" + houseId;
+        String url = "http://localhost:8080/Shift/rest/client/retriveShift?houseId=" + houseId;
         String token = auth.substring(7);
         return makeGetRequest(url, token);
     }
 
     public LinkedHashMap<String, Classifica> getClassifica(CoiquyListDTO coiquyListDTO, String auth) {
-        String url = "http://172.31.6.2:8080/Rank/rest/client/retrieveClassifica";
+        String url = "http://localhost:8080/Rank/rest/client/retrieveClassifica";
         String token = auth.substring(7);
         return makePostRequest(url, coiquyListDTO, token);
     }

@@ -1,13 +1,11 @@
-
-/*Logica per il profilo utente*/
-
+// Logica per il profilo utente
 const utente = {
     immagineProfilo: "user-solid.svg"
 };
 
 const userLink = document.getElementById('user');
 
-// Crea l'immagine
+// Crea l'immagine del profilo utente e la inserisce nel DOM
 const img = document.createElement('img');
 img.src = utente.immagineProfilo;
 img.className = 'profile-img';
@@ -18,27 +16,32 @@ userLink.innerHTML = '';
 // Inserisce immagine
 userLink.appendChild(img);
 
+// Recupera l'ID della casa dal localStorage
 const houseId = localStorage.getItem("houseId");
 console.log("House ID:", houseId);
 
-document.querySelector('.nav_links li:nth-child(1) a').href = 'http://172.31.6.2:8080/dashPage.html';
-document.querySelector('.nav_links li:nth-child(2) a').href = 'http://172.31.6.2:8080/expensePage.html';
-document.querySelector('.nav_links li:nth-child(3) a').href = 'http://172.31.6.2:8080/shiftPage.html';
-document.querySelector('.nav_links li:nth-child(4) a').href = 'http://172.31.6.2:8080/notYet.html';
+// Imposta i link di navigazione
+document.querySelector('.nav_links li:nth-child(1) a').href = 'http://localhost:8080/dashPage.html';
+document.querySelector('.nav_links li:nth-child(2) a').href = 'http://localhost:8080/expensePage.html';
+document.querySelector('.nav_links li:nth-child(3) a').href = 'http://localhost:8080/shiftPage.html';
+document.querySelector('.nav_links li:nth-child(4) a').href = 'http://localhost:8080/notYet.html';
 
+// Array per le spese e i coinquilini
 const expenses = [];
 let coinquilini = [];
+
+// Funzione per recuperare i coinquilini dal localStorage
 function local()
 {
-    let user=JSON.parse(localStorage.getItem("listCoiquy"));
+    let user = JSON.parse(localStorage.getItem("listCoiquy"));
     user.forEach((item) => {
-        //const userObj = JSON.parse(item);
         coinquilini.push(item);
         console.log(item);
     })
 }
 console.log(coinquilini);
 
+// Recupera gli elementi del DOM per i campi della spesa
 const descriptionInput = document.getElementById("description");
 const amountInput = document.getElementById("amount");
 let payerInput = document.getElementById("option")
@@ -48,6 +51,7 @@ const expenseList = document.getElementById("expense-list");
 const totalSpan = document.getElementById("total");
 const balancesDiv = document.getElementById("balances");
 
+// Funzione per aggiungere una nuova spesa
 function addExpense() {
     const description = descriptionInput.value.trim();
     const amountStr = amountInput.value.trim().replace(",", ".");
@@ -62,14 +66,14 @@ function addExpense() {
         return;
     }
 
-    fetch('http://172.31.6.2:8080/Expense/rest/expense/createExpense', {
+    // Chiamata API per creare la spesa
+    fetch('http://localhost:8080/Expense/rest/expense/createExpense', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem("token")}`
         },
         body: JSON.stringify({
-
             description: description,
             amount: amount,
             createdBy: createdBy,
@@ -99,6 +103,7 @@ function addExpense() {
             console.error('Errore:', error);
         });
 
+    // Reset dei campi input dopo l'aggiunta
     descriptionInput.value = "";
     amountInput.value = "";
     payerInput.value = "";
@@ -106,6 +111,7 @@ function addExpense() {
     balancesDiv.innerHTML = "<p>ℹ️ Nessun calcolo effettuato</p>";
 }
 
+// Funzione per renderizzare una singola spesa nella lista
 function renderSingleExpense(expense, index) {
     const li = document.createElement("li-expense");
     li.classList.toggle("paid", expense.paid);
@@ -125,9 +131,10 @@ function renderSingleExpense(expense, index) {
     paidBtn.disabled = expense.status === "SETTLED";
     paidBtn.classList.add("paid-btn");
 
+    // Listener per saldare la spesa
     paidBtn.addEventListener("click", () => {
         // Chiama l'API per aggiornare lo stato dell'expense
-        fetch(`http://172.31.6.2:8080/Expense/rest/expense/updateExpenseStatus`, {
+        fetch(`http://localhost:8080/Expense/rest/expense/updateExpenseStatus`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -158,11 +165,11 @@ function renderSingleExpense(expense, index) {
     return li;
 }
 
-
+// Funzione per recuperare tutte le spese dal backend
 async function retriveExpenses() {
     expenseList.innerHTML = ""; // pulisci DOM
 
-    await fetch(`http://172.31.6.2:8080/Expense/rest/expense/getAllExpenses?houseId=${localStorage.getItem("houseId")}`,{
+    await fetch(`http://localhost:8080/Expense/rest/expense/getAllExpenses?houseId=${localStorage.getItem("houseId")}`,{
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -189,7 +196,7 @@ async function retriveExpenses() {
         });
 }
 
-
+// Funzione per aggiornare il totale delle spese non saldate
 function updateTotal() {
     const total = expenses
         .filter(exp => exp.status !== "SETTLED") // Filtra le spese non pagate
@@ -197,6 +204,7 @@ function updateTotal() {
     totalSpan.textContent = `€${total.toFixed(2)}`;
 }
 
+// Funzione per recuperare e mostrare i coinquilini come partecipanti e pagatore
 async function retriveCoinquys() {
     try {
         // Participants Checkbox (scelta multipla)
@@ -221,6 +229,7 @@ async function retriveCoinquys() {
         participantsGrid.style.border = "1px solid #ccc"; // (Opzionale) per chiarezza
         participantsGrid.style.borderRadius = "8px";
 
+        // Crea i checkbox per ogni coinquilino
         coinquilini.forEach(coinquilino => {
             const div = document.createElement('div');
             div.style.display = "flex";
@@ -249,7 +258,7 @@ async function retriveCoinquys() {
         });
         container.appendChild(participantsGrid);
 
-        //Payer Select
+        // Payer Select
         const containerSelect = document.getElementById('payer-container');
         containerSelect.innerHTML = ""; // Pulisce eventuali contenuti precedenti
         const selectPayer = document.createElement('select');
@@ -288,7 +297,7 @@ async function retriveCoinquys() {
 
 // Funzione riutilizzabile per calcolare e mostrare i debiti
 function calculateDebts() {
-    fetch("http://172.31.6.2:8080/Expense/rest/expense/calculateDebt", {
+    fetch("http://localhost:8080/Expense/rest/expense/calculateDebt", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -308,6 +317,7 @@ function calculateDebts() {
                 return;
             }
 
+            // Mostra i debiti per ogni partecipante
             data.debts.forEach(debt => {
                 const debtorNames = Object.keys(debt.participants);
                 const amounts = Object.values(debt.participants);
@@ -350,14 +360,14 @@ function calculateDebts() {
             document.getElementById("balances").innerHTML = "<p>⚠️ Errore nella richiesta al server.</p>";
         });
 
+    // Funzione di utilità per capitalizzare la prima lettera
     function capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 }
 
-
-//per inizializzazione dei contenuti della pagina nel caso ci sono
-//delle informazioni salvate nel DB
+// Per inizializzazione dei contenuti della pagina nel caso ci sono
+// delle informazioni salvate nel DB
 document.addEventListener('DOMContentLoaded', async () => {
     local()
     await retriveCoinquys();
@@ -367,4 +377,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateTotal();
 });
 
+// Listener per il bottone di aggiunta spesa
 addBtn.addEventListener("click", addExpense);

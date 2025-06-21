@@ -12,8 +12,7 @@ function showHouseLogin() {
     document.getElementById("formTitle").textContent = "CoinquiHouse";
 }
 
-
-// Aggiungi un listener per il click sul link "Registrati"
+// Listener per il click sul bottone di registrazione
 document.querySelector("#registerForm button").addEventListener("click", async () => {
     let out;
     const inputs = document.querySelectorAll("#registerForm input");
@@ -23,9 +22,9 @@ document.querySelector("#registerForm button").addEventListener("click", async (
         houseAddress: inputs[1].value,
     };
 
-
     try {
-        const res = await fetch("http://172.31.6.2:8080/House/rest/house/create", {
+        // Effettua la richiesta di creazione casa
+        const res = await fetch("http://localhost:8080/House/rest/house/create", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -34,27 +33,26 @@ document.querySelector("#registerForm button").addEventListener("click", async (
             body: JSON.stringify(data),
         });
 
-
         const result = await res.text();
         if (res.ok) {
-            //alert("Registrazione completata!");
+            // Registrazione completata con successo
             const json = JSON.parse(result);
             const code = json["code"];
             out = document.getElementById("outputreg");
             out.innerHTML = "✅ Registrazione completata, il codice di accesso alla tua Coinquihouse è: <br>" + code;
         } else {
-            //alert("Errore: " + result);
+            // Errore lato server
             out = document.getElementById("outputreg");
             out.innerHTML = "❗️" + result;
         }
     } catch (error) {
-        //alert("Errore di rete: " + error.message);
+        // Errore di rete
         out = document.getElementById("outputreg");
         out.innerHTML = "❗️" + error.message;
     }
 });
 
-// Aggiungi un listener per il click sul link "Hai già un account?"
+// Listener per il submit del form di login
 document.querySelector("#loginForm").addEventListener("submit", async (event) => {
     let out;
     event.preventDefault(); // Previene il comportamento predefinito del form
@@ -66,44 +64,42 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
     };
 
     try {
-        const res = await fetch(`http://172.31.6.2:8080/House/rest/house/loginHouse`, {
+        // Effettua la richiesta di login casa
+        const res = await fetch(`http://localhost:8080/House/rest/house/loginHouse`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + token,
-
             },
             body: JSON.stringify(data),
         });
 
         const result = await res.text();
         if (res.ok) {
-            //alert("Login effettuato!");
+            // Login effettuato con successo
             out = document.getElementById("outputlog");
             out.innerHTML = "✅ Login effettuato!";
             localStorage.setItem("houseId", houseId);
-            window.location.href = `http://172.31.6.2:8080/dashPage.html`;
+            window.location.href = `http://localhost:8080/dashPage.html`;
         } else if (res.status === 401 || res.status === 403) {
-            //alert("Codice di accesso errato");
+            // Accesso negato per codice errato
             out = document.getElementById("outputlog");
             out.innerHTML = "❗️ Accesso negato";
         }
         else {
-            //alert("Errore: " + result);
+            // Altri errori
             out = document.getElementById("outputlog");
             out.innerHTML = "❗️" + result;
         }
     } catch (error) {
-        //alert("Errore di rete: " + error.message);
+        // Errore di rete
         out = document.getElementById("outputlog");
         out.innerHTML = "❗️" + error.message;
     }
 });
 
-
-// Aggiungi un listener per il click sul link "Hai già un account?"
+// Listener per il click sul bottone di login per evitare doppio invio
 document.querySelector("#loginForm button").addEventListener("click", async (event) => {
     event.preventDefault(); // Previene il doppio invio del form
     document.querySelector("#loginForm").dispatchEvent(new Event("submit"));
 });
-
