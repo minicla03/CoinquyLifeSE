@@ -96,13 +96,13 @@ Con affetto,
 
 ## 👥 Il Team CoinquyLife
 
-| Nome                        | Nick GitHub       |
-|-----------------------------|-------------------|
-| Aragonese Alessandra        | Aleragons         |
-| Maturo Christian            | Kris-dj           |  
-| Mininno Claudio             | minicla03         |
-| Ricci Giuseppe              | Giusk10           |
-| Simeone Lucia               | luxiqqq           |
+| Nome                        | Nick GitHub                               |
+|-----------------------------|-------------------------------------------|
+| Simeone Lucia               | [luxiqqq](https://github.com/luxiqqq)     |
+| Mininno Claudio             | [minicla03](https://github.com/minicla03) |
+| Ricci Giuseppe              | [Giusk10](https://github.com/Giusk10)     |
+| Aragonese Alessandra        | [Aleragons](https://github.com/aleragons) |
+| Maturo Christian            | [Kris-dj](https://github.com/kris-dj)     |  
 
 ---
 
